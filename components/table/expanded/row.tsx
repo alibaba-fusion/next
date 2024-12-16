@@ -61,13 +61,17 @@ export default class ExpandedRow extends React.Component {
             let content;
 
             if (totalIndent > colSpan && !lockType) {
-                log.warning("It's not allowed expandedRowIndent is more than the number of columns.");
+                log.warning(
+                    "It's not allowed expandedRowIndent is more than the number of columns."
+                );
             }
             if (leftIndent < columns.length && lockType === 'left') {
                 log.warning('expandedRowIndent left is less than the number of left lock columns.');
             }
             if (rightIndent < columns.length && lockType === 'right') {
-                log.warning('expandedRowIndent right is less than the number of right lock columns.');
+                log.warning(
+                    'expandedRowIndent right is less than the number of right lock columns.'
+                );
             }
             if (lockType) {
                 return openRowKeys.indexOf(record[primaryKey]) > -1 ? (
@@ -114,7 +118,10 @@ export default class ExpandedRow extends React.Component {
                 col.lock === 'right' && rightStart--;
             });
             return openRowKeys.indexOf(record[primaryKey]) > -1 ? (
-                <tr className={`${prefix}table-expanded-row`} key={`expanded-${record[primaryKey] || expandedIndex}`}>
+                <tr
+                    className={`${prefix}table-expanded-row`}
+                    key={`expanded-${record[primaryKey] || expandedIndex}`}
+                >
                     {renderCols(leftIndent)}
                     <td colSpan={colSpan - totalIndent}>{content}</td>
                     {renderCols(rightIndent, rightStart)}
@@ -135,6 +142,14 @@ export default class ExpandedRow extends React.Component {
         }
 
         const newRowIndex = expandedIndexSimulate ? rowIndex / 2 : rowIndex;
-        return <Row {...others} record={record} columns={columns} __rowIndex={rowIndex} rowIndex={newRowIndex} />;
+        return (
+            <Row
+                {...others}
+                record={record}
+                columns={columns}
+                __rowIndex={rowIndex}
+                rowIndex={newRowIndex}
+            />
+        );
     }
 }

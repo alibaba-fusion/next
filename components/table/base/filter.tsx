@@ -41,7 +41,10 @@ class Filter extends React.Component {
 
     static getDerivedStateFromProps(nextProps, prevState) {
         const state = {};
-        if (nextProps.hasOwnProperty('filterParams') && typeof nextProps.filterParams !== 'undefined') {
+        if (
+            nextProps.hasOwnProperty('filterParams') &&
+            typeof nextProps.filterParams !== 'undefined'
+        ) {
             const dataIndex = nextProps.dataIndex || this.props.dataIndex;
             const filterParams = nextProps.filterParams || {};
             const filterConfig = filterParams[dataIndex] || {};
@@ -135,7 +138,16 @@ class Filter extends React.Component {
     };
 
     render() {
-        const { filters, prefix, locale, className, filterMode, filterMenuProps, filterProps, rtl } = this.props;
+        const {
+            filters,
+            prefix,
+            locale,
+            className,
+            filterMode,
+            filterMenuProps,
+            filterProps,
+            rtl,
+        } = this.props;
 
         const dropdownClassname = classnames(filterProps && filterProps.className, {
             [`${prefix}table-filter-menu`]: true,
@@ -149,7 +161,11 @@ class Filter extends React.Component {
 
         function renderSubMenu(parent, children) {
             return (
-                <Menu.SubMenu label={parent.label} key={parent.value} selectable={subMenuSelectable}>
+                <Menu.SubMenu
+                    label={parent.label}
+                    key={parent.value}
+                    selectable={subMenuSelectable}
+                >
                     {renderMenuContent(children)}
                 </Menu.SubMenu>
             );

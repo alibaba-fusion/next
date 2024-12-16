@@ -92,7 +92,7 @@ export default function tree(BaseComponent) {
             const { openRowKeys } = this.state;
             const { primaryKey } = this.props;
             const ret = [],
-                loop = function(dataSource, level, parentId = null) {
+                loop = function (dataSource, level, parentId = null) {
                     dataSource.forEach(item => {
                         item.__level = level;
 
@@ -138,7 +138,7 @@ export default function tree(BaseComponent) {
                 dataSource = this.ds,
                 openRowKeys = [...this.state.openRowKeys],
                 index = openRowKeys.indexOf(id),
-                getChildrenKeyById = function(id) {
+                getChildrenKeyById = function (id) {
                     const ret = [id];
                     const loop = data => {
                         data.forEach(item => {

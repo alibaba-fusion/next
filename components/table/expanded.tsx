@@ -138,7 +138,9 @@ export default function expanded(BaseComponent, stickyLock) {
             const bodyNode = tableEl && tableEl.querySelector(`.${prefix}table-body`);
 
             Object.keys(this.expandedRowRefs || {}).forEach(key => {
-                dom.setStyle(this.expandedRowRefs[key], { width: (bodyNode && bodyNode.clientWidth) || totalWidth });
+                dom.setStyle(this.expandedRowRefs[key], {
+                    width: (bodyNode && bodyNode.clientWidth) || totalWidth,
+                });
             });
         };
 

@@ -13,7 +13,10 @@ import Table from '../index';
 Enzyme.configure({ adapter: new Adapter() });
 
 describe('Table', () => {
-    let dataSource = [{ id: '1', name: 'test' }, { id: '2', name: 'test2' }],
+    let dataSource = [
+            { id: '1', name: 'test' },
+            { id: '2', name: 'test2' },
+        ],
         table,
         wrapper,
         timeout,
@@ -41,7 +44,7 @@ describe('Table', () => {
         timeout = (props, callback) => {
             return new Promise(resolve => {
                 wrapper.setProps(props);
-                setTimeout(function() {
+                setTimeout(function () {
                     resolve();
                 }, 10);
             }).then(callback);
@@ -50,7 +53,7 @@ describe('Table', () => {
         timeoutStickyLock = (props, callback) => {
             return new Promise(resolve => {
                 stickyLockWrapper.setProps(props);
-                setTimeout(function() {
+                setTimeout(function () {
                     resolve();
                 }, 10);
             }).then(callback);
@@ -82,16 +85,8 @@ describe('Table', () => {
             () => {
                 assert(wrapper.find(Checkbox).length === 3);
                 assert(wrapper.find('.next-checkbox-wrapper.disabled').length === 1);
-                wrapper
-                    .find('.next-checkbox')
-                    .at(2)
-                    .find('input')
-                    .simulate('click');
-                wrapper
-                    .find('.next-checkbox')
-                    .at(2)
-                    .find('input')
-                    .simulate('change');
+                wrapper.find('.next-checkbox').at(2).find('input').simulate('click');
+                wrapper.find('.next-checkbox').at(2).find('input').simulate('change');
                 done();
             }
         );
@@ -174,29 +169,12 @@ describe('Table', () => {
                 },
             },
             () => {
+                assert(wrapper.find('#table-titleAddons').at(0).text() === '请选择');
+                assert(wrapper.find('colgroup').at(2).props().children[0].props.style.width === 90);
+                assert(wrapper.find('th .next-checkbox-wrapper').at(1).hasClass('disabled'));
                 assert(
-                    wrapper
-                        .find('#table-titleAddons')
-                        .at(0)
-                        .text() === '请选择'
-                );
-                assert(
-                    wrapper
-                        .find('colgroup')
-                        .at(2)
-                        .props().children[0].props.style.width === 90
-                );
-                assert(
-                    wrapper
-                        .find('th .next-checkbox-wrapper')
-                        .at(1)
-                        .hasClass('disabled')
-                );
-                assert(
-                    wrapper
-                        .find('th .next-checkbox-wrapper .next-checkbox-label')
-                        .at(0)
-                        .text() === '>'
+                    wrapper.find('th .next-checkbox-wrapper .next-checkbox-label').at(0).text() ===
+                        '>'
                 );
                 done();
             }
@@ -234,7 +212,10 @@ describe('Table', () => {
 
         timeout(
             {
-                children: [<Table.Column dataIndex="id" sortable />, <Table.Column dataIndex="name" />],
+                children: [
+                    <Table.Column dataIndex="id" sortable />,
+                    <Table.Column dataIndex="name" />,
+                ],
                 onSort,
             },
             () => {
@@ -248,7 +229,10 @@ describe('Table', () => {
     it('should support tableLayout&tableWidth', done => {
         timeout(
             {
-                children: [<Table.Column dataIndex="id" sortable />, <Table.Column dataIndex="name" />],
+                children: [
+                    <Table.Column dataIndex="id" sortable />,
+                    <Table.Column dataIndex="name" />,
+                ],
                 tableLayout: 'fixed',
                 tableWidth: 1200,
             },
@@ -270,11 +254,22 @@ describe('Table', () => {
 
         timeout(
             {
-                children: [<Table.Column dataIndex="id" sortable />, <Table.Column dataIndex="name" />],
+                children: [
+                    <Table.Column dataIndex="id" sortable />,
+                    <Table.Column dataIndex="name" />,
+                ],
                 onSort,
                 sortIcons: {
-                    desc: <Icon style={{ top: '6px', left: '4px' }} type={'arrow-down'} size="small" />,
-                    asc: <Icon style={{ top: '-6px', left: '4px' }} type={'arrow-up'} size="small" />,
+                    desc: (
+                        <Icon
+                            style={{ top: '6px', left: '4px' }}
+                            type={'arrow-down'}
+                            size="small"
+                        />
+                    ),
+                    asc: (
+                        <Icon style={{ top: '-6px', left: '4px' }} type={'arrow-up'} size="small" />
+                    ),
                 },
             },
             () => {
@@ -365,7 +360,9 @@ describe('Table', () => {
             })
             .then(() => {
                 const loadingIndicator = <div className="test-custom-loading">Loading...</div>;
-                const CustomLoading = ({ className }) => <Loading className={className} indicator={loadingIndicator} />;
+                const CustomLoading = ({ className }) => (
+                    <Loading className={className} indicator={loadingIndicator} />
+                );
 
                 return timeout(
                     {
@@ -408,13 +405,17 @@ describe('Table', () => {
             () => {
                 assert(arr.toString() === '0,1');
 
-                let expandedCtrl0 = wrapper.find('.next-table-body .next-table-expanded-ctrl').at(0);
+                let expandedCtrl0 = wrapper
+                    .find('.next-table-body .next-table-expanded-ctrl')
+                    .at(0);
                 expandedCtrl0.simulate('click');
                 let expandedRow0 = wrapper.find('.next-table-body .next-table-expanded-row').at(0);
 
                 assert(expandedRow0.text().replace(/\s$|^\s/g, '') === 'test' + '0');
 
-                let expandedCtrl1 = wrapper.find('.next-table-body .next-table-expanded-ctrl').at(1);
+                let expandedCtrl1 = wrapper
+                    .find('.next-table-body .next-table-expanded-ctrl')
+                    .at(1);
                 expandedCtrl1.simulate('click');
                 let expandedRow1 = wrapper.find('.next-table-body .next-table-expanded-row').at(1);
 
@@ -426,8 +427,12 @@ describe('Table', () => {
                     expandedRowIndent: [2, 1],
                 },
                 () => {
-                    let expandedRowTdFirst = wrapper.find('.next-table-body .next-table-expanded-row td').first(),
-                        expandedRowTdSecond = wrapper.find('.next-table-body .next-table-expanded-row td').at(1);
+                    let expandedRowTdFirst = wrapper
+                            .find('.next-table-body .next-table-expanded-row td')
+                            .first(),
+                        expandedRowTdSecond = wrapper
+                            .find('.next-table-body .next-table-expanded-row td')
+                            .at(1);
                     assert(expandedRowTdFirst.text().replace(/\s$|^\s/g, '') === '');
                     assert(expandedRowTdSecond.text().replace(/\s$|^\s/g, '') === '');
                     done();
@@ -448,7 +453,9 @@ describe('Table', () => {
             () => {
                 let expandedRow = wrapper.find('.next-table-body .next-table-expanded-row').first();
                 assert(expandedRow.length === 0);
-                let expandedCtrl = wrapper.find('.next-table-body .next-table-expanded-ctrl').first();
+                let expandedCtrl = wrapper
+                    .find('.next-table-body .next-table-expanded-ctrl')
+                    .first();
                 expandedCtrl.simulate('click');
             }
         );
@@ -467,7 +474,9 @@ describe('Table', () => {
             },
             () => {
                 let expandedTotal = wrapper.find('.next-table-row');
-                let expandedIcon = wrapper.find('.next-table-prerow .next-table-cell-wrapper .next-icon');
+                let expandedIcon = wrapper.find(
+                    '.next-table-prerow .next-table-cell-wrapper .next-icon'
+                );
 
                 assert(expandedTotal.length - expandedIcon.length === 1);
                 done();
@@ -492,12 +501,7 @@ describe('Table', () => {
             () => {
                 let header = wrapper.find('.next-table-header tr');
                 assert(header.length === 2);
-                assert(
-                    header
-                        .first()
-                        .text()
-                        .replace(/\s/g, '') === 'group1group2'
-                );
+                assert(header.first().text().replace(/\s/g, '') === 'group1group2');
                 done();
             }
         );
@@ -554,21 +558,12 @@ describe('Table', () => {
         assert(wrapper.find('next-table-filter-active').length === 0);
 
         wrapper.find('.next-icon-filter').simulate('click');
-        wrapper
-            .find('.next-btn')
-            .at(0)
-            .simulate('click');
+        wrapper.find('.next-btn').at(0).simulate('click');
 
         assert.deepEqual(id, undefined);
         wrapper.find('.next-icon-filter').simulate('click');
-        wrapper
-            .find('.next-menu-item')
-            .at(1)
-            .simulate('click');
-        wrapper
-            .find('.next-btn')
-            .at(0)
-            .simulate('click');
+        wrapper.find('.next-menu-item').at(1).simulate('click');
+        wrapper.find('.next-btn').at(0).simulate('click');
         assert.deepEqual(id, '3');
 
         assert(wrapper.find('next-table-filter-active'));
@@ -580,18 +575,11 @@ describe('Table', () => {
             },
         });
         wrapper.find('.next-icon-filter').simulate('click');
-        wrapper
-            .find('.next-btn')
-            .at(0)
-            .simulate('click');
+        wrapper.find('.next-btn').at(0).simulate('click');
         assert.deepEqual(id, '1');
         wrapper.find('.next-icon-filter').simulate('click');
         assert.deepEqual(
-            wrapper
-                .find('.next-menu-item')
-                .at(0)
-                .props()
-                .className.indexOf('next-selected') > -1,
+            wrapper.find('.next-menu-item').at(0).props().className.indexOf('next-selected') > -1,
             true
         );
     });
@@ -723,7 +711,9 @@ describe('Table', () => {
             },
             () => {
                 assert(wrapper.find('.next-table-row.hidden').length === 1);
-                let treeNode = wrapper.find('.next-table-row .next-icon-arrow-right.next-table-tree-arrow');
+                let treeNode = wrapper.find(
+                    '.next-table-row .next-icon-arrow-right.next-table-tree-arrow'
+                );
                 treeNode.simulate('click');
                 assert(wrapper.find('.next-table-row.hidden').length === 0);
                 assert(
@@ -769,7 +759,11 @@ describe('Table', () => {
         wrapper.setProps({});
         timeout(
             {
-                dataSource: [{ id: '1', name: 'test' }, { id: '2', name: 'test2' }, { id: '3', name: 'test3' }],
+                dataSource: [
+                    { id: '1', name: 'test' },
+                    { id: '2', name: 'test2' },
+                    { id: '3', name: 'test3' },
+                ],
                 cellProps: (rowIndex, colIndex) => {
                     if (rowIndex == 0 && colIndex == 1) {
                         return {
@@ -779,33 +773,18 @@ describe('Table', () => {
                 },
             },
             () => {
-                assert(
-                    /test/.test(
-                        wrapper
-                            .find('.next-table-row')
-                            .at(0)
-                            .find('td')
-                            .at(1)
-                            .text()
-                    )
-                );
-                assert(
-                    wrapper
-                        .find('.next-table-row')
-                        .at(1)
-                        .find('td').length === 1
-                );
-                assert(
-                    wrapper
-                        .find('.next-table-row')
-                        .at(2)
-                        .find('td').length === 1
-                );
+                assert(/test/.test(wrapper.find('.next-table-row').at(0).find('td').at(1).text()));
+                assert(wrapper.find('.next-table-row').at(1).find('td').length === 1);
+                assert(wrapper.find('.next-table-row').at(2).find('td').length === 1);
             }
         ).then(() => {
             timeout(
                 {
-                    dataSource: [{ id: '1', name: 'test' }, { id: '2', name: 'test2' }, { id: '3', name: 'test3' }],
+                    dataSource: [
+                        { id: '1', name: 'test' },
+                        { id: '2', name: 'test2' },
+                        { id: '3', name: 'test3' },
+                    ],
                     cellProps: (rowIndex, colIndex) => {
                         if (rowIndex == 0 && colIndex == 0) {
                             return {
@@ -816,16 +795,7 @@ describe('Table', () => {
                 },
                 () => {
                     done();
-                    assert(
-                        /1/.test(
-                            wrapper
-                                .find('.next-table-row')
-                                .at(0)
-                                .find('td')
-                                .at(0)
-                                .text()
-                        )
-                    );
+                    assert(/1/.test(wrapper.find('.next-table-row').at(0).find('td').at(0).text()));
                 }
             );
         });
@@ -835,7 +805,11 @@ describe('Table', () => {
         wrapper.setProps({});
         timeout(
             {
-                dataSource: [{ id: '1', name: 'test' }, { id: '2', name: 'test2' }, { id: '3', name: 'test3' }],
+                dataSource: [
+                    { id: '1', name: 'test' },
+                    { id: '2', name: 'test2' },
+                    { id: '3', name: 'test3' },
+                ],
                 getCellProps: (rowIndex, colIndex) => {
                     if (rowIndex == 0 && colIndex == 1) {
                         return {
@@ -845,33 +819,18 @@ describe('Table', () => {
                 },
             },
             () => {
-                assert(
-                    /test/.test(
-                        wrapper
-                            .find('.next-table-row')
-                            .at(0)
-                            .find('td')
-                            .at(1)
-                            .text()
-                    )
-                );
-                assert(
-                    wrapper
-                        .find('.next-table-row')
-                        .at(1)
-                        .find('td').length === 1
-                );
-                assert(
-                    wrapper
-                        .find('.next-table-row')
-                        .at(2)
-                        .find('td').length === 1
-                );
+                assert(/test/.test(wrapper.find('.next-table-row').at(0).find('td').at(1).text()));
+                assert(wrapper.find('.next-table-row').at(1).find('td').length === 1);
+                assert(wrapper.find('.next-table-row').at(2).find('td').length === 1);
             }
         ).then(() => {
             timeout(
                 {
-                    dataSource: [{ id: '1', name: 'test' }, { id: '2', name: 'test2' }, { id: '3', name: 'test3' }],
+                    dataSource: [
+                        { id: '1', name: 'test' },
+                        { id: '2', name: 'test2' },
+                        { id: '3', name: 'test3' },
+                    ],
                     getCellProps: (rowIndex, colIndex) => {
                         if (rowIndex == 0 && colIndex == 0) {
                             return {
@@ -882,16 +841,7 @@ describe('Table', () => {
                 },
                 () => {
                     done();
-                    assert(
-                        /1/.test(
-                            wrapper
-                                .find('.next-table-row')
-                                .at(0)
-                                .find('td')
-                                .at(0)
-                                .text()
-                        )
-                    );
+                    assert(/1/.test(wrapper.find('.next-table-row').at(0).find('td').at(0).text()));
                 }
             );
         });
@@ -900,7 +850,11 @@ describe('Table', () => {
     it('should support getRowProps', done => {
         timeout(
             {
-                dataSource: [{ id: '1', name: 'test' }, { id: '2', name: 'test2' }, { id: '3', name: 'test3' }],
+                dataSource: [
+                    { id: '1', name: 'test' },
+                    { id: '2', name: 'test2' },
+                    { id: '3', name: 'test3' },
+                ],
                 getRowProps: (record, index) => {
                     if (index == 0) {
                         return {
@@ -910,12 +864,7 @@ describe('Table', () => {
                 },
             },
             () => {
-                assert(
-                    wrapper
-                        .find('.next-table-row')
-                        .at(0)
-                        .prop('data-props') === 'rowprops'
-                );
+                assert(wrapper.find('.next-table-row').at(0).prop('data-props') === 'rowprops');
                 done();
             }
         );
@@ -924,7 +873,11 @@ describe('Table', () => {
     it('should support rowProps', done => {
         timeout(
             {
-                dataSource: [{ id: '1', name: 'test' }, { id: '2', name: 'test2' }, { id: '3', name: 'test3' }],
+                dataSource: [
+                    { id: '1', name: 'test' },
+                    { id: '2', name: 'test2' },
+                    { id: '3', name: 'test3' },
+                ],
                 rowProps: (record, index) => {
                     if (index == 0) {
                         return {
@@ -934,12 +887,7 @@ describe('Table', () => {
                 },
             },
             () => {
-                assert(
-                    wrapper
-                        .find('.next-table-row')
-                        .at(0)
-                        .prop('data-props') === 'rowprops'
-                );
+                assert(wrapper.find('.next-table-row').at(0).prop('data-props') === 'rowprops');
                 done();
             }
         );
@@ -1078,7 +1026,10 @@ describe('Table', () => {
         assert(wrapper.find('div.next-table-empty').length !== 0);
 
         wrapper.setProps({
-            dataSource: [{ id: '1', name: 'test' }, { id: '2', name: 'test2' }],
+            dataSource: [
+                { id: '1', name: 'test' },
+                { id: '2', name: 'test2' },
+            ],
         });
 
         assert(wrapper.find('div.next-table-lock-left').length === 1);
@@ -1165,8 +1116,9 @@ describe('Table', () => {
             // assert(wrapper.find('div.next-table-lock.next-table-scrolling-to-right').length === 1);
             // assert(stickyLockWrapper.find('div.next-table-lock.next-table-scrolling-to-right').length === 1);
             assert(
-                stickyLockWrapper.find('div.next-table-lock tr td.next-table-fix-left.next-table-fix-left-last')
-                    .length === ds.length
+                stickyLockWrapper.find(
+                    'div.next-table-lock tr td.next-table-fix-left.next-table-fix-left-last'
+                ).length === ds.length
             );
             done();
         }, 500);
@@ -1175,109 +1127,53 @@ describe('Table', () => {
     it('should support align alignHeader', () => {
         wrapper.setProps({
             children: [
-                <Table.Column title="id" align="right" alignHeader="left" dataIndex="id" width={200} />,
+                <Table.Column
+                    title="id"
+                    align="right"
+                    alignHeader="left"
+                    dataIndex="id"
+                    width={200}
+                />,
                 <Table.Column title="name" align="left" dataIndex="name" width={200} />,
                 <Table.Column title="id" alignHeader="right" dataIndex="id" width={200} />,
             ],
         });
 
-        assert(
-            wrapper
-                .find('thead tr th')
-                .at(0)
-                .props().style.textAlign === 'left'
-        );
-        assert(
-            wrapper
-                .find('thead tr th')
-                .at(1)
-                .props().style.textAlign === 'left'
-        );
-        assert(
-            wrapper
-                .find('thead tr th')
-                .at(2)
-                .props().style.textAlign === 'right'
-        );
+        assert(wrapper.find('thead tr th').at(0).props().style.textAlign === 'left');
+        assert(wrapper.find('thead tr th').at(1).props().style.textAlign === 'left');
+        assert(wrapper.find('thead tr th').at(2).props().style.textAlign === 'right');
 
+        assert(wrapper.find('tbody tr').at(0).find('td').at(0).props().style.textAlign === 'right');
+        assert(wrapper.find('tbody tr').at(0).find('td').at(1).props().style.textAlign === 'left');
         assert(
-            wrapper
-                .find('tbody tr')
-                .at(0)
-                .find('td')
-                .at(0)
-                .props().style.textAlign === 'right'
-        );
-        assert(
-            wrapper
-                .find('tbody tr')
-                .at(0)
-                .find('td')
-                .at(1)
-                .props().style.textAlign === 'left'
-        );
-        assert(
-            wrapper
-                .find('tbody tr')
-                .at(0)
-                .find('td')
-                .at(2)
-                .props().style.textAlign === undefined
+            wrapper.find('tbody tr').at(0).find('td').at(2).props().style.textAlign === undefined
         );
     });
 
     it('should support align alignHeader rtl', () => {
         wrapper.setProps({
             children: [
-                <Table.Column title="id" align="right" alignHeader="left" dataIndex="id" width={200} />,
+                <Table.Column
+                    title="id"
+                    align="right"
+                    alignHeader="left"
+                    dataIndex="id"
+                    width={200}
+                />,
                 <Table.Column title="name" align="left" dataIndex="name" width={200} />,
                 <Table.Column title="id" alignHeader="right" dataIndex="id" width={200} />,
             ],
             rtl: true,
         });
 
-        assert(
-            wrapper
-                .find('thead tr th')
-                .at(0)
-                .props().style.textAlign === 'right'
-        );
-        assert(
-            wrapper
-                .find('thead tr th')
-                .at(1)
-                .props().style.textAlign === 'right'
-        );
-        assert(
-            wrapper
-                .find('thead tr th')
-                .at(2)
-                .props().style.textAlign === 'left'
-        );
+        assert(wrapper.find('thead tr th').at(0).props().style.textAlign === 'right');
+        assert(wrapper.find('thead tr th').at(1).props().style.textAlign === 'right');
+        assert(wrapper.find('thead tr th').at(2).props().style.textAlign === 'left');
 
+        assert(wrapper.find('tbody tr').at(0).find('td').at(0).props().style.textAlign === 'left');
+        assert(wrapper.find('tbody tr').at(0).find('td').at(1).props().style.textAlign === 'right');
         assert(
-            wrapper
-                .find('tbody tr')
-                .at(0)
-                .find('td')
-                .at(0)
-                .props().style.textAlign === 'left'
-        );
-        assert(
-            wrapper
-                .find('tbody tr')
-                .at(0)
-                .find('td')
-                .at(1)
-                .props().style.textAlign === 'right'
-        );
-        assert(
-            wrapper
-                .find('tbody tr')
-                .at(0)
-                .find('td')
-                .at(2)
-                .props().style.textAlign === undefined
+            wrapper.find('tbody tr').at(0).find('td').at(2).props().style.textAlign === undefined
         );
     });
 });

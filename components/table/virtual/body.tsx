@@ -68,7 +68,11 @@ export default class VirtualBody extends React.Component {
             wrapperStyle.height = bodyHeight;
         }
         return (
-            <div style={{ maxHeight: maxBodyHeight }} className={className} onScroll={this.onScroll}>
+            <div
+                style={{ maxHeight: maxBodyHeight }}
+                className={className}
+                onScroll={this.onScroll}
+            >
                 <div style={wrapperStyle} ref={this.virtualScrollRef}>
                     <div
                         style={{

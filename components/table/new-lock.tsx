@@ -62,7 +62,9 @@ export default function stickyLock(BaseComponent) {
             const isEmpty = !(dataSource && dataSource.length > 0);
 
             this.updateOffsetArr();
-            this.onLockBodyScroll(isEmpty ? { currentTarget: this.headerNode } : { currentTarget: this.bodyNode });
+            this.onLockBodyScroll(
+                isEmpty ? { currentTarget: this.headerNode } : { currentTarget: this.bodyNode }
+            );
             this.forceUpdate();
 
             events.on(window, 'resize', this.updateOffsetArr);
@@ -80,7 +82,9 @@ export default function stickyLock(BaseComponent) {
         componentDidUpdate() {
             this.updateOffsetArr();
             this.onLockBodyScroll(
-                this.bodyNode ? { currentTarget: this.bodyNode } : { currentTarget: this.headerNode },
+                this.bodyNode
+                    ? { currentTarget: this.bodyNode }
+                    : { currentTarget: this.headerNode },
                 true
             );
         }
@@ -92,7 +96,8 @@ export default function stickyLock(BaseComponent) {
         }
 
         updateOffsetArr = () => {
-            const { lockLeftChildren, lockRightChildren, originChildren } = this.splitChildren || {};
+            const { lockLeftChildren, lockRightChildren, originChildren } =
+                this.splitChildren || {};
 
             const leftLen = this.getFlatenChildren(lockLeftChildren).length;
             const rightLen = this.getFlatenChildren(lockRightChildren).length;
@@ -148,7 +153,9 @@ export default function stickyLock(BaseComponent) {
                         if ([true, 'left', 'right'].indexOf(props.lock) > -1) {
                             isLock = true;
                             if (!('width' in props)) {
-                                log.warning(`Should config width for lock column named [ ${props.dataIndex} ].`);
+                                log.warning(
+                                    `Should config width for lock column named [ ${props.dataIndex} ].`
+                                );
                             }
                         }
                         ret.push(props);
@@ -240,8 +247,20 @@ export default function stickyLock(BaseComponent) {
             const flatenLeftChildren = this.getFlatenChildren(lockLeftChildren);
             const flatenRightChildren = this.getFlatenChildren(lockRightChildren);
 
-            setStickyStyle(lockLeftChildren, flatenLeftChildren, 'left', this.state.leftOffsetArr, prefix);
-            setStickyStyle(lockRightChildren, flatenRightChildren, 'right', this.state.rightOffsetArr, prefix);
+            setStickyStyle(
+                lockLeftChildren,
+                flatenLeftChildren,
+                'left',
+                this.state.leftOffsetArr,
+                prefix
+            );
+            setStickyStyle(
+                lockRightChildren,
+                flatenRightChildren,
+                'right',
+                this.state.rightOffsetArr,
+                prefix
+            );
 
             return [...lockLeftChildren, ...originChildren, ...lockRightChildren];
         }
@@ -367,7 +386,16 @@ export default function stickyLock(BaseComponent) {
 
         render() {
             /* eslint-disable no-unused-vars, prefer-const */
-            let { children, columns, prefix, components, scrollToRow, className, dataSource, ...others } = this.props;
+            let {
+                children,
+                columns,
+                prefix,
+                components,
+                scrollToRow,
+                className,
+                dataSource,
+                ...others
+            } = this.props;
 
             const normalizedChildren = this.normalizeChildrenState(this.props);
 

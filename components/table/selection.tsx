@@ -270,7 +270,10 @@ export default function selection(BaseComponent) {
             if (Array.isArray(entireDataSource) && entireDataSource.length > dataSource.length) {
                 totalDS = entireDataSource;
             }
-            const records = unique(totalDS.filter(item => selectedRowKeys.indexOf(item[primaryKey]) > -1), primaryKey);
+            const records = unique(
+                totalDS.filter(item => selectedRowKeys.indexOf(item[primaryKey]) > -1),
+                primaryKey
+            );
             if (typeof rowSelection.onSelect === 'function') {
                 rowSelection.onSelect(checked, record, records);
             }
@@ -326,7 +329,14 @@ export default function selection(BaseComponent) {
                 components = { ...components };
                 components.Row = components.Row || SelectionRow;
             }
-            return <BaseComponent {...others} columns={columns} components={components} children={children} />;
+            return (
+                <BaseComponent
+                    {...others}
+                    columns={columns}
+                    components={components}
+                    children={children}
+                />
+            );
         }
     }
     statics(SelectionTable, BaseComponent);

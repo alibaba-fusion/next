@@ -23,7 +23,8 @@ export default class Sort extends React.Component {
     };
     // 渲染排序
     renderSort() {
-        const { prefix, sort, sortIcons, className, dataIndex, locale, sortDirections, rtl } = this.props,
+        const { prefix, sort, sortIcons, className, dataIndex, locale, sortDirections, rtl } =
+                this.props,
             sortStatus = sort[dataIndex],
             map = {
                 desc: 'descending',
@@ -33,7 +34,11 @@ export default class Sort extends React.Component {
         const icons = sortDirections.map(sortOrder => {
             return sortOrder === 'default' ? null : (
                 <a key={sortOrder} className={sortStatus === sortOrder ? 'current' : ''}>
-                    {sortIcons ? sortIcons[sortOrder] : <Icon rtl={rtl} type={map[sortOrder]} size="xs" />}
+                    {sortIcons ? (
+                        sortIcons[sortOrder]
+                    ) : (
+                        <Icon rtl={rtl} type={map[sortOrder]} size="xs" />
+                    )}
                 </a>
             );
         });
@@ -64,7 +69,8 @@ export default class Sort extends React.Component {
 
         sortDirections.forEach((dir, i) => {
             if (sort[dataIndex] === dir) {
-                nextSortType = sortDirections.length - 1 > i ? sortDirections[i + 1] : sortDirections[0];
+                nextSortType =
+                    sortDirections.length - 1 > i ? sortDirections[i + 1] : sortDirections[0];
             }
         });
 

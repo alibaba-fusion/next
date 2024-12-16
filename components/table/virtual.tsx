@@ -88,8 +88,12 @@ export default function virtual(BaseComponent) {
                 state.scrollToRow = nextProps.scrollToRow;
             }
 
-            if (prevState.useVirtual !== nextProps.useVirtual || prevState.dataSource !== nextProps.dataSource) {
-                state.hasVirtualData = nextProps.useVirtual && nextProps.dataSource && nextProps.dataSource.length > 0;
+            if (
+                prevState.useVirtual !== nextProps.useVirtual ||
+                prevState.dataSource !== nextProps.dataSource
+            ) {
+                state.hasVirtualData =
+                    nextProps.useVirtual && nextProps.dataSource && nextProps.dataSource.length > 0;
             }
 
             return state;
@@ -188,7 +192,8 @@ export default function virtual(BaseComponent) {
                 if (oldScrollToRow !== scrollToRow) {
                     this.bodyNode.scrollTop = rowHeight * scrollToRow;
                 } else {
-                    this.bodyNode.scrollTop = (this.lastScrollTop % rowHeight) + rowHeight * scrollToRow;
+                    this.bodyNode.scrollTop =
+                        (this.lastScrollTop % rowHeight) + rowHeight * scrollToRow;
                 }
             }
         }

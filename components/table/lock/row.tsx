@@ -32,6 +32,12 @@ export default class LockRow extends React.Component {
 
     render() {
         /* eslint-disable no-unused-vars*/
-        return <Row {...this.props} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} />;
+        return (
+            <Row
+                {...this.props}
+                onMouseEnter={this.onMouseEnter}
+                onMouseLeave={this.onMouseLeave}
+            />
+        );
     }
 }

@@ -142,7 +142,12 @@ export default class Body extends React.Component {
                     <div
                         ref={this.getEmptyNode}
                         className={`${prefix}table-empty`}
-                        style={{ position: 'sticky', left: 0, overflow: 'hidden', width: totalWidth }}
+                        style={{
+                            position: 'sticky',
+                            left: 0,
+                            overflow: 'hidden',
+                            width: totalWidth,
+                        }}
                     >
                         {empty}
                     </div>
@@ -160,7 +165,10 @@ export default class Body extends React.Component {
             rows = dataSource.map((record, index) => {
                 let rowProps = {};
                 // record may be a string
-                const rowIndex = typeof record === 'object' && '__rowIndex' in record ? record.__rowIndex : index;
+                const rowIndex =
+                    typeof record === 'object' && '__rowIndex' in record
+                        ? record.__rowIndex
+                        : index;
 
                 if (expandedIndexSimulate) {
                     rowProps = record.__expanded ? {} : getRowProps(record, index / 2);
@@ -179,9 +187,14 @@ export default class Body extends React.Component {
                 const expanded = record.__expanded ? 'expanded' : '';
                 return (
                     <Row
-                        key={`${record[primaryKey] || (record[primaryKey] === 0 ? 0 : rowIndex)}${expanded}`}
+                        key={`${
+                            record[primaryKey] || (record[primaryKey] === 0 ? 0 : rowIndex)
+                        }${expanded}`}
                         {...rowProps}
-                        ref={this.getRowRef.bind(this, expanded ? `${rowIndex}_expanded` : rowIndex)}
+                        ref={this.getRowRef.bind(
+                            this,
+                            expanded ? `${rowIndex}_expanded` : rowIndex
+                        )}
                         colGroup={colGroup}
                         rtl={rtl}
                         columns={columns}
