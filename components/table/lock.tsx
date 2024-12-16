@@ -101,7 +101,9 @@ export default function lock(BaseComponent) {
             const checkLock = col => {
                 if ([true, 'left', 'right'].indexOf(col.lock) > -1) {
                     if (!('width' in col)) {
-                        log.warning(`Should config width for lock column named [ ${col.dataIndex} ].`);
+                        log.warning(
+                            `Should config width for lock column named [ ${col.dataIndex} ].`
+                        );
                     }
                     isLock = true;
                 }
@@ -290,8 +292,12 @@ export default function lock(BaseComponent) {
             // add shadow class for lock columns
             if (this.isLock()) {
                 const { rtl } = this.props;
-                const lockRightTable = rtl ? this.getWrapperNode('left') : this.getWrapperNode('right'),
-                    lockLeftTable = rtl ? this.getWrapperNode('right') : this.getWrapperNode('left'),
+                const lockRightTable = rtl
+                        ? this.getWrapperNode('left')
+                        : this.getWrapperNode('right'),
+                    lockLeftTable = rtl
+                        ? this.getWrapperNode('right')
+                        : this.getWrapperNode('left'),
                     shadowClassName = 'shadow';
 
                 const x = this.bodyNode.scrollLeft;
@@ -398,7 +404,8 @@ export default function lock(BaseComponent) {
                     return true;
                 }
 
-                const configWidths = parseInt(widthObj.cellWidths) || parseInt(widthObj.headerWidths);
+                const configWidths =
+                    parseInt(widthObj.cellWidths) || parseInt(widthObj.headerWidths);
 
                 if (configWidths <= width && configWidths > 0) {
                     this.removeLockTable();
@@ -490,7 +497,11 @@ export default function lock(BaseComponent) {
                         setTimeout(() => {
                             const affixRef = this.tableRightInc.affixRef;
                             // if rendered then update postion of affix
-                            return affixRef && affixRef.getInstance() && affixRef.getInstance().updatePosition();
+                            return (
+                                affixRef &&
+                                affixRef.getInstance() &&
+                                affixRef.getInstance().updatePosition()
+                            );
                         });
                     }
 
@@ -502,7 +513,11 @@ export default function lock(BaseComponent) {
                         setTimeout(() => {
                             const affixRef = this.tableLeftInc.affixRef;
                             // if rendered then update postion of affix
-                            return affixRef && affixRef.getInstance() && affixRef.getInstance().updatePosition();
+                            return (
+                                affixRef &&
+                                affixRef.getInstance() &&
+                                affixRef.getInstance().updatePosition()
+                            );
                         });
                     }
                 });
@@ -513,9 +528,9 @@ export default function lock(BaseComponent) {
             if (this.isLock()) {
                 this.tableInc.props.dataSource.forEach((item, index) => {
                     // record may be a string
-                    const rowIndex = `${typeof item === 'object' && '__rowIndex' in item ? item.__rowIndex : index}${
-                        item.__expanded ? '_expanded' : ''
-                    }`;
+                    const rowIndex = `${
+                        typeof item === 'object' && '__rowIndex' in item ? item.__rowIndex : index
+                    }${item.__expanded ? '_expanded' : ''}`;
 
                     // 同步左侧的锁列
                     this.setRowHeight(rowIndex, 'left');
@@ -529,7 +544,9 @@ export default function lock(BaseComponent) {
             const lockRow = this.getRowNode(rowIndex, dir),
                 row = this.getRowNode(rowIndex),
                 rowHeight =
-                    (ieVersion ? row && row.offsetHeight : row && parseFloat(getComputedStyle(row).height)) || 'auto',
+                    (ieVersion
+                        ? row && row.offsetHeight
+                        : row && parseFloat(getComputedStyle(row).height)) || 'auto',
                 lockHeight =
                     (ieVersion
                         ? lockRow && lockRow.offsetHeight
@@ -635,10 +652,21 @@ export default function lock(BaseComponent) {
 
         render() {
             /* eslint-disable no-unused-vars, prefer-const */
-            let { children, columns, prefix, components, className, dataSource, tableWidth, ...others } = this.props;
-            let { lockLeftChildren, lockRightChildren, children: normalizedChildren } = this.normalizeChildrenState(
-                this.props
-            );
+            let {
+                children,
+                columns,
+                prefix,
+                components,
+                className,
+                dataSource,
+                tableWidth,
+                ...others
+            } = this.props;
+            let {
+                lockLeftChildren,
+                lockRightChildren,
+                children: normalizedChildren,
+            } = this.normalizeChildrenState(this.props);
 
             const leftLen = this.getFlatenChildrenLength(lockLeftChildren);
             const rightLen = this.getFlatenChildrenLength(lockRightChildren);

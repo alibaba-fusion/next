@@ -429,7 +429,8 @@ class Table extends React.Component {
                         !(
                             child &&
                             ['function', 'object'].indexOf(typeof child.type) > -1 &&
-                            (child.type._typeMark === 'column' || child.type._typeMark === 'columnGroup')
+                            (child.type._typeMark === 'column' ||
+                                child.type._typeMark === 'columnGroup')
                         )
                     ) {
                         log.warning('Use <Table.Column/>, <Table.ColumnGroup/> as child.');
@@ -569,7 +570,11 @@ class Table extends React.Component {
                 tableWidth,
             } = this.props;
             const { sort } = this.state;
-            const { Header = HeaderComponent, Wrapper = WrapperComponent, Body = BodyComponent } = components;
+            const {
+                Header = HeaderComponent,
+                Wrapper = WrapperComponent,
+                Body = BodyComponent,
+            } = components;
             const colGroup = this.renderColGroup(flatChildren);
 
             return [

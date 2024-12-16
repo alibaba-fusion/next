@@ -38,7 +38,10 @@ export default class FixedHeader extends React.Component {
                     </table>
                 </div>
                 {!lockType && (
-                    <div className={`${prefix}table-header-fixer`} style={{ position: 'absolute', right: 0 }} />
+                    <div
+                        className={`${prefix}table-header-fixer`}
+                        style={{ position: 'absolute', right: 0 }}
+                    />
                 )}
             </div>
         );

@@ -28,6 +28,14 @@ export default class TreeRow extends React.Component {
             opened: openRowKeys.indexOf(record[primaryKey]) > -1,
             [className]: className,
         });
-        return <Row {...others} record={record} className={cls} primaryKey={primaryKey} prefix={prefix} />;
+        return (
+            <Row
+                {...others}
+                record={record}
+                className={cls}
+                primaryKey={primaryKey}
+                prefix={prefix}
+            />
+        );
     }
 }

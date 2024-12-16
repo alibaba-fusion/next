@@ -106,7 +106,8 @@ export default class Cell extends React.Component {
         if (align) {
             tagStyle.textAlign = align;
             if (rtl) {
-                tagStyle.textAlign = align === 'left' ? 'right' : align === 'right' ? 'left' : align;
+                tagStyle.textAlign =
+                    align === 'left' ? 'right' : align === 'right' ? 'left' : align;
             }
         }
         const cls = classnames({

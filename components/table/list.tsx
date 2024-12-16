@@ -40,7 +40,7 @@ export default function list(BaseComponent) {
 
         normalizeDataSource(dataSource) {
             const ret = [];
-            const loop = function(dataSource, level) {
+            const loop = function (dataSource, level) {
                 dataSource.forEach(item => {
                     const itemCopy = { ...item };
                     itemCopy.__level = level;
