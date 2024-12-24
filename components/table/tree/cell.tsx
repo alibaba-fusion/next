@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { type KeyboardEvent, type UIEvent } from 'react';
 import PropTypes from 'prop-types';
 import Icon from '../../icon';
 import { KEYCODE } from '../../util';
 import CellComponent from '../base/cell';
+import type { RecordItem, TreeCellProps } from '../types';
 
-export default class TreeCell extends React.Component {
+export default class TreeCell extends React.Component<TreeCellProps> {
     static propTypes = {
         indent: PropTypes.number,
         locale: PropTypes.object,
@@ -25,12 +26,12 @@ export default class TreeCell extends React.Component {
         rowSelection: PropTypes.object,
     };
 
-    onTreeNodeClick = (record, e) => {
+    onTreeNodeClick = (record: RecordItem, e: UIEvent) => {
         e.stopPropagation();
         this.context.onTreeNodeClick(record);
     };
 
-    expandedKeydown = (record, e) => {
+    expandedKeydown = (record: RecordItem, e: KeyboardEvent) => {
         e.preventDefault();
         e.stopPropagation();
 
@@ -49,7 +50,7 @@ export default class TreeCell extends React.Component {
             if (isTree) {
                 const paddingType = rtl ? 'paddingRight' : 'paddingLeft';
                 firstCellStyle = {
-                    [paddingType]: indent * (record.__level + 1),
+                    [paddingType]: indent * ((record!.__level as number) + 1),
                 };
                 treeArrowNode = (
                     <Icon
@@ -59,8 +60,8 @@ export default class TreeCell extends React.Component {
                         type="arrow-right"
                     />
                 );
-                if (record.children && record.children.length) {
-                    const hasExpanded = openRowKeys.indexOf(record[primaryKey]) > -1;
+                if (record!.children && record!.children.length) {
+                    const hasExpanded = openRowKeys.indexOf(record![primaryKey!]) > -1;
 
                     treeArrowType = hasExpanded ? 'arrow-down' : 'arrow-right';
 
@@ -70,12 +71,12 @@ export default class TreeCell extends React.Component {
                             type={treeArrowType}
                             size="xs"
                             rtl={rtl}
-                            onClick={e => this.onTreeNodeClick(record, e)}
-                            onKeyDown={e => this.expandedKeydown(record, e)}
+                            onClick={e => this.onTreeNodeClick(record!, e)}
+                            onKeyDown={e => this.expandedKeydown(record!, e)}
                             role="button"
-                            tabIndex="0"
+                            tabIndex={0}
                             aria-expanded={hasExpanded}
-                            aria-label={hasExpanded ? locale.expanded : locale.folded}
+                            aria-label={hasExpanded ? locale!.expanded : locale!.folded}
                         />
                     );
                 }

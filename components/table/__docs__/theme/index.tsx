@@ -1,12 +1,13 @@
-import React from 'react';
+/* eslint-disable react/prop-types */
+import React, { type ReactElement } from 'react';
 import ReactDOM from 'react-dom';
 import '../../../demo-helper/style';
 import '../../style';
-import { Demo, DemoGroup, initDemo } from '../../../demo-helper';
+import { Demo, type DemoFunctionDefineForObject, DemoGroup, initDemo } from '../../../demo-helper';
 import ConfigProvider from '../../../config-provider';
 import zhCN from '../../../locale/zh-cn';
 import enUS from '../../../locale/en-us';
-import Table from '../../index';
+import Table, { ColumnProps, type TableProps } from '../../index';
 
 const i18nMap = {
     'en-us': {
@@ -35,62 +36,75 @@ const i18nMap = {
     },
 };
 
-const convert = object => {
-    const obj = {};
-    Object.keys(object).forEach(key => {
-        obj[key] = object[key].value;
+const convert = (object: ReturnType<typeof normalize>) => {
+    const obj: {
+        [key in keyof typeof object]?: string;
+    } = {};
+    Object.keys(object).forEach((key: keyof typeof object) => {
+        obj[key] = object[key].value as string;
     });
     return obj;
 };
 
-const normalize = demoFunction => {
-    const ret = demoFunction.reduce((current, value) => {
-        current[value.name] = {};
-        current[value.name].label = value.label;
-        current[value.name].value = value.value;
-        current[value.name].enum = value.enum.map(item => ({
-            label: item.label ? item.label : item === 'true' ? '显示' : '隐藏',
-            value: item.label ? item.value : item,
-        }));
-        return current;
-    }, {});
+const functions: {
+    label: string;
+    name: string;
+    value: string;
+    enum: (
+        | {
+              label: string;
+              value: string;
+          }
+        | string
+    )[];
+}[] = [
+    {
+        label: '筛选',
+        name: 'filters',
+        value: 'false',
+        enum: ['true', 'false'],
+    },
+    {
+        label: '排序',
+        name: 'sortable',
+        value: 'false',
+        enum: ['true', 'false'],
+    },
+    {
+        label: '表格有无竖线',
+        name: 'hasBorder',
+        value: 'false',
+        enum: ['true', 'false'],
+    },
+];
+
+const normalize = (demoFunction: typeof functions) => {
+    const ret = demoFunction.reduce(
+        (current, value) => {
+            current[value.name] = {} as DemoFunctionDefineForObject;
+            current[value.name].label = value.label;
+            current[value.name].value = value.value;
+            current[value.name].enum = value.enum.map(item => ({
+                label: typeof item === 'object' ? item.label : item === 'true' ? '显示' : '隐藏',
+                value: typeof item === 'object' ? item.value : item,
+            }));
+            return current;
+        },
+        {} as Record<string, DemoFunctionDefineForObject>
+    );
     return ret;
 };
 
-class FunctionDemo extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            demoFunction: normalize([
-                {
-                    label: '筛选',
-                    name: 'filters',
-                    value: 'false',
-                    enum: ['true', 'false'],
-                },
-                {
-                    label: '排序',
-                    name: 'sortable',
-                    value: 'false',
-                    enum: ['true', 'false'],
-                },
-                {
-                    label: '表格有无竖线',
-                    name: 'hasBorder',
-                    value: 'false',
-                    enum: ['true', 'false'],
-                },
-            ]),
-        };
+class FunctionDemo extends React.Component<{ lang: 'zh-cn' | 'en-us' }> {
+    state = {
+        demoFunction: normalize(functions),
+    };
 
-        this.onFunctionChange = this.onFunctionChange.bind(this);
-    }
-
-    onFunctionChange(demoFunction) {
+    onFunctionChange = (demoFunction: ReturnType<typeof normalize>) => {
         this.setState({
             demoFunction,
         });
-    }
+    };
 
     render() {
         const { demoFunction } = this.state;
@@ -98,8 +112,8 @@ class FunctionDemo extends React.Component {
         const { lang } = this.props;
         const i18n = i18nMap[lang];
         const { size } = functions;
-        const rowSelection = {
-            mode: functions.rowSelection,
+        const rowSelection: TableProps['rowSelection'] = {
+            mode: functions.rowSelection as 'single' | 'multiple',
             selectedRowKeys: [4],
         };
         let filters,
@@ -120,7 +134,7 @@ class FunctionDemo extends React.Component {
             hasBorder = true;
         }
 
-        function productRender(product) {
+        function productRender(product: { avatar: string; title: string }[]) {
             return (
                 <div className="media">
                     <img
@@ -132,7 +146,7 @@ class FunctionDemo extends React.Component {
             );
         }
 
-        function statusRender(status) {
+        function statusRender(status: boolean) {
             if (status) {
                 return i18n.priced;
             } else {
@@ -140,17 +154,17 @@ class FunctionDemo extends React.Component {
             }
         }
 
-        function priceRender(price) {
+        function priceRender(price: string) {
             return <b>{price}</b>;
         }
 
         function operRender() {
             return <a href="javascript:;">{i18n.view}</a>;
         }
-        function groupHeaderRender(record) {
+        function groupHeaderRender(record: { product: { title: string }[] }) {
             return <div>{record.product[0].title}</div>;
         }
-        function groupFooterRender(record) {
+        function groupFooterRender(record: { product: { title: string }[] }) {
             return <div>{record.product[0].title}</div>;
         }
         const listDataSource = [
@@ -225,7 +239,7 @@ class FunctionDemo extends React.Component {
                 ],
             },
         ];
-        const getSelectedRowProps = (record, index) => ({
+        const getSelectedRowProps: TableProps['rowProps'] = (record, index) => ({
             className: index === 1 ? 'selected' : '',
         });
         const cols = [
@@ -245,7 +259,7 @@ class FunctionDemo extends React.Component {
             <Table.Column cell={operRender} title="" dataIndex="oper" key="oper" />,
         ];
 
-        const smallCols = [].concat(
+        const smallCols = ([] as ReactElement[]).concat(
             <Table.Column
                 title={i18n.productDetail}
                 key="product"
@@ -349,63 +363,53 @@ class FunctionDemo extends React.Component {
         );
     }
 }
+const demoFunction = [
+    {
+        label: '斑马线',
+        name: 'zebra',
+        value: 'false',
+        enum: ['true', 'false'],
+    },
+    {
+        label: '选择',
+        name: 'rowSelection',
+        value: 'false',
+        enum: [{ value: 'single', label: '单选' }, { value: 'multiple', label: '多选' }, 'false'],
+    },
+    {
+        label: '单列对齐方式',
+        name: 'align',
+        value: 'left',
+        enum: [
+            { value: 'left', label: '左对齐' },
+            { value: 'center', label: '居中对齐' },
+            { value: 'right', label: '右对齐' },
+        ],
+    },
+    {
+        label: '表头',
+        name: 'hasHeader',
+        value: 'true',
+        enum: ['true', 'false'],
+    },
+    {
+        label: '表格有无竖线',
+        name: 'hasBorder',
+        value: 'false',
+        enum: ['true', 'false'],
+    },
+];
 
-class TableFunctionDemo extends React.Component {
-    constructor(props) {
-        super(props);
-        const demoFunction = [
-            {
-                label: '斑马线',
-                name: 'zebra',
-                value: 'false',
-                enum: ['true', 'false'],
-            },
-            {
-                label: '选择',
-                name: 'rowSelection',
-                value: 'false',
-                enum: [
-                    { value: 'single', label: '单选' },
-                    { value: 'multiple', label: '多选' },
-                    'false',
-                ],
-            },
-            {
-                label: '单列对齐方式',
-                name: 'align',
-                value: 'left',
-                enum: [
-                    { value: 'left', label: '左对齐' },
-                    { value: 'center', label: '居中对齐' },
-                    { value: 'right', label: '右对齐' },
-                ],
-            },
-            {
-                label: '表头',
-                name: 'hasHeader',
-                value: 'true',
-                enum: ['true', 'false'],
-            },
-            {
-                label: '表格有无竖线',
-                name: 'hasBorder',
-                value: 'false',
-                enum: ['true', 'false'],
-            },
-        ];
+class TableFunctionDemo extends React.Component<{ lang: 'zh-cn' | 'en-us' }> {
+    state = {
+        demoFunction: normalize(demoFunction),
+    };
 
-        this.state = {
-            demoFunction: normalize(demoFunction),
-        };
-
-        this.onFunctionChange = this.onFunctionChange.bind(this);
-    }
-
-    onFunctionChange(demoFunction) {
+    onFunctionChange = (demoFunction: ReturnType<typeof normalize>) => {
         this.setState({
             demoFunction,
         });
-    }
+    };
 
     render() {
         const { demoFunction } = this.state;
@@ -413,11 +417,11 @@ class TableFunctionDemo extends React.Component {
         const { lang } = this.props;
         const i18n = i18nMap[lang];
         const { size } = functions;
-        const rowSelection =
+        const rowSelection: TableProps['rowSelection'] =
             functions.rowSelection === 'false'
                 ? null
                 : {
-                      mode: functions.rowSelection,
+                      mode: functions.rowSelection as 'single' | 'multiple',
                       selectedRowKeys: [1],
                   };
         let filters;
@@ -430,7 +434,7 @@ class TableFunctionDemo extends React.Component {
         const hasHeader = functions.hasHeader === 'true';
         const hasBorder = functions.hasBorder === 'true';
         const isZebra = functions.zebra === 'true';
-        const align = functions.align;
+        const align = functions.align as ColumnProps['align'];
         const listDataSource = [
             {
                 price: '$2.45(USD)',
@@ -480,7 +484,7 @@ class TableFunctionDemo extends React.Component {
             },
         ];
 
-        function productRender(product) {
+        function productRender(product: { title: string; avatar: string }[]) {
             return (
                 <div className="media">
                     <img
@@ -492,7 +496,7 @@ class TableFunctionDemo extends React.Component {
             );
         }
 
-        function statusRender(status) {
+        function statusRender(status: boolean) {
             if (status) {
                 return i18n.priced;
             } else {
@@ -500,7 +504,7 @@ class TableFunctionDemo extends React.Component {
             }
         }
 
-        function priceRender(price) {
+        function priceRender(price: string) {
             return <b>{price}</b>;
         }
 
@@ -508,11 +512,11 @@ class TableFunctionDemo extends React.Component {
             return <a href="javascript:;">{i18n.view}</a>;
         }
 
-        function groupHeaderRender(record) {
+        function groupHeaderRender(record: { product: { title: string }[] }) {
             return <div>{record.product[0].title}</div>;
         }
 
-        function groupFooterRender(record) {
+        function groupFooterRender(record: { product: { title: string }[] }) {
             return <div>{record.product[0].title}</div>;
         }
 
@@ -526,7 +530,7 @@ class TableFunctionDemo extends React.Component {
             />,
             <Table.Column cell={operRender} title="" dataIndex="oper" key="oper" />,
         ];
-        const smallCols = [].concat(
+        const smallCols = ([] as ReactElement[]).concat(
             <Table.Column
                 align={align}
                 title={i18n.productDetail}
@@ -635,7 +639,7 @@ class TableFunctionDemo extends React.Component {
     }
 }
 
-window.renderDemo = function (lang) {
+window.renderDemo = function (lang: 'zh-cn' | 'en-us') {
     ReactDOM.render(
         <ConfigProvider locale={lang === 'en-us' ? enUS : zhCN}>
             <div className="demo-container">

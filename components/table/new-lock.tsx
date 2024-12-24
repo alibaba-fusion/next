@@ -1,4 +1,4 @@
-import React, { Children } from 'react';
+import React, { Children, ReactElement } from 'react';
 import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
@@ -9,10 +9,32 @@ import LockBody from './lock/body';
 import LockHeader from './lock/header';
 import LockWrapper from './fixed/wrapper';
 import { statics, setStickyStyle } from './util';
+import type Base from './base';
+import type {
+    NormalizedColumnProps,
+    RowLike,
+    StickyLockTableProps,
+    StickyLockTableState,
+    WrapperLike,
+} from './types';
 
-export default function stickyLock(BaseComponent) {
+// Fixme: 实现很简陋的 deepCopy，应用 lodash 替换
+function deepCopy(arr: NormalizedColumnProps[]) {
+    const copy = (arr: NormalizedColumnProps[]) => {
+        return arr.map(item => {
+            const newItem = { ...item };
+            if (item.children) {
+                item.children = copy(item.children);
+            }
+            return newItem;
+        });
+    };
+    return copy(arr) as NormalizedColumnProps[];
+}
+
+export default function stickyLock(BaseComponent: typeof Base) {
     /** Table */
-    class LockTable extends React.Component {
+    class LockTable extends React.Component<StickyLockTableProps, StickyLockTableState> {
         static LockRow = LockRow;
         static LockBody = LockBody;
         static LockHeader = LockHeader;
@@ -21,7 +43,7 @@ export default function stickyLock(BaseComponent) {
             /**
              * 指定滚动到某一行，仅在`useVirtual`的时候生效
              */
-            scrollToRow: PropTypes.number,
+            // scrollToRow: PropTypes.number,
             ...BaseComponent.propTypes,
         };
 
@@ -35,9 +57,16 @@ export default function stickyLock(BaseComponent) {
             onLockBodyScroll: PropTypes.func,
         };
 
-        state = {};
+        state = {} as StickyLockTableState;
+        pingLeft?: boolean;
+        pingRight?: boolean;
+        splitChildren: {
+            lockLeftChildren: NormalizedColumnProps[];
+            lockRightChildren: NormalizedColumnProps[];
+            originChildren: NormalizedColumnProps[];
+        };
 
-        constructor(props, context) {
+        constructor(props: StickyLockTableProps) {
             super(props);
 
             this.state = {
@@ -70,7 +99,11 @@ export default function stickyLock(BaseComponent) {
             events.on(window, 'resize', this.updateOffsetArr);
         }
 
-        shouldComponentUpdate(nextProps, nextState, nextContext) {
+        shouldComponentUpdate(
+            nextProps: StickyLockTableProps,
+            nextState: StickyLockTableState,
+            nextContext: unknown
+        ) {
             if (nextProps.pure) {
                 const isEqual = shallowElementEquals(nextProps, this.props);
                 return !(isEqual && obj.shallowEqual(nextContext, this.context));
@@ -95,6 +128,9 @@ export default function stickyLock(BaseComponent) {
             events.off(window, 'resize', this.updateOffsetArr);
         }
 
+        [tableKey: `table${string}Inc`]: InstanceType<typeof Base> | null;
+        [nodeKey: `${string}${'body' | 'header'}Node`]: HTMLElement | null;
+
         updateOffsetArr = () => {
             const { lockLeftChildren, lockRightChildren, originChildren } =
                 this.splitChildren || {};
@@ -109,7 +145,7 @@ export default function stickyLock(BaseComponent) {
             const leftOffsetArr = this.getStickyWidth(lockLeftChildren, 'left', totalLen);
             const rightOffsetArr = this.getStickyWidth(lockRightChildren, 'right', totalLen);
 
-            const state = {};
+            const state: Partial<StickyLockTableState> = {};
 
             if (`${leftOffsetArr}` !== `${this.state.leftOffsetArr}`) {
                 state.leftOffsetArr = leftOffsetArr;
@@ -132,22 +168,22 @@ export default function stickyLock(BaseComponent) {
             }
         };
 
-        normalizeChildrenState(props) {
+        normalizeChildrenState(props: StickyLockTableProps) {
             const columns = this.normalizeChildren(props);
 
             this.splitChildren = this.splitFromNormalizeChildren(columns);
 
-            return this.mergeFromSplitLockChildren(this.splitChildren, props.prefix);
+            return this.mergeFromSplitLockChildren(this.splitChildren, props.prefix!);
         }
 
-        // 将React结构化数据提取props转换成数组
-        normalizeChildren(props) {
+        // 将 React 结构化数据提取 props 转换成数组
+        normalizeChildren(props: StickyLockTableProps) {
             const { children, columns } = props;
-            let isLock = false,
+            let isLock: boolean | NormalizedColumnProps | undefined = false,
                 ret;
-            const getChildren = children => {
-                const ret = [];
-                Children.forEach(children, child => {
+            const getChildren = (children: StickyLockTableProps['children']) => {
+                const ret: NormalizedColumnProps[] = [];
+                Children.forEach(children, (child: ReactElement) => {
                     if (child) {
                         const props = { ...child.props };
                         if ([true, 'left', 'right'].indexOf(props.lock) > -1) {
@@ -169,7 +205,7 @@ export default function stickyLock(BaseComponent) {
 
             if (columns && !children) {
                 ret = columns;
-                isLock = columns.find(record => [true, 'left', 'right'].indexOf(record.lock) > -1);
+                isLock = columns.find(record => [true, 'left', 'right'].indexOf(record.lock!) > -1);
             } else {
                 ret = getChildren(children);
             }
@@ -185,16 +221,18 @@ export default function stickyLock(BaseComponent) {
         }
 
         /**
-         * 从数组中分离出lock的列和正常的列
-         * @param {Array} children
-         * @return {Object} { lockLeftChildren, lockRightChildren, originChildren } 锁左列, 锁左列, 剩余列
+         * 从数组中分离出 lock 的列和正常的列
+         * @returns 锁左列，锁左列，剩余列
          */
-        splitFromNormalizeChildren(children) {
+        splitFromNormalizeChildren(children: NormalizedColumnProps[]) {
             const originChildren = deepCopy(children);
             const lockLeftChildren = deepCopy(children);
             const lockRightChildren = deepCopy(children);
-            const loop = (lockChildren, condition) => {
-                const ret = [];
+            const loop = (
+                lockChildren: NormalizedColumnProps[],
+                condition: (child: NormalizedColumnProps) => string | boolean | undefined
+            ) => {
+                const ret: NormalizedColumnProps[] = [];
                 lockChildren.forEach(child => {
                     if (child.children) {
                         const res = loop(child.children, condition);
@@ -237,10 +275,10 @@ export default function stickyLock(BaseComponent) {
         /**
          * 将左侧的锁列树和中间的普通树及右侧的锁列树进行合并
          * 会在原始 originChildren 上做改动
-         * @param {Object} splitChildren { lockLeftChildren, lockRightChildren, originChildren }
-         * @return {Array} originChildren
+         * @param splitChildren - \{ lockLeftChildren, lockRightChildren, originChildren \}
+         * @returns originChildren
          */
-        mergeFromSplitLockChildren(splitChildren, prefix) {
+        mergeFromSplitLockChildren(splitChildren: typeof this.splitChildren, prefix: string) {
             const { lockLeftChildren, lockRightChildren } = splitChildren;
             const { originChildren } = splitChildren;
 
@@ -265,21 +303,21 @@ export default function stickyLock(BaseComponent) {
             return [...lockLeftChildren, ...originChildren, ...lockRightChildren];
         }
 
-        getCellNode(index, i) {
+        getCellNode(index: number, i: number) {
             const table = this.tableInc;
 
             try {
                 // in case of finding an unmounted component due to cached data
                 // need to clear refs of table when dataSource Changed
                 // use try catch for temporary
-                return findDOMNode(table.getCellRef(index, i));
+                return findDOMNode(table!.getCellRef(index, i)) as HTMLElement;
             } catch (error) {
                 return null;
             }
         }
 
-        onLockBodyScroll = (e, forceSet) => {
-            const { scrollLeft, scrollWidth, clientWidth } = e.currentTarget || {};
+        onLockBodyScroll = (e: { currentTarget?: HTMLElement | null }, forceSet?: boolean) => {
+            const { scrollLeft, scrollWidth, clientWidth } = e.currentTarget! || {};
             const { pingRight, pingLeft } = this;
 
             const pingLeftNext = scrollLeft > 0 && this.state.hasLockLeft;
@@ -299,16 +337,18 @@ export default function stickyLock(BaseComponent) {
             }
         };
 
-        getStickyWidth = (lockChildren, dir, totalLen) => {
-            const { dataSource, scrollToRow } = this.props;
-            const offsetArr = [];
+        getStickyWidth = (
+            lockChildren: NormalizedColumnProps[],
+            dir: 'left' | 'right',
+            totalLen: number
+        ) => {
+            const offsetArr: number[] = [];
             const flatenChildren = this.getFlatenChildren(lockChildren);
             const len = flatenChildren.length;
 
             flatenChildren.reduce((ret, col, index) => {
                 const tag = dir === 'left' ? index : len - 1 - index;
                 const tagNext = dir === 'left' ? tag - 1 : tag + 1;
-                const nodeToGetWidth = dir === 'left' ? tag - 1 : totalLen - index;
 
                 if (dir === 'left' && tag === 0) {
                     ret[0] = 0;
@@ -320,8 +360,8 @@ export default function stickyLock(BaseComponent) {
 
                 const { headerCellRowIndex, headerCellColIndex } = flatenChildren[tagNext];
 
-                // 根据tableHeader计算，避免单元格合并出现问题
-                const node = this.getHeaderCellNode(headerCellRowIndex, headerCellColIndex);
+                // 根据 tableHeader 计算，避免单元格合并出现问题
+                const node = this.getHeaderCellNode(headerCellRowIndex!, headerCellColIndex!);
                 let colWidth = 0;
                 if (node) {
                     colWidth = parseFloat(getComputedStyle(node).width) || 0;
@@ -334,13 +374,13 @@ export default function stickyLock(BaseComponent) {
             return offsetArr;
         };
 
-        getTableInstance = (type, instance) => {
+        getTableInstance = (type: string, instance: InstanceType<typeof Base> | null) => {
             type = '';
             this[`table${type}Inc`] = instance;
         };
 
-        getNode = (type, node) => {
-            this[`${type}Node`] = node;
+        getNode = (type: 'body' | 'header', node: HTMLElement) => {
+            this[`${type}Node` as const] = node;
         };
 
         getTableNode() {
@@ -349,28 +389,28 @@ export default function stickyLock(BaseComponent) {
                 // in case of finding an unmounted component due to cached data
                 // need to clear refs of table when dataSource Changed
                 // use try catch for temporary
-                return findDOMNode(table.tableEl);
+                return findDOMNode(table!.tableEl) as HTMLElement;
             } catch (error) {
                 return null;
             }
         }
 
-        getHeaderCellNode(index, i) {
+        getHeaderCellNode(index: number, i: number) {
             const table = this.tableInc;
 
             try {
                 // in case of finding an unmounted component due to cached data
                 // need to clear refs of table when dataSource Changed
                 // use try catch for temporary
-                return findDOMNode(table.getHeaderCellRef(index, i));
+                return findDOMNode(table!.getHeaderCellRef(index, i)) as HTMLElement;
             } catch (error) {
                 return null;
             }
         }
 
-        getFlatenChildren = (children = []) => {
-            const loop = arr => {
-                const newArray = [];
+        getFlatenChildren = (children: NormalizedColumnProps[] = []) => {
+            const loop = (arr: NormalizedColumnProps[]) => {
+                const newArray: NormalizedColumnProps[] = [];
                 arr.forEach(child => {
                     if (child.children) {
                         newArray.push(...loop(child.children));
@@ -402,13 +442,13 @@ export default function stickyLock(BaseComponent) {
             components = { ...components };
             components.Body = components.Body || LockBody;
             components.Header = components.Header || LockHeader;
-            components.Wrapper = components.Wrapper || LockWrapper;
-            components.Row = components.Row || LockRow;
+            components.Wrapper = components.Wrapper || (LockWrapper as WrapperLike);
+            components.Row = components.Row || (LockRow as RowLike);
             className = classnames({
                 [`${prefix}table-lock`]: true,
                 [`${prefix}table-stickylock`]: true,
-                [`${prefix}table-wrap-empty`]: !dataSource.length,
-                [className]: className,
+                [`${prefix}table-wrap-empty`]: !dataSource!.length,
+                [className!]: className,
             });
 
             return (
@@ -423,19 +463,5 @@ export default function stickyLock(BaseComponent) {
             );
         }
     }
-    statics(LockTable, BaseComponent);
-    return LockTable;
-}
-
-function deepCopy(arr) {
-    let copy = arr => {
-        return arr.map(item => {
-            const newItem = { ...item };
-            if (item.children) {
-                item.children = copy(item.children);
-            }
-            return newItem;
-        });
-    };
-    return copy(arr);
+    return statics(LockTable, BaseComponent);
 }

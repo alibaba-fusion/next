@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Row from '../base/row';
+import type { LockRowProps, RowProps } from '../types';
 
-export default class LockRow extends React.Component {
+export default class LockRow extends React.Component<LockRowProps> {
     static propTypes = {
         ...Row.propTypes,
     };
@@ -16,14 +17,14 @@ export default class LockRow extends React.Component {
         ...Row.defaultProps,
     };
 
-    onMouseEnter = (record, index, e) => {
+    onMouseEnter: RowProps['onMouseEnter'] = (record, index, e) => {
         const { onRowMouseEnter } = this.context;
         const { onMouseEnter } = this.props;
         onRowMouseEnter && onRowMouseEnter(record, index, e);
         onMouseEnter(record, index, e);
     };
 
-    onMouseLeave = (record, index, e) => {
+    onMouseLeave: RowProps['onMouseLeave'] = (record, index, e) => {
         const { onRowMouseLeave } = this.context;
         const { onMouseLeave } = this.props;
         onRowMouseLeave && onRowMouseLeave(record, index, e);
@@ -31,7 +32,6 @@ export default class LockRow extends React.Component {
     };
 
     render() {
-        /* eslint-disable no-unused-vars*/
         return (
             <Row
                 {...this.props}

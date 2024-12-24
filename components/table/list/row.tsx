@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { log } from '../../util';
 import Row from '../base/row';
+import type { ListRowContext, RecordItem } from '../types';
 
 export default class GroupListRow extends Row {
     static contextTypes = {
@@ -13,8 +14,9 @@ export default class GroupListRow extends Row {
         lockType: PropTypes.oneOf(['left', 'right']),
     };
 
+    context: ListRowContext;
+
     render() {
-        /* eslint-disable no-unused-vars*/
         const {
             prefix,
             className,
@@ -39,7 +41,7 @@ export default class GroupListRow extends Row {
         } = this.props;
         const cls = classnames({
             [`${prefix}table-row`]: true,
-            [className]: className,
+            [className!]: className,
         });
 
         // clear notRenderCellIndex, incase of cached data
@@ -98,7 +100,7 @@ export default class GroupListRow extends Row {
                             'record.children/recored should contains primaryKey when childrenSelection is true.'
                         );
                     }
-                    return <tr key={child[primaryKey]}>{cells}</tr>;
+                    return <tr key={child[primaryKey] as string}>{cells}</tr>;
                 }
                 if (this.context.rowSelection) {
                     cells.shift();
@@ -114,17 +116,20 @@ export default class GroupListRow extends Row {
         }
         return null;
     }
-    renderContent(type) {
+    renderContent(type: string) {
         const { columns, prefix, record, rowIndex } = this.props;
         const cameType = type.charAt(0).toUpperCase() + type.substr(1);
-        const list = this.context[`list${cameType}`];
+        const list = this.context[`list${cameType as 'Header' | 'Footer'}` as const];
         let listNode;
         if (list) {
             if (React.isValidElement(list.cell)) {
-                listNode = React.cloneElement(list.cell, {
-                    record,
-                    index: rowIndex,
-                });
+                listNode = React.cloneElement(
+                    list.cell as React.ReactElement<{ record?: RecordItem; index?: number }>,
+                    {
+                        record,
+                        index: rowIndex,
+                    }
+                );
             } else if (typeof list.cell === 'function') {
                 listNode = list.cell(record, rowIndex);
             }

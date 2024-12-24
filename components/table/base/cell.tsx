@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { type ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { obj, pickAttrs } from '../../util';
+import { type ClassPropsWithDefault, obj, pickAttrs } from '../../util';
+import type { CellProps } from '../types';
 
-export default class Cell extends React.Component {
+type InnerCellProps = ClassPropsWithDefault<CellProps, typeof Cell.defaultProps>;
+
+export default class Cell extends React.Component<CellProps> {
     static propTypes = {
         prefix: PropTypes.string,
         pure: PropTypes.bool,
@@ -14,7 +17,7 @@ export default class Cell extends React.Component {
         isIconLeft: PropTypes.bool,
         colIndex: PropTypes.number,
         rowIndex: PropTypes.number,
-        // 经过锁列调整后的列索引，lock right的列会从非0开始
+        // 经过锁列调整后的列索引，lock right 的列会从非 0 开始
         __colIndex: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
         title: PropTypes.any,
         width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
@@ -42,11 +45,13 @@ export default class Cell extends React.Component {
         component: 'td',
         type: 'body',
         isIconLeft: false,
-        cell: value => value,
+        cell: (value: unknown) => value,
         prefix: 'next-',
     };
 
-    shouldComponentUpdate(nextProps) {
+    readonly props: InnerCellProps;
+
+    shouldComponentUpdate(nextProps: CellProps) {
         if (nextProps.pure) {
             const isEqual = obj.shallowEqual(this.props, nextProps);
             return !isEqual;
@@ -55,7 +60,6 @@ export default class Cell extends React.Component {
     }
 
     render() {
-        /* eslint-disable no-unused-vars */
         const {
             prefix,
             className,
@@ -96,9 +100,9 @@ export default class Cell extends React.Component {
         } = this.props;
         const tagStyle = { ...style };
         const cellProps = { value, index: rowIndex, record, context };
-        let content = cell;
+        let content: ReactNode = cell;
         if (React.isValidElement(content)) {
-            // header情况下， props.cell为 column.title，不需要传递这些props
+            // header 情况下，props.cell 为 column.title，不需要传递这些 props
             content = React.cloneElement(content, type === 'header' ? undefined : cellProps);
         } else if (typeof content === 'function') {
             content = content(value, rowIndex, record, context);
@@ -113,7 +117,7 @@ export default class Cell extends React.Component {
         const cls = classnames({
             [`${prefix}table-cell`]: true,
             [`${prefix}table-word-break-${wordBreak}`]: !!wordBreak,
-            [className]: className,
+            [className!]: className,
         });
 
         return (

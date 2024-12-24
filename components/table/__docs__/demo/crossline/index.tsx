@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Table } from '@alifd/next';
+import type { ColumnProps } from '@alifd/next/types/table';
 
 const dataSource = () => {
     const result = [];
@@ -13,7 +14,7 @@ const dataSource = () => {
     }
     return result;
 };
-const render = current => {
+const render: ColumnProps['cell'] = current => {
     return <a> remove {current}</a>;
 };
 

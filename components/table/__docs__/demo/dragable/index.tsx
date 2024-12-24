@@ -5,6 +5,7 @@ import { Table } from '@alifd/next';
 import { DragDropContext, DragSource, DropTarget } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import classnames from 'classnames';
+import type { ColumnProps, SelectionRowProps, TableProps } from '@alifd/next/types/table';
 
 const { SelectionRow } = Table;
 
@@ -14,7 +15,16 @@ const MyDndProvider = DragDropContext(HTML5Backend)(({ children }) => {
     return children;
 });
 
-function MyRow(props) {
+type MyRowProps = SelectionRowProps & {
+    index?: number;
+    moveRow?: (dragIndex: number, hoverIndex: number) => void;
+    isDragging?: boolean;
+    isOver?: boolean;
+    connectDragSource?: (node: React.ReactNode) => React.ReactNode;
+    connectDropTarget?: (node: React.ReactNode) => React.ReactNode;
+};
+
+function MyRow(props: MyRowProps) {
     const {
         isDragging,
         isOver,
@@ -29,9 +39,9 @@ function MyRow(props) {
     const style = { ...others.style, cursor: 'move' };
 
     const cls = classnames({
-        [className]: className,
-        'drop-over-upward': isOver && others.index < dragingIndex,
-        'drop-over-downward': isOver && others.index > dragingIndex,
+        [className!]: className,
+        'drop-over-upward': isOver && others.index! < dragingIndex,
+        'drop-over-downward': isOver && others.index! > dragingIndex,
     });
 
     return (
@@ -39,7 +49,7 @@ function MyRow(props) {
             {...others}
             style={{ ...style, ...{ opacity } }}
             className={cls}
-            wrapper={row => connectDragSource(connectDropTarget(row))}
+            wrapper={row => connectDragSource!(connectDropTarget!(row))}
         />
     );
 }
@@ -47,7 +57,7 @@ function MyRow(props) {
 const NewRow = DropTarget(
     'row',
     {
-        drop(props, monitor) {
+        drop(props: MyRowProps, monitor) {
             const dragIndex = monitor.getItem().index;
             const hoverIndex = props.index;
 
@@ -55,7 +65,7 @@ const NewRow = DropTarget(
                 return;
             }
 
-            props.moveRow(dragIndex, hoverIndex);
+            props.moveRow!(dragIndex, hoverIndex!);
             monitor.getItem().index = hoverIndex;
         },
     },
@@ -67,10 +77,10 @@ const NewRow = DropTarget(
     DragSource(
         'row',
         {
-            beginDrag: props => {
-                dragingIndex = props.index;
+            beginDrag: (props: MyRowProps) => {
+                dragingIndex = props.index!;
                 return {
-                    id: props.record[props.primaryKey],
+                    id: props.record[props.primaryKey!],
                     index: props.rowIndex,
                 };
             },
@@ -82,15 +92,21 @@ const NewRow = DropTarget(
     )(MyRow)
 );
 
-class InnerTable extends React.Component {
-    constructor(props) {
+type InnerTableProps = TableProps;
+
+type InnerTableState = {
+    dataSource: NonNullable<TableProps['dataSource']>;
+};
+
+class InnerTable extends React.Component<InnerTableProps, InnerTableState> {
+    constructor(props: InnerTableProps) {
         super(props);
         this.state = {
-            dataSource: [...props.dataSource],
+            dataSource: [...props.dataSource!],
         };
     }
 
-    componentWillReceiveProps(nextProps) {
+    componentWillReceiveProps(nextProps: InnerTableProps) {
         if (
             nextProps.dataSource &&
             JSON.stringify(nextProps.dataSource) !== JSON.stringify(this.state.dataSource)
@@ -99,8 +115,7 @@ class InnerTable extends React.Component {
         }
     }
 
-    moveRow = (dragIndex, hoverIndex) => {
-        const { onSort } = this.props;
+    moveRow = (dragIndex: number, hoverIndex: number) => {
         const dragRow = this.state.dataSource[dragIndex];
         const dataSource = [...this.state.dataSource];
         dataSource.splice(dragIndex, 1);
@@ -108,16 +123,13 @@ class InnerTable extends React.Component {
         this.setState({
             dataSource,
         });
-
-        onSort && onSort(this.state.dataSource);
     };
 
     render() {
-        const { excludeProvider, ...restProps } = this.props;
-        const tableProps = {
-            ...restProps,
+        const tableProps: TableProps = {
+            ...this.props,
             dataSource: this.state.dataSource,
-            rowProps: (props, index) => ({
+            rowProps: (record, index) => ({
                 index,
                 moveRow: this.moveRow,
             }),
@@ -125,6 +137,7 @@ class InnerTable extends React.Component {
                 Row: NewRow,
             },
         };
+        ``;
 
         return <Table {...tableProps} />;
     }
@@ -149,15 +162,11 @@ const result = [
 ];
 
 class Demo extends React.Component {
-    constructor(props) {
-        super(props);
+    state = {
+        dataSource: result,
+    };
 
-        this.state = {
-            dataSource: result,
-        };
-    }
-
-    onRemove = id => {
+    onRemove = (id: string) => {
         const { dataSource } = this.state;
         let index = -1;
         dataSource.forEach((item, i) => {
@@ -173,7 +182,7 @@ class Demo extends React.Component {
         }
     };
 
-    renderOper = (value, index, record) => {
+    renderOper: ColumnProps['cell'] = (value, index, record) => {
         return <a onClick={this.onRemove.bind(this, record.id)}>Remove({record.id})</a>;
     };
     render() {

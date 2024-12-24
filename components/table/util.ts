@@ -1,4 +1,6 @@
 import classnames from 'classnames';
+import { type CSSProperties } from 'react';
+import type { NormalizedColumnProps } from './types';
 
 const blackList = [
     'defaultProps',
@@ -9,15 +11,18 @@ const blackList = [
     'getDerivedStateFromProps',
 ];
 
-export const statics = (Target, Component) => {
+export const statics = <T extends object, U extends object>(Target: T, Component: U): T & U => {
     Object.keys(Component).forEach(property => {
         if (blackList.indexOf(property) === -1) {
-            Target[property] = Component[property];
+            (Target as Record<string, unknown>)[property] = (Component as Record<string, unknown>)[
+                property
+            ];
         }
     });
+    return Target as T & U;
 };
 
-export const fetchDataByPath = (object, path) => {
+export const fetchDataByPath = (object: Record<string, unknown>, path?: string) => {
     if (!object || !path) {
         return false;
     }
@@ -30,14 +35,14 @@ export const fetchDataByPath = (object, path) => {
         if (key.indexOf('[') >= 0) {
             key = key.match(/(.*)\[(.*)\]/);
             if (key && typeof key[1] === 'object' && typeof object[key[1]] === 'object') {
-                val = object[key[1]][key[2]];
+                val = (object[key[1]] as Record<string, unknown>)[key[2]];
             }
         } else {
             val = object[field[0]];
         }
         if (val) {
             for (let colIndex = 1; colIndex < field.length; colIndex++) {
-                val = val[field[colIndex]];
+                val = (val as Record<string, unknown>)[field[colIndex]];
                 if (typeof val === 'undefined') {
                     break;
                 }
@@ -47,17 +52,19 @@ export const fetchDataByPath = (object, path) => {
     return val;
 };
 
-/**
- * @param {Array} lockChildren
- * @param {String} dir 'left', 'right'
- */
-export const setStickyStyle = (lockChildren, flatenChildren, dir, offsetArr = [], prefix) => {
+export const setStickyStyle = (
+    lockChildren: NormalizedColumnProps[],
+    flatenChildren: NormalizedColumnProps[],
+    dir: 'left' | 'right',
+    offsetArr: number[] = [],
+    prefix: string
+) => {
     const len = flatenChildren.length;
 
     flatenChildren.forEach((col, index) => {
         const isLeftLast = dir === 'left' && index === len - 1;
         const isRightFirst = dir === 'right' && index === 0;
-        const style = {
+        const style: CSSProperties = {
             position: 'sticky',
         };
         const offset = offsetArr[index];
@@ -75,8 +82,13 @@ export const setStickyStyle = (lockChildren, flatenChildren, dir, offsetArr = []
         col.cellStyle = style;
     });
 
-    const setOffset = (col, index, dir, isBorder) => {
-        const style = {
+    const setOffset = (
+        col: NormalizedColumnProps,
+        index: number,
+        dir: 'left' | 'right',
+        isBorder: boolean
+    ) => {
+        const style: CSSProperties = {
             position: 'sticky',
         };
         const offset = offsetArr[index];
@@ -95,11 +107,12 @@ export const setStickyStyle = (lockChildren, flatenChildren, dir, offsetArr = []
     };
 
     // 查看当前元素的叶子结点数量
-    const getLeafNodes = node => {
+    const getLeafNodes = (node: NormalizedColumnProps | undefined) => {
         let nodesLen = 0;
-        const arrLen = (Array.isArray(node && node.children) && node.children.length) || 0;
+        const arrLen = (Array.isArray(node && node.children) && node!.children!.length) || 0;
         if (arrLen > 0) {
-            nodesLen = node.children.reduce((ret, item, idx) => {
+            nodesLen = node!.children!.reduce((ret, item, idx) => {
+                // @ts-expect-error 这里实现感觉有些问题，应该传入的是 item
                 return ret + getLeafNodes(item.children);
             }, 0);
         } else {
@@ -108,7 +121,7 @@ export const setStickyStyle = (lockChildren, flatenChildren, dir, offsetArr = []
         return nodesLen;
     };
 
-    const getPreNodes = (arr, idx) => {
+    const getPreNodes = (arr: NormalizedColumnProps[], idx: number) => {
         return arr.reduce((ret, item, i) => {
             if (i < idx) {
                 return ret + getLeafNodes(item);
@@ -119,14 +132,14 @@ export const setStickyStyle = (lockChildren, flatenChildren, dir, offsetArr = []
 
     // for multiple header
     // nodesLen 前序叶子结点数
-    const loop = (arr, i) => {
+    const loop = (arr: NormalizedColumnProps[], i: number) => {
         dir === 'right' && arr.reverse();
         arr.forEach((child, j) => {
             const p = dir === 'right' ? i - getPreNodes(arr, j) : i + getPreNodes(arr, j);
             if (child.children) {
                 // 合并单元格的节点
                 loop(child.children, p);
-                // 查询当前元素下的 前序叶子结点数 比如为n
+                // 查询当前元素下的 前序叶子结点数 比如为 n
                 // const isBorder = (dir === 'right' && j === 0) || (dir === 'left' && j === (arr.length - 1));
                 setOffset(child, p, dir, j === arr.length - 1);
             }

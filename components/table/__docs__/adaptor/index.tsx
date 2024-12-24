@@ -1,6 +1,7 @@
-import React from 'react';
-import { Types, getChildren } from '@alifd/adaptor-helper';
+import React, { type CSSProperties } from 'react';
+import { Types } from '@alifd/adaptor-helper';
 import { Table } from '@alifd/next';
+import type { ColumnProps, TableProps } from '@alifd/next/types/table';
 
 export default {
     name: 'Table',
@@ -47,15 +48,34 @@ export default {
                 "Product | Price | Status\n2014 New Fashion Novelty Tank Slim Women's Fashion Dresses With Lace | US $2.5 | No Priced\nFree shipping women Casual dresses lady dress plus size 201 | US $2.5 | Already Priced",
         },
     }),
-    adaptor: ({ border, stripe, select, align, head, width, data, style, ...others }) => {
+    adaptor: ({
+        border,
+        stripe,
+        select,
+        align,
+        head,
+        width,
+        data,
+        style,
+        ...others
+    }: {
+        border: TableProps['hasBorder'];
+        stripe: TableProps['isZebra'];
+        select: 'checkbox' | 'none';
+        align: ColumnProps['align'];
+        head: 'show' | 'hide';
+        width: number;
+        data: string;
+        style: CSSProperties;
+    }) => {
         const list = data.split('\n').filter(v => !!v);
-        let ths = [];
-        const bodys = [];
+        let ths: string[] = [];
+        const bodys: { [key: string]: string }[] = [];
         list.forEach((template, index) => {
             if (index === 0) {
                 ths = template.split('|');
             } else {
-                const column = {};
+                const column: { [key: string]: string } = {};
                 template.split('|').forEach((value, index) => {
                     column[`column_${index}`] = value;
                 });

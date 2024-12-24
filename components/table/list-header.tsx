@@ -1,22 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import type { GroupHeaderProps } from './types';
 
 /**
  * Table.GroupHeader
  * @order 2
  **/
-export default class ListHeader extends React.Component {
+export default class ListHeader extends React.Component<GroupHeaderProps> {
     static propTypes = {
         /**
          * 行渲染的逻辑
          */
         cell: PropTypes.oneOfType([PropTypes.element, PropTypes.node, PropTypes.func]),
         /**
-         * 是否在Children上面渲染selection
+         * 是否在 Children 上面渲染 selection
          */
         hasChildrenSelection: PropTypes.bool,
         /**
-         * 是否在GroupHeader上面渲染selection
+         * 是否在 GroupHeader 上面渲染 selection
          */
         hasSelection: PropTypes.bool,
         /**

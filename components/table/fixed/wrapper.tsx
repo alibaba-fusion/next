@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import type { FixedWrapperProps } from '../types';
 
-/* eslint-disable react/prefer-stateless-function */
-export default class FixedWrapper extends React.Component {
+export default class FixedWrapper extends React.Component<FixedWrapperProps> {
     static propTypes = {
         children: PropTypes.any,
         prefix: PropTypes.string,

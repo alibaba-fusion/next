@@ -1,13 +1,16 @@
-import React from 'react';
+import React, { type ReactNode, type MouseEvent } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import RowComponent from './row';
 import CellComponent from './cell';
-import { dom, events } from '../../util';
+import { type ClassPropsWithDefault, dom, events } from '../../util';
+import type { BodyProps, CellLike, RecordItem, RowLike, RowProps } from '../types';
 
 const noop = () => {};
 
-export default class Body extends React.Component {
+type InnerBodyProps = ClassPropsWithDefault<BodyProps, typeof Body.defaultProps>;
+
+export default class Body extends React.Component<BodyProps> {
     static propTypes = {
         loading: PropTypes.bool,
         emptyContent: PropTypes.any,
@@ -49,6 +52,9 @@ export default class Body extends React.Component {
         columns: [],
     };
 
+    readonly props: InnerBodyProps;
+    emptyNode: HTMLElement | null;
+
     componentDidMount() {
         events.on(window, 'resize', this.setEmptyDomStyle);
     }
@@ -61,46 +67,45 @@ export default class Body extends React.Component {
         events.off(window, 'resize', this.setEmptyDomStyle);
     }
 
-    getRowRef = (i, row) => {
+    getRowRef = (i: number, row: InstanceType<RowLike> | null) => {
         this.props.rowRef(i, row);
     };
 
-    onRowClick = (record, index, e) => {
-        this.props.onRowClick(record, index, e);
+    onRowClick = (record: RecordItem, index: number, e: MouseEvent) => {
+        this.props.onRowClick!(record, index, e);
     };
 
-    onRowMouseEnter = (record, index, e) => {
-        this.props.onRowMouseEnter(record, index, e);
+    onRowMouseEnter = (record: RecordItem, index: number, e: MouseEvent) => {
+        this.props.onRowMouseEnter!(record, index, e);
     };
 
-    onRowMouseLeave = (record, index, e) => {
-        this.props.onRowMouseLeave(record, index, e);
+    onRowMouseLeave = (record: RecordItem, index: number, e: MouseEvent) => {
+        this.props.onRowMouseLeave!(record, index, e);
     };
 
-    onBodyMouseOver = e => {
+    onBodyMouseOver = (e: MouseEvent) => {
         this.props.onBodyMouseOver(e);
     };
 
-    onBodyMouseOut = e => {
+    onBodyMouseOut = (e: MouseEvent) => {
         this.props.onBodyMouseOut(e);
     };
 
-    getEmptyNode = ref => {
+    getEmptyNode = (ref: HTMLElement | null) => {
         this.emptyNode = ref;
     };
 
     setEmptyDomStyle = () => {
         const { tableEl } = this.props;
-        // getboundingclientRect 获取的是除 margin 之外的内容区，可能带小数点，不四舍五入
-        const borderLeftWidth = dom.getStyle(tableEl, 'borderLeftWidth');
+        // getBoundingClientRect 获取的是除 margin 之外的内容区，可能带小数点，不四舍五入
+        const borderLeftWidth = dom.getStyle(tableEl!, 'borderLeftWidth') as number;
         const tableWidth = tableEl && tableEl.getBoundingClientRect().width;
-        const totalWidth = tableWidth - borderLeftWidth - 1 || '100%';
+        const totalWidth = tableWidth! - borderLeftWidth - 1 || '100%';
 
         dom.setStyle(this.emptyNode, { width: totalWidth });
     };
 
     render() {
-        /*eslint-disable no-unused-vars */
         const {
             prefix,
             className,
@@ -132,11 +137,11 @@ export default class Body extends React.Component {
             ...others
         } = this.props;
 
-        const totalWidth = +(tableEl && tableEl.clientWidth) - 1 || '100%';
+        const totalWidth = +(tableEl! && tableEl.clientWidth) - 1 || '100%';
 
-        const { Row = RowComponent, Cell = CellComponent } = components;
-        const empty = loading ? <span>&nbsp;</span> : emptyContent || locale.empty;
-        let rows = (
+        const { Row = RowComponent as RowLike, Cell = CellComponent as CellLike } = components;
+        const empty = loading ? <span>&nbsp;</span> : emptyContent || locale!.empty;
+        let rows: ReactNode = (
             <tr>
                 <td colSpan={columns.length}>
                     <div
@@ -163,11 +168,11 @@ export default class Body extends React.Component {
         }
         if (dataSource.length) {
             rows = dataSource.map((record, index) => {
-                let rowProps = {};
+                let rowProps: Partial<RowProps> | undefined | void = {};
                 // record may be a string
                 const rowIndex =
                     typeof record === 'object' && '__rowIndex' in record
-                        ? record.__rowIndex
+                        ? (record.__rowIndex as number)
                         : index;
 
                 if (expandedIndexSimulate) {
@@ -182,13 +187,13 @@ export default class Body extends React.Component {
                 const className = classnames({
                     first: index === 0,
                     last: index === dataSource.length - 1,
-                    [rowClass]: rowClass,
+                    [rowClass!]: rowClass,
                 });
                 const expanded = record.__expanded ? 'expanded' : '';
                 return (
                     <Row
                         key={`${
-                            record[primaryKey] || (record[primaryKey] === 0 ? 0 : rowIndex)
+                            record[primaryKey!] || (record[primaryKey!] === 0 ? 0 : rowIndex)
                         }${expanded}`}
                         {...rowProps}
                         ref={this.getRowRef.bind(

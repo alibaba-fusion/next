@@ -4,44 +4,46 @@ import { polyfill } from 'react-lifecycles-compat';
 import RowComponent from './tree/row';
 import CellComponent from './tree/cell';
 import { statics } from './util';
+import type Base from './base';
+import type { CellLike, RecordItem, RowLike, TreeTableProps, TreeTableState } from './types';
 
 const noop = () => {};
 
-export default function tree(BaseComponent) {
-    class TreeTable extends React.Component {
+export default function tree(BaseComponent: typeof Base) {
+    class TreeTable extends React.Component<TreeTableProps, TreeTableState> {
         static TreeRow = RowComponent;
         static TreeCell = CellComponent;
         static propTypes = {
             /**
-             * 默认情况下展开的树形表格，传入了此属性代表tree的展开为受控操作
+             * 默认情况下展开的树形表格，传入了此属性代表 tree 的展开为受控操作
              */
-            openRowKeys: PropTypes.array,
+            // openRowKeys: PropTypes.array,
             /**
-             * 默认情况下展开的 Expand行 或者 Tree行，非受控模式
+             * 默认情况下展开的 Expand 行 或者 Tree 行，非受控模式
              * @version 1.23.22
              */
-            defaultOpenRowKeys: PropTypes.array,
+            // defaultOpenRowKeys: PropTypes.array,
             /**
-             * 点击tree展开或者关闭的时候触发的事件
-             * @param {Array} openRowKeys tree模式下展开的key
-             * @param {String} currentRowKey 当前点击行的key
-             * @param {Boolean} opened 当前点击是展开还是收起
-             * @param {Object} currentRecord 当前点击行的记录
+             * 点击 tree 展开或者关闭的时候触发的事件
+             * @param openRowKeys - tree 模式下展开的 key
+             * @param currentRowKey - 当前点击行的 key
+             * @param opened - 当前点击是展开还是收起
+             * @param currentRecord - 当前点击行的记录
              */
-            onRowOpen: PropTypes.func,
+            // onRowOpen: PropTypes.func,
             /**
-             * dataSource当中数据的主键，如果给定的数据源中的属性不包含该主键，会造成选择状态全部选中
+             * dataSource 当中数据的主键，如果给定的数据源中的属性不包含该主键，会造成选择状态全部选中
              */
-            primaryKey: PropTypes.oneOfType([PropTypes.symbol, PropTypes.string]),
+            // primaryKey: PropTypes.oneOfType([PropTypes.symbol, PropTypes.string]),
             /**
-             * 在tree模式下的缩进尺寸， 仅在isTree为true时候有效
+             * 在 tree 模式下的缩进尺寸，仅在 isTree 为 true 时候有效
              */
-            indent: PropTypes.number,
+            // indent: PropTypes.number,
             /**
-             * 开启Table的tree模式, 接收的数据格式中包含children则渲染成tree table
+             * 开启 Table 的 tree 模式，接收的数据格式中包含 children 则渲染成 tree table
              */
-            isTree: PropTypes.bool,
-            locale: PropTypes.object,
+            // isTree: PropTypes.bool,
+            // locale: PropTypes.object,
             ...BaseComponent.propTypes,
         };
 
@@ -60,9 +62,10 @@ export default function tree(BaseComponent) {
             onTreeNodeClick: PropTypes.func,
             isTree: PropTypes.bool,
         };
+        ds: RecordItem[];
 
-        constructor(props, context) {
-            super(props, context);
+        constructor(props: TreeTableProps) {
+            super(props);
             this.state = {
                 openRowKeys: props.openRowKeys || props.defaultOpenRowKeys || [],
             };
@@ -78,7 +81,7 @@ export default function tree(BaseComponent) {
             };
         }
 
-        static getDerivedStateFromProps(nextProps) {
+        static getDerivedStateFromProps(nextProps: TreeTableProps) {
             if ('openRowKeys' in nextProps) {
                 return {
                     openRowKeys: nextProps.openRowKeys || [],
@@ -88,15 +91,19 @@ export default function tree(BaseComponent) {
             return null;
         }
 
-        normalizeDataSource(dataSource) {
+        normalizeDataSource(dataSource: TreeTableProps['dataSource']) {
             const { openRowKeys } = this.state;
             const { primaryKey } = this.props;
-            const ret = [],
-                loop = function (dataSource, level, parentId = null) {
-                    dataSource.forEach(item => {
+            const ret: RecordItem[] = [],
+                loop = function (
+                    dataSource: TreeTableProps['dataSource'],
+                    level: number,
+                    parentId: string | number | null = null
+                ) {
+                    dataSource!.forEach(item => {
                         item.__level = level;
 
-                        if (level === 0 || openRowKeys.indexOf(parentId) > -1) {
+                        if (level === 0 || openRowKeys!.indexOf(parentId) > -1) {
                             item.__hidden = false;
                         } else {
                             item.__hidden = true;
@@ -104,7 +111,7 @@ export default function tree(BaseComponent) {
                         ret.push(item);
 
                         if (item.children) {
-                            loop(item.children, level + 1, item[primaryKey]);
+                            loop(item.children, level + 1, item[primaryKey!] as string);
                         }
                     });
                 };
@@ -113,17 +120,17 @@ export default function tree(BaseComponent) {
             return ret;
         }
 
-        getTreeNodeStatus(dataSource = []) {
+        getTreeNodeStatus(dataSource: RecordItem[] = []) {
             const { openRowKeys } = this.state,
                 { primaryKey } = this.props,
-                ret = [];
+                ret: unknown[] = [];
 
-            openRowKeys.forEach(openKey => {
+            openRowKeys!.forEach(openKey => {
                 dataSource.forEach(item => {
-                    if (item[primaryKey] === openKey) {
+                    if (item[primaryKey!] === openKey) {
                         if (item.children) {
                             item.children.forEach(child => {
-                                ret.push(child[primaryKey]);
+                                ret.push(child[primaryKey!]);
                             });
                         }
                     }
@@ -132,24 +139,24 @@ export default function tree(BaseComponent) {
             return ret;
         }
 
-        onTreeNodeClick = record => {
+        onTreeNodeClick = (record: RecordItem) => {
             const { primaryKey } = this.props,
-                id = record[primaryKey],
+                id = record[primaryKey!] as string | number,
                 dataSource = this.ds,
-                openRowKeys = [...this.state.openRowKeys],
+                openRowKeys = [...this.state.openRowKeys!],
                 index = openRowKeys.indexOf(id),
-                getChildrenKeyById = function (id) {
+                getChildrenKeyById = function (id: string | number) {
                     const ret = [id];
-                    const loop = data => {
+                    const loop = (data: RecordItem[]) => {
                         data.forEach(item => {
-                            ret.push(item[primaryKey]);
+                            ret.push(item[primaryKey!] as string | number);
                             if (item.children) {
                                 loop(item.children);
                             }
                         });
                     };
                     dataSource.forEach(item => {
-                        if (item[primaryKey] === id) {
+                        if (item[primaryKey!] === id) {
                             if (item.children) {
                                 loop(item.children);
                             }
@@ -159,7 +166,7 @@ export default function tree(BaseComponent) {
                 };
 
             if (index > -1) {
-                // 不仅要删除当前的openRowKey，还需要删除关联子节点的openRowKey
+                // 不仅要删除当前的 openRowKey，还需要删除关联子节点的 openRowKey
                 const ids = getChildrenKeyById(id);
                 ids.forEach(id => {
                     const i = openRowKeys.indexOf(id);
@@ -176,20 +183,21 @@ export default function tree(BaseComponent) {
                     openRowKeys,
                 });
             }
-            this.props.onRowOpen(openRowKeys, id, index === -1, record);
+            this.props.onRowOpen!(openRowKeys, id, index === -1, record);
         };
 
         render() {
-            /* eslint-disable no-unused-vars, prefer-const */
-            let { components, isTree, dataSource, indent, ...others } = this.props;
+            const { isTree, indent, ...others } = this.props;
+
+            let { components, dataSource } = this.props;
 
             if (isTree) {
                 components = { ...components };
                 if (!components.Row) {
-                    components.Row = RowComponent;
+                    components.Row = RowComponent as RowLike;
                 }
                 if (!components.Cell) {
-                    components.Cell = CellComponent;
+                    components.Cell = CellComponent as CellLike;
                 }
 
                 dataSource = this.normalizeDataSource(dataSource);
@@ -197,6 +205,5 @@ export default function tree(BaseComponent) {
             return <BaseComponent {...others} dataSource={dataSource} components={components} />;
         }
     }
-    statics(TreeTable, BaseComponent);
-    return polyfill(TreeTable);
+    return polyfill(statics(TreeTable, BaseComponent));
 }

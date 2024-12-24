@@ -10,7 +10,7 @@ const data = [
         name: 'Jack',
         age: 32,
         address: 'Zhejiang Province, China',
-        // 非叶子结点需要带着children，并且设置一条空数据先
+        // 非叶子结点需要带着 children，并且设置一条空数据先
         children: [{ key: generateRandomKey() }],
     },
     {
@@ -56,7 +56,7 @@ class App extends React.Component {
                                             name: `${currentRecord.name}-son`,
                                             age: 10,
                                             address: 'Earth',
-                                            // 非叶子结点需要带着children，并且设置一条空数据先
+                                            // 非叶子结点需要带着 children，并且设置一条空数据先
                                             children: [{ key: generateRandomKey() }],
                                         },
                                         {

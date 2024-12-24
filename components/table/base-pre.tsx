@@ -1,4 +1,5 @@
-import React from 'react';
+// 这个文件看起来没有被使用到
+import React, { Ref, type LegacyRef } from 'react';
 import Loading from '../loading';
 import BodyComponent from './base/body';
 import HeaderComponent from './base/header';
@@ -11,9 +12,12 @@ import Column from './column';
 import ColumnGroup from './column-group';
 import Table from './base';
 import { statics } from './util';
+import type { BaseTableProps } from './types';
 
-function HOC(WrappedComponent) {
-    class PreTable extends React.Component {
+function HOC(WrappedComponent: typeof Table) {
+    class PreTable extends React.Component<
+        BaseTableProps & { loading?: boolean; forwardedRef?: Ref<InstanceType<typeof Table>> }
+    > {
         static Column = Column;
         static ColumnGroup = ColumnGroup;
         static Header = HeaderComponent;
@@ -39,17 +43,19 @@ function HOC(WrappedComponent) {
         }
     }
 
-    // 当前版本大于 16.6.3 （有forwardRef的那个版本）
+    // 当前版本大于 16.6.3（有 forwardRef 的那个版本）
     if (typeof React.forwardRef === 'function') {
-        const HocTable = React.forwardRef((props, ref) => {
-            return <PreTable {...props} forwardedRef={ref} />;
-        });
+        const HocTable = React.forwardRef<InstanceType<typeof Table>, BaseTableProps>(
+            (props, ref) => {
+                return <PreTable {...props} forwardedRef={ref} />;
+            }
+        );
         statics(HocTable, WrappedComponent);
         return HocTable;
     }
 
     statics(PreTable, WrappedComponent);
-    // 对于没有低版本用户来说，获取底层Table的ref，可以通过 forwardedRef 这个props获取
+    // 对于没有低版本用户来说，获取底层 Table 的 ref，可以通过 forwardedRef 这个 props 获取
     return PreTable;
 }
 
