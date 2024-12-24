@@ -1,8 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Table } from '@alifd/next';
+import type { TableProps } from '@alifd/next/types/table';
 
-const onRowClick = function (record, index, e) {
+const onRowClick: TableProps['onRowClick'] = function (record, index, e) {
         console.log(record, index, e);
     },
     dataSource = () => {
@@ -17,10 +18,7 @@ const onRowClick = function (record, index, e) {
         }
         return result;
     },
-    render = (value, index, record) => {
-        return <a>Remove({record.id})</a>;
-    },
-    cellProps = (rowIndex, colIndex) => {
+    cellProps: TableProps['cellProps'] = (rowIndex, colIndex) => {
         if (rowIndex === 2 && colIndex === 1) {
             return {
                 // take 3 rows's space

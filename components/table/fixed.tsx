@@ -7,10 +7,12 @@ import HeaderComponent from './fixed/header';
 import BodyComponent from './fixed/body';
 import WrapperComponent from './fixed/wrapper';
 import { statics } from './util';
+import type Base from './base';
+import type { FixedTableProps, WrapperLike } from './types';
 
-export default function fixed(BaseComponent, stickyLock) {
+export default function fixed(BaseComponent: typeof Base) {
     /** Table */
-    class FixedTable extends React.Component {
+    class FixedTable extends React.Component<FixedTableProps> {
         static FixedHeader = HeaderComponent;
         static FixedBody = BodyComponent;
         static FixedWrapper = WrapperComponent;
@@ -18,15 +20,15 @@ export default function fixed(BaseComponent, stickyLock) {
             /**
              * 是否具有表头
              */
-            hasHeader: PropTypes.bool,
+            // hasHeader: PropTypes.bool,
             /**
-             * 表头是否固定，该属性配合maxBodyHeight使用，当内容区域的高度超过maxBodyHeight的时候，在内容区域会出现滚动条
+             * 表头是否固定，该属性配合 maxBodyHeight 使用，当内容区域的高度超过 maxBodyHeight 的时候，在内容区域会出现滚动条
              */
-            fixedHeader: PropTypes.bool,
+            // fixedHeader: PropTypes.bool,
             /**
-             * 最大内容区域的高度,在`fixedHeader`为`true`的时候,超过这个高度会出现滚动条
+             * 最大内容区域的高度，在`fixedHeader`为`true`的时候，超过这个高度会出现滚动条
              */
-            maxBodyHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+            // maxBodyHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
             ...BaseComponent.propTypes,
         };
 
@@ -49,6 +51,9 @@ export default function fixed(BaseComponent, stickyLock) {
         };
 
         state = {};
+        scrollToRightEnd?: boolean;
+        scrollTarget: HTMLElement | null;
+        timeoutId?: number;
 
         getChildContext() {
             return {
@@ -71,14 +76,17 @@ export default function fixed(BaseComponent, stickyLock) {
             this.onFixedScrollSync({ currentTarget: this.bodyNode, target: this.bodyNode });
         }
 
-        getNode = (type, node, lockType) => {
+        [nodeKey: `${string}${'header' | 'body'}${'Left' | 'Right' | ''}Node`]: HTMLElement;
+        [tableKey: `table${string}Inc`]: InstanceType<typeof Base>;
+
+        getNode = (type: 'header' | 'body', node: HTMLElement, lockType?: string) => {
             lockType = lockType ? lockType.charAt(0).toUpperCase() + lockType.substr(1) : '';
-            this[`${type}${lockType}Node`] = node;
+            this[`${type}${lockType as 'Left' | 'Right'}Node` as const] = node;
         };
 
-        getTableInstance = (type, instance) => {
+        getTableInstance = (type: string, instance: InstanceType<typeof Base>) => {
             type = '';
-            this[`table${type}Inc`] = instance;
+            this[`table${type}Inc` as const] = instance;
         };
 
         getTableNode() {
@@ -87,20 +95,22 @@ export default function fixed(BaseComponent, stickyLock) {
                 // in case of finding an unmounted component due to cached data
                 // need to clear refs of table when dataSource Changed
                 // use try catch for temporary
-                return findDOMNode(table.tableEl);
+                return findDOMNode(table.tableEl) as HTMLElement;
             } catch (error) {
                 return null;
             }
         }
 
         // for fixed header scroll left
-        onFixedScrollSync = (current = { currentTarget: {} }) => {
-            const currentTarget = current.currentTarget || {},
+        onFixedScrollSync = (
+            current: { currentTarget?: HTMLElement; target?: HTMLElement } = {}
+        ) => {
+            const currentTarget = current.currentTarget || ({} as HTMLElement),
                 headerNode = this.headerNode,
                 bodyNode = this.bodyNode;
 
             const { scrollLeft, scrollWidth, clientWidth } = currentTarget;
-            const scrollToRightEnd = !(scrollLeft < scrollWidth - clientWidth);
+            const scrollToRightEnd = !(scrollLeft! < scrollWidth! - clientWidth!);
             const { prefix, loading } = this.props;
 
             if (!loading && scrollToRightEnd !== this.scrollToRightEnd) {
@@ -143,7 +153,12 @@ export default function fixed(BaseComponent, stickyLock) {
             if (hasHeader && !this.props.lockType && body) {
                 const hasVerScroll = body.scrollHeight > body.clientHeight,
                     hasHozScroll = body.scrollWidth > body.clientWidth;
-                const style = {};
+                const style: Partial<
+                    Record<
+                        typeof paddingName | typeof marginName | 'marginBottom' | 'paddingBottom',
+                        unknown
+                    >
+                > = {};
                 if (!hasVerScroll) {
                     style[paddingName] = 0;
                     style[marginName] = 0;
@@ -165,9 +180,11 @@ export default function fixed(BaseComponent, stickyLock) {
             }
 
             if (hasHeader && !this.props.lockType && this.headerNode) {
-                const fixer = this.headerNode.querySelector(`.${prefix}table-header-fixer`);
-                const height = dom.getStyle(this.headerNode, 'height');
-                const paddingBottom = dom.getStyle(this.headerNode, 'paddingBottom');
+                const fixer = this.headerNode.querySelector(
+                    `.${prefix}table-header-fixer`
+                ) as HTMLElement;
+                const height = dom.getStyle(this.headerNode, 'height') as number;
+                const paddingBottom = dom.getStyle(this.headerNode, 'paddingBottom') as number;
 
                 dom.setStyle(fixer, {
                     width: scrollBarSize,
@@ -177,17 +194,9 @@ export default function fixed(BaseComponent, stickyLock) {
         }
 
         render() {
-            /* eslint-disable no-unused-vars, prefer-const */
-            let {
-                components,
-                className,
-                prefix,
-                fixedHeader,
-                lockType,
-                dataSource,
-                maxBodyHeight,
-                ...others
-            } = this.props;
+            const { prefix, fixedHeader, lockType, dataSource, maxBodyHeight, ...others } =
+                this.props;
+            let { className, components } = this.props;
             if (fixedHeader) {
                 components = { ...components };
                 if (!components.Header) {
@@ -197,12 +206,12 @@ export default function fixed(BaseComponent, stickyLock) {
                     components.Body = BodyComponent;
                 }
                 if (!components.Wrapper) {
-                    components.Wrapper = WrapperComponent;
+                    components.Wrapper = WrapperComponent as WrapperLike;
                 }
                 className = classnames({
                     [`${prefix}table-fixed`]: true,
-                    [`${prefix}table-wrap-empty`]: !dataSource.length,
-                    [className]: className,
+                    [`${prefix}table-wrap-empty`]: !dataSource!.length,
+                    [className!]: className,
                 });
             }
 
@@ -218,6 +227,5 @@ export default function fixed(BaseComponent, stickyLock) {
             );
         }
     }
-    statics(FixedTable, BaseComponent);
-    return FixedTable;
+    return statics(FixedTable, BaseComponent);
 }

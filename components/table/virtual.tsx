@@ -5,28 +5,30 @@ import { polyfill } from 'react-lifecycles-compat';
 import { dom } from '../util';
 import VirtualBody from './virtual/body';
 import { statics } from './util';
+import type Base from './base';
+import type { VirtualTableProps, VirtualTableState } from './types';
 
 const noop = () => {};
-export default function virtual(BaseComponent) {
-    class VirtualTable extends React.Component {
+export default function virtual(BaseComponent: typeof Base) {
+    class VirtualTable extends React.Component<VirtualTableProps, VirtualTableState> {
         static VirtualBody = VirtualBody;
         static propTypes = {
             /**
              * 是否开启虚拟滚动
              */
-            useVirtual: PropTypes.bool,
+            // useVirtual: PropTypes.bool,
             /**
              * 设置行高
              */
-            rowHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.func]),
-            maxBodyHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-            primaryKey: PropTypes.oneOfType([PropTypes.symbol, PropTypes.string]),
-            dataSource: PropTypes.array,
+            // rowHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.func]),
+            // maxBodyHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+            // primaryKey: PropTypes.oneOfType([PropTypes.symbol, PropTypes.string]),
+            // dataSource: PropTypes.array,
             /**
              * 在内容区域滚动的时候触发的函数
              */
-            onBodyScroll: PropTypes.func,
-            keepForwardRenderRows: PropTypes.number,
+            // onBodyScroll: PropTypes.func,
+            // keepForwardRenderRows: PropTypes.number,
             ...BaseComponent.propTypes,
         };
 
@@ -49,9 +51,15 @@ export default function virtual(BaseComponent) {
             getTableInstanceForVirtual: PropTypes.func,
             rowSelection: PropTypes.object,
         };
+        lastScrollTop: number;
+        bodyNode: HTMLElement;
+        rowSelection: VirtualTableProps['rowSelection'];
+        start: number;
+        end: number;
+        visibleCount: number;
 
-        constructor(props, context) {
-            super(props, context);
+        constructor(props: VirtualTableProps) {
+            super(props);
             const { useVirtual, dataSource } = props;
 
             const hasVirtualData = useVirtual && dataSource && dataSource.length > 0;
@@ -75,8 +83,11 @@ export default function virtual(BaseComponent) {
             };
         }
 
-        static getDerivedStateFromProps(nextProps, prevState) {
-            const state = {};
+        static getDerivedStateFromProps(
+            nextProps: VirtualTableProps,
+            prevState: VirtualTableState
+        ) {
+            const state: Partial<VirtualTableState> = {};
 
             if ('maxBodyHeight' in nextProps) {
                 if (prevState.height !== nextProps.maxBodyHeight) {
@@ -117,6 +128,9 @@ export default function virtual(BaseComponent) {
             this.reComputeSize();
         }
 
+        [bodyNodeKey: `body${string}Node`]: HTMLElement | null;
+        [tableKey: `table${string}Inc`]: InstanceType<typeof Base> | null;
+
         reComputeSize() {
             const { rowHeight, hasVirtualData } = this.state;
             if (typeof rowHeight === 'function' && hasVirtualData) {
@@ -137,12 +151,12 @@ export default function virtual(BaseComponent) {
                 return 0;
             }
             let count = 0;
-            dataSource.forEach(item => {
+            dataSource!.forEach(item => {
                 if (!item.__hidden) {
                     count += 1;
                 }
             });
-            return count * rowHeight;
+            return count * rowHeight!;
         }
 
         computeInnerTop() {
@@ -152,14 +166,14 @@ export default function virtual(BaseComponent) {
                 return 0;
             }
 
-            const start = Math.max(this.start - keepForwardRenderRows, 0);
+            const start = Math.max(this.start - keepForwardRenderRows!, 0);
 
-            return start * rowHeight;
+            return start * rowHeight!;
         }
 
-        getVisibleRange(ExpectStart) {
+        getVisibleRange(ExpectStart: number) {
             const { height, rowHeight } = this.state;
-            const len = this.props.dataSource.length;
+            const len = this.props.dataSource!.length;
 
             let end,
                 visibleCount = 0;
@@ -168,7 +182,8 @@ export default function virtual(BaseComponent) {
                 // try get cell height;
                 end = 1;
             } else {
-                visibleCount = parseInt(dom.getPixels(height) / rowHeight, 10);
+                // @ts-expect-error parseInt 第一个参数是 string，这里是 number，在已经是 number 的情况下，这里其实只是想要取整
+                visibleCount = parseInt(dom.getPixels(height) / rowHeight!, 10);
 
                 if ('number' === typeof ExpectStart) {
                     start = ExpectStart < len ? ExpectStart : 0;
@@ -186,13 +201,16 @@ export default function virtual(BaseComponent) {
 
         adjustScrollTop() {
             const { rowHeight, hasVirtualData, scrollToRow } = this.state;
+            // @ts-expect-error 只有 rowHeight 是数字时才可以这样做，没有考虑 rowHeight 是函数的情况
             const oldScrollToRow = Math.floor(this.lastScrollTop / rowHeight);
             if (hasVirtualData && this.bodyNode) {
                 //根据上次lastScrollTop记录的位置计算而来的scrollToRow位置不准 则以最新的scrollToRow为准重新校准位置（可能是由非用户滚动事件导致的props.scrollToRow发生了变化）
                 if (oldScrollToRow !== scrollToRow) {
-                    this.bodyNode.scrollTop = rowHeight * scrollToRow;
+                    // @ts-expect-error 只有 rowHeight 是数字时才可以这样做，没有考虑 rowHeight 是函数的情况
+                    this.bodyNode.scrollTop = rowHeight * scrollToRow!;
                 } else {
                     this.bodyNode.scrollTop =
+                        // @ts-expect-error 只有 rowHeight 是数字时才可以这样做，没有考虑 rowHeight 是函数的情况
                         (this.lastScrollTop % rowHeight) + rowHeight * scrollToRow;
                 }
             }
@@ -205,10 +223,10 @@ export default function virtual(BaseComponent) {
                 const { clientHeight, clientWidth } = body;
 
                 const tableInc = this.tableInc;
-                const tableNode = findDOMNode(tableInc);
+                const tableNode = findDOMNode(tableInc) as HTMLElement;
                 const { prefix } = this.props;
                 const headerNode = tableNode.querySelector(`.${prefix}table-header table`);
-                const headerClientWidth = headerNode && headerNode.clientWidth;
+                const headerClientWidth = headerNode! && headerNode.clientWidth;
                 // todo 2.0 设置宽度这个可以去掉
                 if (clientWidth < headerClientWidth) {
                     dom.setStyle(virtualScrollNode, 'min-width', headerClientWidth);
@@ -234,23 +252,24 @@ export default function virtual(BaseComponent) {
                     scrollToRow: start,
                 });
             }
-            this.props.onBodyScroll(start);
+            this.props.onBodyScroll!(start);
             this.lastScrollTop = scrollTop;
         };
 
-        computeScrollToRow(offset) {
+        computeScrollToRow(offset: number) {
             const { rowHeight } = this.state;
+            // @ts-expect-error rowHeight 只有是数字时才可以这样做，另 parseInt 接受的是 string，这里只是想取整
             const start = parseInt(offset / rowHeight);
             this.start = start;
             return start;
         }
 
-        getBodyNode = (node, lockType) => {
+        getBodyNode = (node: HTMLElement, lockType: string) => {
             lockType = lockType ? lockType.charAt(0).toUpperCase() + lockType.substr(1) : '';
-            this[`body${lockType}Node`] = node;
+            this[`body${lockType}Node` as const] = node;
         };
 
-        getTableInstance = (type, instance) => {
+        getTableInstance = (type: string, instance: InstanceType<typeof Base> | null) => {
             type = type ? type.charAt(0).toUpperCase() + type.substr(1) : '';
             this[`table${type}Inc`] = instance;
         };
@@ -260,25 +279,24 @@ export default function virtual(BaseComponent) {
                 // in case of finding an unmounted component due to cached data
                 // need to clear refs of this.tableInc when dataSource Changed
                 // use try catch for temporary
-                return findDOMNode(this.tableInc.getRowRef(0));
+                return findDOMNode(this.tableInc!.getRowRef(0)) as HTMLElement;
             } catch (error) {
                 return null;
             }
         }
 
         render() {
-            /* eslint-disable no-unused-vars, prefer-const */
-            let {
+            const {
                 useVirtual,
-                components,
                 dataSource,
-                fixedHeader,
                 rowHeight,
                 scrollToRow,
                 onBodyScroll,
                 keepForwardRenderRows,
                 ...others
             } = this.props;
+
+            let { components, fixedHeader } = this.props;
 
             const entireDataSource = dataSource;
             let newDataSource = dataSource;
@@ -287,13 +305,13 @@ export default function virtual(BaseComponent) {
             if (this.state.hasVirtualData) {
                 newDataSource = [];
                 components = { ...components };
-                const { start, end } = this.getVisibleRange(this.state.scrollToRow);
+                const { start, end } = this.getVisibleRange(this.state.scrollToRow!);
                 let count = -1;
-                dataSource.forEach((current, index, record) => {
+                dataSource!.forEach((current, index, record) => {
                     if (!current.__hidden) {
                         count += 1;
-                        if (count >= Math.max(start - keepForwardRenderRows, 0) && count < end) {
-                            newDataSource.push(current);
+                        if (count >= Math.max(start - keepForwardRenderRows!, 0) && count < end) {
+                            newDataSource!.push(current);
                         }
                     }
                     current.__rowIndex = index;
@@ -310,13 +328,12 @@ export default function virtual(BaseComponent) {
                     {...others}
                     scrollToRow={scrollToRow}
                     dataSource={newDataSource}
-                    entireDataSource={entireDataSource}
+                    entireDataSource={entireDataSource!}
                     components={components}
                     fixedHeader={fixedHeader}
                 />
             );
         }
     }
-    statics(VirtualTable, BaseComponent);
-    return polyfill(VirtualTable);
+    return polyfill(statics(VirtualTable, BaseComponent));
 }

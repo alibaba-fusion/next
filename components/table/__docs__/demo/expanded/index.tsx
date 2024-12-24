@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Table, Button } from '@alifd/next';
+import type { ColumnProps, TableProps } from '@alifd/next/types/table';
 
 const dataSource = () => {
         const result = [];
@@ -13,18 +14,16 @@ const dataSource = () => {
         }
         return result;
     },
-    render = (value, index, record) => {
+    render: ColumnProps['cell'] = (value, index, record) => {
         return <a>Remove({record.id})</a>;
     };
 
 class App extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            dataSource: dataSource(),
-        };
-    }
-    onSort(dataIndex, order) {
+    state = {
+        dataSource: dataSource(),
+        expandedRowIndent: undefined,
+    };
+    onSort: TableProps['onSort'] = (dataIndex: 'id', order) => {
         const dataSource = this.state.dataSource.sort(function (a, b) {
             const result = a[dataIndex] - b[dataIndex];
             return order === 'asc' ? (result > 0 ? 1 : -1) : result > 0 ? -1 : 1;
@@ -32,7 +31,7 @@ class App extends React.Component {
         this.setState({
             dataSource,
         });
-    }
+    };
     toggleIndent() {
         this.setState({
             expandedRowIndent: [2, 1],
@@ -51,9 +50,8 @@ class App extends React.Component {
                 </p>
                 <Table
                     dataSource={this.state.dataSource}
-                    isZebra={this.state.isZebra}
                     hasBorder={false}
-                    onSort={this.onSort.bind(this)}
+                    onSort={this.onSort}
                     expandedRowRender={record => record.title}
                     onRowClick={() => console.log('rowClick')}
                     expandedRowIndent={this.state.expandedRowIndent}

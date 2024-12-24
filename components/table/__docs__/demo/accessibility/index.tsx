@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Table } from '@alifd/next';
+import type { ColumnProps } from '@alifd/next/types/table';
 
 const result = [
     {
@@ -14,21 +15,17 @@ const result = [
         title: { name: 'the great gatsby' },
     },
     {
-        id: '003',
+        id: '004',
         time: 1719,
         title: { name: 'The adventures of Robinson Crusoe' },
     },
 ];
 class Demo extends React.Component {
-    constructor(props) {
-        super(props);
+    state = {
+        dataSource: result,
+    };
 
-        this.state = {
-            dataSource: result,
-        };
-    }
-
-    onRemove = id => {
+    onRemove = (id: string) => {
         const { dataSource } = this.state;
         let index = -1;
         dataSource.forEach((item, i) => {
@@ -44,8 +41,8 @@ class Demo extends React.Component {
         }
     };
 
-    renderOper = (value, index, record) => {
-        return <a onClick={this.onRemove.bind(this, record.id)}>Remove({record.id})</a>;
+    renderOper: ColumnProps['cell'] = (value, index, record) => {
+        return <a onClick={this.onRemove.bind(this, record!.id)}>Remove({record!.id})</a>;
     };
     render() {
         return (

@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import type { GroupFooterProps } from './types';
 
-/* istanbul ignore file */
 /**
  * Table.GroupFooter
  * @order 3
  **/
-export default class ListFooter extends React.Component {
+export default class ListFooter extends React.Component<GroupFooterProps> {
     static propTypes = {
         /**
          * 行渲染的逻辑

@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { type UIEvent } from 'react';
 import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
 import FixedBody from '../fixed/body';
+import type { LockBodyContext, LockBodyProps } from '../types';
 
-/* eslint-disable react/prefer-stateless-function */
-export default class LockBody extends React.Component {
+export default class LockBody extends React.Component<LockBodyProps> {
     static propTypes = {
         ...FixedBody.propTypes,
     };
@@ -16,11 +16,13 @@ export default class LockBody extends React.Component {
         lockType: PropTypes.oneOf(['left', 'right']),
     };
 
+    readonly context: LockBodyContext;
+
     componentDidMount() {
-        this.context.getLockNode('body', findDOMNode(this), this.context.lockType);
+        this.context.getLockNode('body', findDOMNode(this) as HTMLElement, this.context.lockType);
     }
 
-    onBodyScroll = event => {
+    onBodyScroll = (event: UIEvent) => {
         this.context.onLockBodyScroll(event);
     };
 

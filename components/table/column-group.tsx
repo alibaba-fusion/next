@@ -1,10 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-/**
- * Table.ColumnGroup
- * @order 1
- **/
 export default class ColumnGroup extends React.Component {
     static propTypes = {
         /**
@@ -25,7 +21,7 @@ export default class ColumnGroup extends React.Component {
 
     getChildContext() {
         return {
-            parent: this,
+            parent: this as InstanceType<typeof ColumnGroup>,
         };
     }
 

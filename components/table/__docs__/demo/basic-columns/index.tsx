@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Table } from '@alifd/next';
+import type { ColumnProps } from '@alifd/next/types/table';
 
 const dataSource = () => {
     const result = [];
@@ -13,8 +14,8 @@ const dataSource = () => {
     }
     return result;
 };
-const render = (value, index, record) => {
-    return <a href="javascript:;">Remove({record.id})</a>;
+const render: ColumnProps['cell'] = (value, index, record) => {
+    return <a href="javascript:;">Remove({record!.id})</a>;
 };
 
 const columns = [

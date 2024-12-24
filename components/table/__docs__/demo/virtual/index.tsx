@@ -1,8 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Table } from '@alifd/next';
+import type { ColumnProps, TableProps } from '@alifd/next/types/table';
 
-const dataSource = j => {
+const dataSource = (j: number) => {
     const result = [];
     for (let i = 0; i < j; i++) {
         result.push({
@@ -14,7 +15,7 @@ const dataSource = j => {
     }
     return result;
 };
-const render = (value, index, record) => {
+const render: ColumnProps['cell'] = (value, index, record) => {
     return <a>Remove({record.id})</a>;
 };
 
@@ -22,7 +23,7 @@ class App extends React.Component {
     state = {
         scrollToRow: 20,
     };
-    onBodyScroll = start => {
+    onBodyScroll: TableProps['onBodyScroll'] = start => {
         this.setState({
             scrollToRow: start,
         });

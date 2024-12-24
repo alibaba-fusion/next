@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { type MouseEvent } from 'react';
 import T from 'prop-types';
 import { events, dom } from '../../util';
+import type { ResizeProps } from '../types';
 
-class Resize extends React.Component {
+class Resize extends React.Component<ResizeProps> {
     static propTypes = {
         prefix: T.string,
         rtl: T.bool,
@@ -15,8 +16,22 @@ class Resize extends React.Component {
         hasLock: T.bool,
         asyncResizable: T.bool,
     };
-    constructor() {
-        super();
+
+    static defaultProps = {
+        onChange: () => {},
+    };
+
+    cellMinWidth: number;
+    lastPageX: number;
+    tRight: number;
+    tLeft: number;
+    cellLeft: number;
+    startLeft: number;
+    changedPageX: number;
+    asyncResizeFlag: boolean;
+
+    constructor(props: ResizeProps) {
+        super(props);
 
         this.cellMinWidth = 40;
 
@@ -29,18 +44,16 @@ class Resize extends React.Component {
 
         this.asyncResizeFlag = false;
     }
-    static defaultProps = {
-        onChange: () => {},
-    };
+
     componentWillUnmount() {
         this.destory();
     }
     showResizeProxy = () => {
-        this.props.resizeProxyDomRef.style.cssText = `display:block;left:${this.startLeft}px;`;
+        this.props.resizeProxyDomRef!.style.cssText = `display:block;left:${this.startLeft}px;`;
     };
     moveResizeProxy = () => {
         const moveLeft = this.startLeft + this.changedPageX;
-        this.props.resizeProxyDomRef.style.cssText = `left:${moveLeft}px;display:block;`;
+        this.props.resizeProxyDomRef!.style.cssText = `left:${moveLeft}px;display:block;`;
     };
     resetResizeProxy = () => {
         // when the mouse was not moved,don't change cell width
@@ -50,7 +63,7 @@ class Resize extends React.Component {
         this.changedPageX = 0;
         this.tRight = 0;
         this.asyncResizeFlag = false;
-        this.props.resizeProxyDomRef.style.cssText = `display:none;`;
+        this.props.resizeProxyDomRef!.style.cssText = `display:none;`;
     };
     movingLimit = () => {
         // table right limit
@@ -70,12 +83,14 @@ class Resize extends React.Component {
             this.changedPageX = 0 - this.startLeft;
         }
 
+        // @ts-expect-error width 在这里不能是 string，否则计算会有问题
         if (this.props.col.width + this.changedPageX < this.cellMinWidth) {
+            // @ts-expect-error width 在这里不能是 string，否则计算会有问题
             this.changedPageX = this.cellMinWidth - this.props.col.width;
         }
     };
-    onMouseDown = e => {
-        const { left: tableLeft, width: tableWidth } = this.props.tableEl.getBoundingClientRect();
+    onMouseDown = (e: MouseEvent) => {
+        const { left: tableLeft, width: tableWidth } = this.props.tableEl!.getBoundingClientRect();
         if (!this.props.cellDomRef || !this.props.cellDomRef.current) {
             return;
         }
@@ -91,7 +106,7 @@ class Resize extends React.Component {
         events.on(document, 'mouseup', this.onMouseUp);
         this.unSelect();
     };
-    onMouseMove = e => {
+    onMouseMove = (e: MouseEvent) => {
         const pageX = e.pageX;
         this.changedPageX = pageX - this.lastPageX;
 
@@ -103,7 +118,7 @@ class Resize extends React.Component {
             if (!this.props.asyncResizable) {
                 // when hasn't lock attribute, cellLeft will change
                 this.cellLeft =
-                    this.props.cellDomRef.current.getBoundingClientRect().left - this.tLeft;
+                    this.props.cellDomRef.current!.getBoundingClientRect().left - this.tLeft;
             }
         }
         this.movingLimit();

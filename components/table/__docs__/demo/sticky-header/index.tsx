@@ -1,9 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Table, Button, Select, Box } from '@alifd/next';
+import type { ColumnProps } from '@alifd/next/types/table';
 
 const Option = Select.Option;
-const dataSource = length => {
+const dataSource = (length: number) => {
     const result = [];
     for (let i = 0; i < length; i++) {
         result.push({
@@ -15,10 +16,10 @@ const dataSource = length => {
     return result;
 };
 
-const render = (value, index, record) => {
+const render: ColumnProps['cell'] = (value, index, record) => {
     return (
         <Select
-            popupContainer={node => node.parentNode}
+            popupContainer={node => node.parentNode as HTMLElement}
             popupProps={{ autoFit: true }}
             defaultValue="jack"
             aria-label="name is"
@@ -66,12 +67,7 @@ class App extends React.Component {
                         fixedHeader
                         stickyHeader
                     >
-                        <Table.Column
-                            title="Id"
-                            dataIndex="id"
-                            width={200}
-                            lock={this.state.lock}
-                        />
+                        <Table.Column title="Id" dataIndex="id" width={200} />
                         <Table.Column title="Title" dataIndex="title.name" width={200} />
                         <Table.Column title="Time" dataIndex="time" width={200} />
                         <Table.Column title="test" cell={render} width={200} />

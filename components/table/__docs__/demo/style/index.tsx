@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Table, Button, Box } from '@alifd/next';
+import { Table, Button } from '@alifd/next';
+import type { ColumnProps } from '@alifd/next/types/table';
 
 const dataSource = () => {
         const result = [];
@@ -13,19 +14,23 @@ const dataSource = () => {
         }
         return result;
     },
-    render = (value, index, record) => {
+    render: ColumnProps['cell'] = (value, index, record) => {
         return <a>Remove({record.id})</a>;
     };
-
-class App extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            dataSource: dataSource(),
-            className: '',
-            align: 'left',
-        };
-    }
+type AppState = {
+    dataSource: ReturnType<typeof dataSource>;
+    className: string;
+    align: 'left' | 'right';
+    wordBreak?: 'word' | 'all';
+    isZebra?: boolean;
+    hasBorder?: boolean;
+};
+class App extends React.Component<object, AppState> {
+    state: AppState = {
+        dataSource: dataSource(),
+        className: '',
+        align: 'left' as const,
+    };
     toggleZebra() {
         this.setState({
             isZebra: !this.state.isZebra,

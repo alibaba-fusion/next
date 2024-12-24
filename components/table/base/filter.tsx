@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { type Key, type ReactNode, type KeyboardEvent } from 'react';
 import PropTypes from 'prop-types';
 import { polyfill } from 'react-lifecycles-compat';
 import classnames from 'classnames';
@@ -7,9 +7,10 @@ import Menu from '../../menu';
 import Button from '../../button';
 import Icon from '../../icon';
 import { KEYCODE } from '../../util';
+import type { FilterItem, FilterProps, FilterState } from '../types';
 
 // 共享状态的组件需要变成非受控组件
-class Filter extends React.Component {
+class Filter extends React.Component<FilterProps, FilterState> {
     static propTypes = {
         dataIndex: PropTypes.string,
         filters: PropTypes.array,
@@ -26,11 +27,12 @@ class Filter extends React.Component {
     static defaultProps = {
         onFilter: () => {},
     };
+    _selectedKeys: string[];
 
-    constructor(props) {
+    constructor(props: FilterProps) {
         super(props);
         const filterParams = props.filterParams || {};
-        const filterConfig = filterParams[props.dataIndex] || {};
+        const filterConfig = filterParams[props.dataIndex!] || {};
         this.state = {
             visible: filterConfig.visible || false,
             selectedKeys: filterConfig.selectedKeys || [],
@@ -39,12 +41,13 @@ class Filter extends React.Component {
         this._selectedKeys = [...this.state.selectedKeys];
     }
 
-    static getDerivedStateFromProps(nextProps, prevState) {
-        const state = {};
+    static getDerivedStateFromProps(nextProps: FilterProps, prevState: FilterState) {
+        const state: Partial<FilterState> = {};
         if (
             nextProps.hasOwnProperty('filterParams') &&
             typeof nextProps.filterParams !== 'undefined'
         ) {
+            // @ts-expect-error getDerivedStateFromProps 是类方法，这里不应该使用 this
             const dataIndex = nextProps.dataIndex || this.props.dataIndex;
             const filterParams = nextProps.filterParams || {};
             const filterConfig = filterParams[dataIndex] || {};
@@ -62,12 +65,12 @@ class Filter extends React.Component {
         return state;
     }
 
-    componentDidUpdate(prevProps, prevState) {
+    componentDidUpdate(prevProps: FilterProps, prevState: FilterState) {
         const { selectedKeys } = prevState;
         this._selectedKeys = [...selectedKeys];
     }
 
-    filterKeydown = e => {
+    filterKeydown = (e: KeyboardEvent) => {
         e.preventDefault();
         e.stopPropagation();
 
@@ -78,7 +81,7 @@ class Filter extends React.Component {
         }
     };
 
-    onFilterVisible = visible => {
+    onFilterVisible = (visible: boolean) => {
         this.setState({
             visible,
         });
@@ -93,7 +96,7 @@ class Filter extends React.Component {
         }
     };
 
-    onFilterSelect = selectedKeys => {
+    onFilterSelect = (selectedKeys: string[]) => {
         this.setState({
             visible: true,
             selectedKeysChangedByInner: true,
@@ -103,10 +106,15 @@ class Filter extends React.Component {
 
     onFilterConfirm = () => {
         const selectedKeys = this.state.selectedKeys;
-        const filterParams = {},
+        const filterParams = {} as {
+                [key: string]: {
+                    visible: boolean;
+                    selectedKeys: string[];
+                };
+            },
             { dataIndex } = this.props;
 
-        filterParams[dataIndex] = {
+        filterParams[dataIndex!] = {
             visible: false,
             selectedKeys: selectedKeys,
         };
@@ -116,14 +124,19 @@ class Filter extends React.Component {
             selectedKeysChangedByInner: true,
         });
         // 兼容之前的格式
-        this.props.onFilter(filterParams);
+        this.props.onFilter!(filterParams);
     };
 
     onFilterClear = () => {
-        const filterParams = {},
+        const filterParams = {} as {
+                [key: string]: {
+                    visible: boolean;
+                    selectedKeys: string[];
+                };
+            },
             { dataIndex } = this.props;
 
-        filterParams[dataIndex] = {
+        filterParams[dataIndex!] = {
             visible: false,
             selectedKeys: [],
         };
@@ -134,7 +147,7 @@ class Filter extends React.Component {
             selectedKeysChangedByInner: true,
         });
         // 兼容之前的格式
-        this.props.onFilter(filterParams);
+        this.props.onFilter!(filterParams);
     };
 
     render() {
@@ -155,23 +168,27 @@ class Filter extends React.Component {
         const { visible, selectedKeys } = this.state;
         const { subMenuSelectable, ...others } = filterMenuProps || {};
 
-        function renderMenuItem(item) {
+        function renderMenuItem(item: { value: Key; label: ReactNode }) {
             return <Menu.Item key={item.value}>{item.label}</Menu.Item>;
         }
 
-        function renderSubMenu(parent, children) {
+        function renderSubMenu(parent: { value: Key; label: ReactNode }, children: FilterItem[]) {
             return (
                 <Menu.SubMenu
                     label={parent.label}
                     key={parent.value}
                     selectable={subMenuSelectable}
                 >
-                    {renderMenuContent(children)}
+                    {
+                        // renderSubMenu 和 renderMenuContent 存在互相调用的问题，谁排在前面都不合适
+                        // eslint-disable-next-line @typescript-eslint/no-use-before-define
+                        renderMenuContent(children)
+                    }
                 </Menu.SubMenu>
             );
         }
 
-        function renderMenuContent(list) {
+        function renderMenuContent(list: FilterItem[]) {
             return list.map(item => {
                 if (item.children) {
                     return renderSubMenu(item, item.children);
@@ -181,19 +198,19 @@ class Filter extends React.Component {
             });
         }
 
-        const content = renderMenuContent(filters),
+        const content = renderMenuContent(filters!),
             footer = (
                 <div className={`${prefix}table-filter-footer`}>
                     <Button type="primary" onClick={this.onFilterConfirm}>
-                        {locale.ok}
+                        {locale!.ok}
                     </Button>
-                    <Button onClick={this.onFilterClear}>{locale.reset}</Button>
+                    <Button onClick={this.onFilterClear}>{locale!.reset}</Button>
                 </div>
             );
 
         const cls = classnames({
             [`${prefix}table-filter`]: true,
-            [className]: className,
+            [className!]: className,
         });
 
         const filterIconCls = classnames({
@@ -205,9 +222,9 @@ class Filter extends React.Component {
                 trigger={
                     <span
                         role="button"
-                        aria-label={locale.filter}
+                        aria-label={locale!.filter}
                         onKeyDown={this.filterKeydown}
-                        tabIndex="0"
+                        tabIndex={0}
                         className={cls}
                     >
                         <Icon type="filter" size="small" className={filterIconCls} />

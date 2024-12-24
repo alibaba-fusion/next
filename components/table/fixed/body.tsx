@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { type CSSProperties, type UIEvent } from 'react';
 import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
 import BodyComponent from '../base/body';
+import type { FixedBodyContext, FixedBodyProps } from '../types';
 
-/* eslint-disable react/prefer-stateless-function */
-export default class FixedBody extends React.Component {
+export default class FixedBody extends React.Component<FixedBodyProps> {
     static propTypes = {
         children: PropTypes.any,
         prefix: PropTypes.string,
@@ -21,12 +21,14 @@ export default class FixedBody extends React.Component {
         getNode: PropTypes.func,
     };
 
+    context: FixedBodyContext;
+
     componentDidMount() {
         const { getNode } = this.context;
-        getNode && getNode('body', findDOMNode(this));
+        getNode && getNode('body', findDOMNode(this) as HTMLElement);
     }
 
-    onBodyScroll = event => {
+    onBodyScroll = (event: UIEvent) => {
         const { onFixedScrollSync } = this.context;
         // sync scroll left to header
         onFixedScrollSync && onFixedScrollSync(event);
@@ -38,10 +40,9 @@ export default class FixedBody extends React.Component {
     };
 
     render() {
-        /*eslint-disable no-unused-vars */
         const { className, colGroup, onLockScroll, tableWidth, ...others } = this.props;
         const { maxBodyHeight, fixedHeader } = this.context;
-        const style = {};
+        const style: CSSProperties = {};
         if (fixedHeader) {
             style.maxHeight = maxBodyHeight;
             style.position = 'relative';

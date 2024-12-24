@@ -1,10 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Table, Button } from '@alifd/next';
+import type { ColumnProps, TableProps } from '@alifd/next/types/table';
 
 const noop = () => {};
 
-const dataSource = j => {
+const dataSource = (j: number) => {
     const result = [];
     for (let i = 0; i < j; i++) {
         result.push({
@@ -17,7 +18,7 @@ const dataSource = j => {
     return result;
 };
 
-const render = (value, index, record) => {
+const render: ColumnProps['cell'] = (value, index, record) => {
     return <a>remove({record.id})</a>;
 };
 
@@ -29,20 +30,19 @@ class App extends React.Component {
     };
 
     componentDidMount = () => {
-        console.log('componentDidMount');
         setTimeout(() => {
             this.setState({
                 dataSource: dataSource(200),
             });
         }, 1000);
     };
-    onBodyScroll = start => {
+    onBodyScroll: TableProps['onBodyScroll'] = start => {
         this.setState({
             scrollToRow: start,
         });
     };
 
-    onBodyScroll2 = start => {
+    onBodyScroll2: TableProps['onBodyScroll'] = start => {
         this.setState({
             scrollToRow2: start,
         });
@@ -65,7 +65,7 @@ class App extends React.Component {
     render() {
         return (
             <div>
-                <div>{`keepForwardRenderRows < rowSpan的值时，滚动到第12行后行合并会失效`}</div>
+                <div>{`keepForwardRenderRows < rowSpan 的值时，滚动到第 12 行后行合并会失效`}</div>
                 <Table
                     className="inventory-table"
                     dataSource={this.state.dataSource}
@@ -74,7 +74,7 @@ class App extends React.Component {
                     keepForwardRenderRows={12}
                     scrollToRow={this.state.scrollToRow}
                     onBodyScroll={this.onBodyScroll}
-                    cellProps={(rowIndex, colIndex) => {
+                    cellProps={(rowIndex: number, colIndex) => {
                         if ([0, 17, 34].includes(rowIndex) && colIndex === 0) {
                             return {
                                 rowSpan: 17,
@@ -89,7 +89,7 @@ class App extends React.Component {
                     <Table.Column title="add" dataIndex="add" cell={this.renderCell} width={200} />
                 </Table>
                 <br />
-                <div>{`keepForwardRenderRows >= rowSpan的值时，滚动到第12行后行合并不会失效`}</div>
+                <div>{`keepForwardRenderRows >= rowSpan 的值时，滚动到第 12 行后行合并不会失效`}</div>
                 <Table
                     className="inventory-table"
                     dataSource={this.state.dataSource}
@@ -98,7 +98,7 @@ class App extends React.Component {
                     keepForwardRenderRows={17}
                     scrollToRow={this.state.scrollToRow2}
                     onBodyScroll={this.onBodyScroll2}
-                    cellProps={(rowIndex, colIndex) => {
+                    cellProps={(rowIndex: number, colIndex) => {
                         if ([0, 17, 34].includes(rowIndex) && colIndex === 0) {
                             return {
                                 rowSpan: 17,

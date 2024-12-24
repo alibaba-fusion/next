@@ -1,8 +1,10 @@
+/* eslint-disable react/prop-types */
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Table } from '@alifd/next';
 import PropTypes from 'prop-types';
-/* eslint-disable react/no-multi-comp,react/prop-types */
+import type { TableProps } from '@alifd/next/types/table';
+
 const { Header, Cell } = Table;
 const dataSource = () => {
     const result = [];
@@ -16,10 +18,10 @@ const dataSource = () => {
     return result;
 };
 
-const AppHeader = (props, context) => {
+const AppHeader: NonNullable<TableProps['components']>['Header'] = (props, context) => {
     const { columns } = props;
     const { onChange } = context;
-    const length = columns[columns.length - 1].length;
+    const length = columns![columns!.length - 1].length;
     return (
         <Header {...props}>
             <tr>
@@ -48,20 +50,22 @@ class App extends React.Component {
     state = {
         selectedKeys: [],
     };
+    dataSource = dataSource();
+
     getChildContext() {
         return {
             onChange: this.onChange,
         };
     }
-    dataSource = dataSource();
-    onChange = checked => {
-        let selectedKeys = [];
+
+    onChange: NonNullable<TableProps['rowSelection']>['onChange'] = checked => {
+        let selectedKeys: number[] = [];
         if (checked) {
             selectedKeys = this.dataSource.map(item => item.id);
         }
         this.onRowChange(selectedKeys);
     };
-    onRowChange = selectedKeys => {
+    onRowChange = (selectedKeys: number[]) => {
         this.setState({
             selectedKeys,
         });

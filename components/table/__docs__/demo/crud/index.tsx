@@ -1,8 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Table, Button } from '@alifd/next';
+import type { ColumnProps, TableProps } from '@alifd/next/types/table';
 
-const onRowClick = function (record, index, e) {
+const onRowClick: TableProps['onRowClick'] = function (record, index, e) {
         console.log(record, index, e);
     },
     dataSource = () => {
@@ -35,7 +36,7 @@ class App extends React.Component {
         });
     };
 
-    onRemove = id => {
+    onRemove = (id: number) => {
         const { dataSource } = this.state;
         let index = -1;
         dataSource.forEach((item, i) => {
@@ -52,7 +53,7 @@ class App extends React.Component {
     };
 
     render() {
-        const renderOper = (value, index, record) => {
+        const renderOper: ColumnProps['cell'] = (value, index, record) => {
             return <a onClick={this.onRemove.bind(this, record.id)}>Remove({record.id})</a>;
         };
         return (

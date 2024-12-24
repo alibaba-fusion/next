@@ -1,4 +1,4 @@
-import React, { Children } from 'react';
+import React, { Children, type ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import ListHeader from './list-header';
@@ -8,9 +8,18 @@ import BodyComponent from './list/body';
 import HeaderComponent from './fixed/header';
 import WrapperComponent from './fixed/wrapper';
 import { statics } from './util';
+import type Base from './base';
+import type {
+    GroupFooterProps,
+    GroupHeaderProps,
+    ListTableProps,
+    RecordItem,
+    RowLike,
+    WrapperLike,
+} from './types';
 
-export default function list(BaseComponent) {
-    class ListTable extends React.Component {
+export default function list(BaseComponent: typeof Base) {
+    class ListTable extends React.Component<ListTableProps> {
         static ListHeader = ListHeader;
         static ListFooter = ListFooter;
         static ListRow = RowComponent;
@@ -29,6 +38,10 @@ export default function list(BaseComponent) {
         };
 
         state = {};
+        listHeader: GroupHeaderProps;
+        listFooter: GroupFooterProps;
+        rowSelection: ListTableProps['rowSelection'];
+        ds: RecordItem[];
 
         getChildContext() {
             return {
@@ -38,9 +51,9 @@ export default function list(BaseComponent) {
             };
         }
 
-        normalizeDataSource(dataSource) {
-            const ret = [];
-            const loop = function (dataSource, level) {
+        normalizeDataSource(dataSource: RecordItem[]) {
+            const ret: RecordItem[] = [];
+            const loop = function (dataSource: RecordItem[], level: number) {
                 dataSource.forEach(item => {
                     const itemCopy = { ...item };
                     itemCopy.__level = level;
@@ -56,36 +69,39 @@ export default function list(BaseComponent) {
         }
 
         render() {
-            /* eslint-disable prefer-const */
-            let { components, children, className, prefix, ...others } = this.props;
-            let isList = false,
-                ret = [];
-            Children.forEach(children, child => {
-                if (child) {
-                    if (['function', 'object'].indexOf(typeof child.type) > -1) {
-                        if (child.type._typeMark === 'listHeader') {
-                            this.listHeader = child.props;
-                            isList = true;
-                        } else if (child.type._typeMark === 'listFooter') {
-                            this.listFooter = child.props;
+            const { children, prefix, ...others } = this.props;
+            let { components, className } = this.props;
+            let isList = false;
+            const ret: ReactElement[] = [];
+            Children.forEach(
+                children,
+                (child: ReactElement<unknown, typeof ListHeader | typeof ListFooter>) => {
+                    if (child) {
+                        if (['function', 'object'].indexOf(typeof child.type) > -1) {
+                            if (child.type._typeMark === 'listHeader') {
+                                this.listHeader = child.props as GroupHeaderProps;
+                                isList = true;
+                            } else if (child.type._typeMark === 'listFooter') {
+                                this.listFooter = child.props as GroupFooterProps;
+                            } else {
+                                ret.push(child);
+                            }
                         } else {
                             ret.push(child);
                         }
-                    } else {
-                        ret.push(child);
                     }
                 }
-            });
+            );
             this.rowSelection = this.props.rowSelection;
             if (isList) {
                 components = { ...components };
-                components.Row = components.Row || RowComponent;
+                components.Row = components.Row || (RowComponent as RowLike);
                 components.Body = components.Body || BodyComponent;
                 components.Header = components.Header || HeaderComponent;
-                components.Wrapper = components.Wrapper || WrapperComponent;
+                components.Wrapper = components.Wrapper || (WrapperComponent as WrapperLike);
                 className = classnames({
                     [`${prefix}table-group`]: true,
-                    [className]: className,
+                    [className!]: className,
                 });
             }
             return (
@@ -99,6 +115,5 @@ export default function list(BaseComponent) {
             );
         }
     }
-    statics(ListTable, BaseComponent);
-    return ListTable;
+    return statics(ListTable, BaseComponent);
 }

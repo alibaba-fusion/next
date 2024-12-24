@@ -1,9 +1,19 @@
-import React from 'react';
+import React, { type CSSProperties } from 'react';
 import ReactDOM from 'react-dom';
 import { Table, Button } from '@alifd/next';
-/*eslint-disable react/prop-types, react/no-multi-comp*/
-class ExpandedApp extends React.Component {
-    constructor(props) {
+import type { ColumnProps, RecordItem, TableProps } from '@alifd/next/types/table';
+
+type ExpandedAppProps = {
+    dataSource: NonNullable<TableProps['dataSource']>;
+    index: number;
+};
+class ExpandedApp extends React.Component<
+    ExpandedAppProps,
+    {
+        dataSource: NonNullable<TableProps['dataSource']>;
+    }
+> {
+    constructor(props: ExpandedAppProps) {
         super(props);
         this.state = {
             dataSource: this.props.dataSource,
@@ -15,7 +25,7 @@ class ExpandedApp extends React.Component {
         this.setState({ dataSource });
     }
     render() {
-        const style = {
+        const style: CSSProperties = {
             borderTop: '1px solid #eee',
             textAlign: 'center',
             background: '#f8f8f8',
@@ -56,24 +66,28 @@ const dataSource = () => {
         }
         return result;
     },
-    render = (value, index, record) => {
+    render: ColumnProps['cell'] = (value, index, record) => {
         return <a>Remove({record.id})</a>;
     },
-    expandedRowRender = (record, index) => {
+    expandedRowRender: TableProps['expandedRowRender'] = (record, index) => {
         const children = record.children;
-        return <ExpandedApp dataSource={children} index={index} />;
+        return <ExpandedApp dataSource={children!} index={index} />;
     };
 
 class App extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            dataSource: dataSource(),
-            hasBorder: false,
-            openRowKeys: [],
-        };
-    }
-    onSort(dataIndex, order) {
+    state: {
+        dataSource: ReturnType<typeof dataSource>;
+        hasBorder: boolean;
+        openRowKeys: number[];
+        getExpandedColProps?: TableProps['getExpandedColProps'];
+        hasExpandedRowCtrl?: TableProps['hasExpandedRowCtrl'];
+    } = {
+        dataSource: dataSource(),
+        hasBorder: false,
+        openRowKeys: [],
+        getExpandedColProps: undefined,
+    };
+    onSort: TableProps['onSort'] = (dataIndex: 'id', order) => {
         const dataSource = this.state.dataSource.sort(function (a, b) {
             const result = a[dataIndex] - b[dataIndex];
             return order === 'asc' ? (result > 0 ? 1 : -1) : result > 0 ? -1 : 1;
@@ -81,10 +95,10 @@ class App extends React.Component {
         this.setState({
             dataSource,
         });
-    }
+    };
     disabledExpandedCol() {
         this.setState({
-            getExpandedColProps: (record, index) => {
+            getExpandedColProps: (record: RecordItem, index: number) => {
                 console.log(index);
                 if (index === 3) {
                     return {
@@ -99,11 +113,11 @@ class App extends React.Component {
             hasExpandedRowCtrl: false,
         });
     }
-    onRowOpen(openRowKeys) {
+    onRowOpen: TableProps['onRowOpen'] = openRowKeys => {
         this.setState({ openRowKeys });
-    }
-    toggleExpand(record) {
-        const key = record.id,
+    };
+    toggleExpand(record: RecordItem) {
+        const key = record.id as number,
             { openRowKeys } = this.state,
             index = openRowKeys.indexOf(key);
         if (index > -1) {
@@ -115,12 +129,11 @@ class App extends React.Component {
             openRowKeys: openRowKeys,
         });
     }
-    rowProps(record, index) {
-        console.log('rowProps', record, index);
+    rowProps: TableProps['rowProps'] = (record, index) => {
         return { className: `next-myclass-${index}` };
-    }
+    };
     render() {
-        const renderTitle = (value, index, record) => {
+        const renderTitle: ColumnProps['cell'] = (value, index, record) => {
             return (
                 <div>
                     {value}
@@ -142,16 +155,15 @@ class App extends React.Component {
                 <Table
                     dataSource={this.state.dataSource}
                     expandedIndexSimulate
-                    isZebra={this.state.isZebra}
                     hasBorder={this.state.hasBorder}
-                    onSort={this.onSort.bind(this)}
+                    onSort={this.onSort}
                     expandedRowRender={expandedRowRender}
                     expandedRowIndent={[1, 1]}
                     openRowKeys={this.state.openRowKeys}
                     getExpandedColProps={this.state.getExpandedColProps}
                     hasExpandedRowCtrl={this.state.hasExpandedRowCtrl}
-                    onRowOpen={this.onRowOpen.bind(this)}
-                    rowProps={this.rowProps.bind(this)}
+                    onRowOpen={this.onRowOpen}
+                    rowProps={this.rowProps}
                 >
                     <Table.Column title="Id" dataIndex="id" sortable />
                     <Table.Column title="Title" dataIndex="title" cell={renderTitle} />

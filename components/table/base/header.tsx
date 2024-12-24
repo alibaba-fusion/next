@@ -5,9 +5,14 @@ import FilterComponent from './filter';
 import SortComponent from './sort';
 import CellComponent from './cell';
 import ResizeComponent from './resize';
+import type { CellLike, CellProps, HeaderProps, SortProps } from '../types';
+import { type ClassPropsWithDefault } from '../../util';
 
 const noop = () => {};
-export default class Header extends React.Component {
+
+type InnerHeaderProps = ClassPropsWithDefault<HeaderProps, typeof Header.defaultProps>;
+
+export default class Header extends React.Component<HeaderProps> {
     static propTypes = {
         children: PropTypes.any,
         prefix: PropTypes.string,
@@ -37,11 +42,16 @@ export default class Header extends React.Component {
         onSort: noop,
         onResizeChange: noop,
     };
-    constructor() {
-        super();
+    hasLock: boolean;
+    readonly props: InnerHeaderProps;
+
+    constructor(props: HeaderProps) {
+        super(props);
 
         this.hasLock = false;
     }
+
+    [cellKey: `header_cell_${number}_${number}`]: { current?: HTMLElement };
 
     checkHasLock = () => {
         const { columns } = this.props;
@@ -62,7 +72,7 @@ export default class Header extends React.Component {
         this.hasLock = hasLock;
     };
 
-    getCellRef = (i, j, cell) => {
+    getCellRef = (i: number, j: number, cell: InstanceType<CellLike>) => {
         this.props.headerCellRef(i, j, cell);
 
         const { columns } = this.props;
@@ -72,7 +82,7 @@ export default class Header extends React.Component {
         }
     };
 
-    createCellDomRef = (i, j) => {
+    createCellDomRef = (i: number, j: number) => {
         const cellRefKey = this.getCellDomRefKey(i, j);
         if (!this[cellRefKey]) {
             this[cellRefKey] = {};
@@ -81,7 +91,7 @@ export default class Header extends React.Component {
         return this[cellRefKey];
     };
 
-    getCellDomRef = (cellRef, cellDom) => {
+    getCellDomRef = (cellRef: { current?: CellLike }, cellDom: CellLike) => {
         if (!cellRef) {
             return;
         }
@@ -89,16 +99,15 @@ export default class Header extends React.Component {
         cellRef.current = cellDom;
     };
 
-    getCellDomRefKey = (i, j) => {
-        return `header_cell_${i}_${j}`;
+    getCellDomRefKey = (i: number, j: number) => {
+        return `header_cell_${i}_${j}` as const;
     };
 
-    onSort = (dataIndex, order, sort) => {
+    onSort: SortProps['onSort'] = (dataIndex, order, sort) => {
         this.props.onSort(dataIndex, order, sort);
     };
 
     render() {
-        /*eslint-disable no-unused-vars */
         const {
             prefix,
             className,
@@ -137,8 +146,7 @@ export default class Header extends React.Component {
         const header = columns.map((cols, index) => {
             const col = cols.map((col, j) => {
                 const cellRef = this.createCellDomRef(index, j);
-                /* eslint-disable no-unused-vars, prefer-const */
-                let {
+                const {
                     title,
                     colSpan,
                     sortable,
@@ -153,7 +161,6 @@ export default class Header extends React.Component {
                     width,
                     align,
                     alignHeader,
-                    className,
                     __normalized,
                     lock,
                     cellStyle,
@@ -161,22 +168,23 @@ export default class Header extends React.Component {
                     ...others
                 } = col;
 
-                const order = sort ? sort[dataIndex] : '';
+                let { className } = col;
+
+                const order = sort ? sort[dataIndex!] : '';
                 className = classnames({
                     [`${prefix}table-header-node`]: true,
                     [`${prefix}table-header-resizable`]: resizable || asyncResizable,
                     [`${prefix}table-word-break-${wordBreak}`]: !!wordBreak,
                     [`${prefix}table-header-sort-${order}`]: sortable && order,
-                    [className]: className,
+                    [className!]: className,
                 });
-                let attrs = {},
-                    sortElement,
-                    filterElement,
-                    resizeElement;
+                let sortElement, filterElement, resizeElement;
+                const attrs: Partial<CellProps> = {};
 
                 attrs.colSpan = colSpan;
 
                 // column.group doesn't have sort resize filter
+                // @ts-expect-error children 不一定有 length 属性
                 if (!(col.children && col.children.length)) {
                     if (sortable) {
                         sortElement = (
@@ -199,11 +207,11 @@ export default class Header extends React.Component {
                                 asyncResizable={asyncResizable}
                                 hasLock={this.hasLock}
                                 col={col}
-                                tableEl={tableEl}
+                                tableEl={tableEl!}
                                 prefix={prefix}
                                 rtl={rtl}
-                                dataIndex={dataIndex}
-                                resizeProxyDomRef={resizeProxyDomRef}
+                                dataIndex={dataIndex!}
+                                resizeProxyDomRef={resizeProxyDomRef!}
                                 cellDomRef={cellRef}
                                 onChange={onResizeChange}
                             />
@@ -213,7 +221,7 @@ export default class Header extends React.Component {
                     if (filters) {
                         filterElement = filters.length ? (
                             <Filter
-                                dataIndex={dataIndex}
+                                dataIndex={dataIndex!}
                                 className={`${prefix}table-header-icon`}
                                 filters={filters}
                                 prefix={prefix}
@@ -230,7 +238,7 @@ export default class Header extends React.Component {
                     attrs.rowSpan = rowSpan - index;
                 }
 
-                if (+attrs.colSpan === 0) {
+                if (+attrs.colSpan! === 0) {
                     return null;
                 }
 

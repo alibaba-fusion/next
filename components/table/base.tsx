@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { type MouseEvent, type ReactElement, type Ref } from 'react';
 import PropTypes from 'prop-types';
 import { findDOMNode } from 'react-dom';
 import classnames from 'classnames';
@@ -7,7 +7,7 @@ import { polyfill } from 'react-lifecycles-compat';
 import Loading from '../loading';
 import ConfigProvider from '../config-provider';
 import zhCN from '../locale/zh-cn';
-import { log, obj, dom } from '../util';
+import { log, obj, dom, type ClassPropsWithDefault } from '../util';
 import BodyComponent from './base/body';
 import HeaderComponent from './base/header';
 import WrapperComponent from './base/wrapper';
@@ -17,6 +17,20 @@ import FilterComponent from './base/filter';
 import SortComponent from './base/sort';
 import Column from './column';
 import ColumnGroup from './column-group';
+import type {
+    BaseTableContext,
+    BaseTableProps,
+    BaseTableState,
+    BodyProps,
+    CellLike,
+    ColumnProps,
+    HeaderProps,
+    NormalizedColumnProps,
+    RowLike,
+    TableChildProps,
+    WrapperLike,
+} from './types';
+import type Affix from '../affix';
 
 const Children = React.Children,
     noop = () => {};
@@ -29,8 +43,10 @@ const Children = React.Children,
 //    </Table.ColumnGroup>
 //</Table>
 
+type InnerBaseTableProps = ClassPropsWithDefault<BaseTableProps, typeof Table.defaultProps>;
+
 /** Table */
-class Table extends React.Component {
+class Table extends React.Component<BaseTableProps, BaseTableState> {
     static Column = Column;
     static ColumnGroup = ColumnGroup;
     static Header = HeaderComponent;
@@ -54,7 +70,7 @@ class Table extends React.Component {
          */
         tableLayout: PropTypes.oneOf(['fixed', 'auto']),
         /**
-         * 表格的总长度，可以这么用：设置表格总长度 、设置部分列的宽度，这样表格会按照剩余空间大小，自动其他列分配宽度
+         * 表格的总长度，可以这么用：设置表格总长度、设置部分列的宽度，这样表格会按照剩余空间大小，自动其他列分配宽度
          */
         tableWidth: PropTypes.number,
         /**
@@ -66,7 +82,7 @@ class Table extends React.Component {
          */
         style: PropTypes.object,
         /**
-         * 尺寸 small为紧凑模式
+         * 尺寸 small 为紧凑模式
          */
         size: PropTypes.oneOf(['small', 'medium']),
         /**
@@ -76,56 +92,56 @@ class Table extends React.Component {
         entireDataSource: PropTypes.array,
         /**
          * 点击表格每一行触发的事件
-         * @param {Object} record 该行所对应的数据
-         * @param {Number} index 该行所对应的序列
-         * @param {Event} e DOM事件对象
+         * @param record - 该行所对应的数据
+         * @param index - 该行所对应的序列
+         * @param e - DOM 事件对象
          */
         onRowClick: PropTypes.func,
         /**
          * 悬浮在表格每一行的时候触发的事件
-         * @param {Object} record 该行所对应的数据
-         * @param {Number} index 该行所对应的序列
-         * @param {Event} e DOM事件对象
+         * @param record - 该行所对应的数据
+         * @param index - 该行所对应的序列
+         * @param e - DOM 事件对象
          */
         onRowMouseEnter: PropTypes.func,
         /**
          * 离开表格每一行的时候触发的事件
-         * @param {Object} record 该行所对应的数据
-         * @param {Number} index 该行所对应的序列
-         * @param {Event} e DOM事件对象
+         * @param record - 该行所对应的数据
+         * @param index - 该行所对应的序列
+         * @param e - DOM 事件对象
          */
         onRowMouseLeave: PropTypes.func,
         /**
          * 点击列排序触发的事件
-         * @param {String} dataIndex 指定的排序的字段
-         * @param {String} order 排序对应的顺序, 有`desc`和`asc`两种
+         * @param dataIndex - 指定的排序的字段
+         * @param order - 排序对应的顺序，有`desc`和`asc`两种
          */
         onSort: PropTypes.func,
         /**
          * 点击过滤确认按钮触发的事件
-         * @param {Object} filterParams 过滤的字段信息
+         * @param filterParams - 过滤的字段信息
          */
         onFilter: PropTypes.func,
         /**
          * 重设列尺寸的时候触发的事件
-         * @param {String} dataIndex 指定重设的字段
-         * @param {Number} value 列宽变动的数值
+         * @param dataIndex - 指定重设的字段
+         * @param value - 列宽变动的数值
          */
         onResizeChange: PropTypes.func,
         /**
          * 设置每一行的属性，如果返回值和其他针对行操作的属性冲突则无效。
-         * @param {Object} record 该行所对应的数据
-         * @param {Number} index 该行所对应的序列
-         * @returns {Object} 需要设置的行属性
+         * @param record - 该行所对应的数据
+         * @param index - 该行所对应的序列
+         * @returns 需要设置的行属性
          */
         rowProps: PropTypes.func,
         /**
          * 设置单元格的属性，通过该属性可以进行合并单元格
-         * @param {Number} rowIndex 该行所对应的序列
-         * @param {Number} colIndex 该列所对应的序列
-         * @param {String} dataIndex 该列所对应的字段名称
-         * @param {Object} record 该行对应的记录
-         * @returns {Object} 返回td元素的所支持的属性对象
+         * @param rowIndex - 该行所对应的序列
+         * @param colIndex - 该列所对应的序列
+         * @param dataIndex - 该列所对应的字段名称
+         * @param record - 该行对应的记录
+         * @returns 返回 td 元素的所支持的属性对象
          */
         cellProps: PropTypes.func,
         /**
@@ -150,42 +166,42 @@ class Table extends React.Component {
         loading: PropTypes.bool,
         /**
          * 自定义 Loading 组件
-         * 请务必传递 props, 使用方式： loadingComponent={props => <Loading {...props}/>}
-         * @param {LoadingProps} props 需要透传给组件的参数
-         * @return {React.ReactNode} 展示的组件
+         * 请务必传递 props, 使用方式：loadingComponent=\{props =\> \<Loading \{...props\}/\>\}
+         * @param props - 需要透传给组件的参数
+         * @returns 展示的组件
          */
         loadingComponent: PropTypes.func,
         /**
-         * 当前过滤的的keys,使用此属性可以控制表格的头部的过滤选项中哪个菜单被选中,格式为 {dataIndex: {selectedKeys:[]}}
-         * 示例:
-         * 假设要控制dataIndex为id的列的过滤菜单中key为one的菜单项选中
+         * 当前过滤的的 keys，使用此属性可以控制表格的头部的过滤选项中哪个菜单被选中，格式为 \{dataIndex: \{selectedKeys:[]\}\}
+         * 示例：
+         * 假设要控制 dataIndex 为 id 的列的过滤菜单中 key 为 one 的菜单项选中
          * `<Table filterParams={{id: {selectedKeys: ['one']}}}/>`
          */
         filterParams: PropTypes.object,
         /**
-         * 当前排序的字段,使用此属性可以控制表格的字段的排序,格式为{[dataIndex]: 'asc' | 'desc' } , 例如  {id: 'desc'}
+         * 当前排序的字段，使用此属性可以控制表格的字段的排序，格式为\{[dataIndex]: 'asc' | 'desc' \} , 例如  \{id: 'desc'\}
          */
         sort: PropTypes.object,
         /**
-         * 自定义排序按钮，例如上下排布的: `{desc: <Icon style={{top: '6px', left: '4px'}} type={'arrow-down'} size="small" />, asc: <Icon style={{top: '-6px', left: '4px'}} type={'arrow-up'} size="small" />}`
+         * 自定义排序按钮，例如上下排布的：`{desc: <Icon style={{top: '6px', left: '4px'}} type={'arrow-down'} size="small" />, asc: <Icon style={{top: '-6px', left: '4px'}} type={'arrow-up'} size="small" />}`
          */
         sortIcons: PropTypes.object,
         /**
          * 自定义国际化文案对象
-         * @property {String} ok 过滤器中确认按钮文案
-         * @property {String} reset 过滤器中重置按钮文案
-         * @property {String} empty 没有数据情况下 table内的文案
-         * @property {String} asc 排序升序状态下的文案
-         * @property {String} desc 排序将序状态下的文案
-         * @property {String} expanded 可折叠行，展开状态下的文案
-         * @property {String} folded 可折叠行，折叠状态下的文案
-         * @property {String} filter 过滤器文案
-         * @property {String} selectAll header里全选的按钮文案
+         * ok 过滤器中确认按钮文案
+         * reset 过滤器中重置按钮文案
+         * empty 没有数据情况下 table 内的文案
+         * asc 排序升序状态下的文案
+         * desc 排序将序状态下的文案
+         * expanded 可折叠行，展开状态下的文案
+         * folded 可折叠行，折叠状态下的文案
+         * filter 过滤器文案
+         * selectAll header 里全选的按钮文案
          */
         locale: PropTypes.object,
         components: PropTypes.object,
         /**
-         * 等同于写子组件 Table.Column ，子组件优先级更高
+         * 等同于写子组件 Table.Column，子组件优先级更高
          */
         columns: PropTypes.array,
         /**
@@ -193,7 +209,7 @@ class Table extends React.Component {
          */
         emptyContent: PropTypes.node,
         /**
-         * dataSource当中数据的主键，如果给定的数据源中的属性不包含该主键，会造成选择状态全部选中
+         * dataSource 当中数据的主键，如果给定的数据源中的属性不包含该主键，会造成选择状态全部选中
          */
         primaryKey: PropTypes.oneOfType([PropTypes.symbol, PropTypes.string]),
         lockType: PropTypes.oneOf(['left', 'right']),
@@ -201,74 +217,74 @@ class Table extends React.Component {
         refs: PropTypes.object,
         /**
          * 额外渲染行的渲染函数
-         * @param {Object} record 该行所对应的数据
-         * @param {Number} index 该行所对应的序列
-         * @returns {Element} 渲染内容
+         * @param record - 该行所对应的数据
+         * @param index - 该行所对应的序列
+         * @returns 渲染内容
          */
         expandedRowRender: PropTypes.func,
         /**
          * 设置行是否可展开，设置 false 为不可展开
-         * @param {Object} record 该行所对应的数据
-         * @param {Number} index 该行所对应的序列
-         * @returns {Boolean} 是否可展开
+         * @param record - 该行所对应的数据
+         * @param index - 该行所对应的序列
+         * @returns 是否可展开
          */
         rowExpandable: PropTypes.func,
         /**
-         * 额外渲染行的缩进, 是个二维数组(eg:[1,1]) 分别表示左右两边的缩进
+         * 额外渲染行的缩进，是个二维数组 (eg:[1,1]) 分别表示左右两边的缩进
          */
         expandedRowIndent: PropTypes.array,
         /**
-         * 是否显示点击展开额外渲染行的+号按钮
+         * 是否显示点击展开额外渲染行的 + 号按钮
          */
         hasExpandedRowCtrl: PropTypes.bool,
         /**
          * 设置额外渲染行的属性
-         * @param {Object} record 该行所对应的数据
-         * @param {Number} index 该行所对应的序列
-         * @returns {Object} 额外渲染行的属性
+         * @param record - 该行所对应的数据
+         * @param index - 该行所对应的序列
+         * @returns 额外渲染行的属性
          */
         getExpandedColProps: PropTypes.func,
         /**
-         * 当前展开的 Expand行 或者 Tree行 , 传入此属性为受控状态，一般配合 onRowOpen 使用
+         * 当前展开的 Expand 行 或者 Tree 行 , 传入此属性为受控状态，一般配合 onRowOpen 使用
          */
         openRowKeys: PropTypes.array,
         /**
-         * 默认情况下展开的 Expand行 或者 Tree行，非受控模式
+         * 默认情况下展开的 Expand 行 或者 Tree 行，非受控模式
          * @version 1.23.22
          */
         defaultOpenRowKeys: PropTypes.array,
         /**
-         * 在 Expand行 或者 Tree行 展开或者收起的时候触发的事件
-         * @param {Array} openRowKeys 展开的渲染行的key
-         * @param {String} currentRowKey 当前点击的渲染行的key
-         * @param {Boolean} expanded 当前点击是展开还是收起
-         * @param {Object} currentRecord 当前点击额外渲染行的记录
+         * 在 Expand 行 或者 Tree 行 展开或者收起的时候触发的事件
+         * @param openRowKeys - 展开的渲染行的 key
+         * @param currentRowKey - 当前点击的渲染行的 key
+         * @param expanded - 当前点击是展开还是收起
+         * @param currentRecord - 当前点击额外渲染行的记录
          */
         onRowOpen: PropTypes.func,
         onExpandedRowClick: PropTypes.func,
         /**
-         * 表头是否固定，该属性配合maxBodyHeight使用，当内容区域的高度超过maxBodyHeight的时候，在内容区域会出现滚动条
+         * 表头是否固定，该属性配合 maxBodyHeight 使用，当内容区域的高度超过 maxBodyHeight 的时候，在内容区域会出现滚动条
          */
         fixedHeader: PropTypes.bool,
         /**
-         * 最大内容区域的高度,在`fixedHeader`为`true`的时候,超过这个高度会出现滚动条
+         * 最大内容区域的高度，在`fixedHeader`为`true`的时候，超过这个高度会出现滚动条
          */
         maxBodyHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
         /**
          * 是否启用选择模式
-         * @property {Function} getProps `Function(record, index)=>Object` 获取selection的默认属性
-         * @property {Function} onChange `Function(selectedRowKeys:Array, records:Array)` 选择改变的时候触发的事件，**注意:** 其中records只会包含当前dataSource的数据，很可能会小于selectedRowKeys的长度。
-         * @property {Function} onSelect `Function(selected:Boolean, record:Object, records:Array)` 用户手动选择/取消选择某行的回调
-         * @property {Function} onSelectAll `Function(selected:Boolean, records:Array)` 用户手动选择/取消选择所有行的回调
-         * @property {Array} selectedRowKeys 设置了此属性,将rowSelection变为受控状态,接收值为该行数据的primaryKey的值
-         * @property {String} mode 选择selection的模式, 可选值为`single`, `multiple`，默认为`multiple`
-         * @property {Function} columnProps `Function()=>Object` 选择列 的props，例如锁列、对齐等，可使用`Table.Column` 的所有参数
-         * @property {Function} titleProps `Function()=>Object` 选择列 表头的props，仅在 `multiple` 模式下生效
-         * @property {Function} titleAddons `Function()=>Node` 选择列 表头添加的元素，在`single` `multiple` 下都生效
+         * getProps `Function(record, index)=>Object` 获取 selection 的默认属性
+         * onChange `Function(selectedRowKeys:Array, records:Array)` 选择改变的时候触发的事件，**注意:** 其中 records 只会包含当前 dataSource 的数据，很可能会小于 selectedRowKeys 的长度。
+         * onSelect `Function(selected:Boolean, record:Object, records:Array)` 用户手动选择/取消选择某行的回调
+         * onSelectAll `Function(selected:Boolean, records:Array)` 用户手动选择/取消选择所有行的回调
+         * selectedRowKeys 设置了此属性，将 rowSelection 变为受控状态，接收值为该行数据的 primaryKey 的值
+         * mode 选择 selection 的模式，可选值为`single`, `multiple`，默认为`multiple`
+         * columnProps `Function()=>Object` 选择列 的 props，例如锁列、对齐等，可使用`Table.Column` 的所有参数
+         * titleProps `Function()=>Object` 选择列 表头的 props，仅在 `multiple` 模式下生效
+         * titleAddons `Function()=>Node` 选择列 表头添加的元素，在`single` `multiple` 下都生效
          */
         rowSelection: PropTypes.object,
         /**
-         * 表头是否是sticky
+         * 表头是否是 sticky
          */
         stickyHeader: PropTypes.bool,
         /**
@@ -276,15 +292,15 @@ class Table extends React.Component {
          */
         offsetTop: PropTypes.number,
         /**
-         * affix组件的的属性
+         * affix 组件的的属性
          */
         affixProps: PropTypes.object,
         /**
-         * 在tree模式下的缩进尺寸， 仅在isTree为true时候有效
+         * 在 tree 模式下的缩进尺寸，仅在 isTree 为 true 时候有效
          */
         indent: PropTypes.number,
         /**
-         * 开启Table的tree模式, 接收的数据格式中包含children则渲染成tree table
+         * 开启 Table 的 tree 模式，接收的数据格式中包含 children 则渲染成 tree table
          */
         isTree: PropTypes.bool,
         /**
@@ -302,7 +318,7 @@ class Table extends React.Component {
          */
         onBodyScroll: PropTypes.func,
         /**
-         * 开启时，getExpandedColProps() / rowProps() / expandedRowRender() 的第二个参数 index (该行所对应的序列) 将按照01,2,3,4...的顺序返回，否则返回真实index(0,2,4,6... / 1,3,5,7...)
+         * 开启时，getExpandedColProps() / rowProps() / expandedRowRender() 的第二个参数 index (该行所对应的序列) 将按照 01,2,3,4...的顺序返回，否则返回真实 index(0,2,4,6... / 1,3,5,7...)
          */
         expandedIndexSimulate: PropTypes.bool,
         /**
@@ -348,7 +364,18 @@ class Table extends React.Component {
         getTableInstanceForExpand: PropTypes.func,
     };
 
-    constructor(props, context) {
+    readonly props: InnerBaseTableProps;
+    notRenderCellIndex: number[];
+    groupChildren: ColumnProps[][];
+    flatChildren: ColumnProps[];
+    wrapper: InstanceType<WrapperLike> | null;
+    resizeProxyDomRef: HTMLDivElement | null;
+    tableEl: HTMLElement | null;
+    affixRef: InstanceType<typeof Affix> | null;
+    colIndex: number;
+    rowIndex: number;
+
+    constructor(props: BaseTableProps, context: BaseTableContext) {
         super(props, context);
         const {
             getTableInstance,
@@ -363,7 +390,7 @@ class Table extends React.Component {
         this.notRenderCellIndex = [];
     }
 
-    state = {
+    state: BaseTableState = {
         sort: this.props.sort || {},
     };
 
@@ -374,8 +401,8 @@ class Table extends React.Component {
         };
     }
 
-    static getDerivedStateFromProps(nextProps) {
-        const state = {};
+    static getDerivedStateFromProps(nextProps: InnerBaseTableProps) {
+        const state: Partial<BaseTableState> = {};
 
         if (typeof nextProps.sort !== 'undefined') {
             state.sort = nextProps.sort;
@@ -388,7 +415,11 @@ class Table extends React.Component {
         this.notRenderCellIndex = [];
     }
 
-    shouldComponentUpdate(nextProps, nextState, nextContext) {
+    shouldComponentUpdate(
+        nextProps: BaseTableProps,
+        nextState: BaseTableState,
+        nextContext: BaseTableContext
+    ) {
         if (nextProps.pure) {
             const isEqual =
                 shallowElementEquals(nextProps, this.props) &&
@@ -404,7 +435,11 @@ class Table extends React.Component {
         this.notRenderCellIndex = [];
     }
 
-    normalizeChildrenState(props) {
+    [headerCellKey: `header_cell_${number}_${number}`]: InstanceType<CellLike> | null;
+    [rowKey: `row_${number | string}`]: InstanceType<RowLike> | null;
+    [cellKey: `cell_${number}_${number}`]: InstanceType<CellLike> | null;
+
+    normalizeChildrenState(props: InnerBaseTableProps) {
         let columns = props.columns;
         if (props.children) {
             columns = this.normalizeChildren(props);
@@ -412,35 +447,43 @@ class Table extends React.Component {
         return this.fetchInfoFromBinaryChildren(columns);
     }
 
-    // 将React结构化数据提取props转换成数组
-    normalizeChildren(props) {
+    // 将 React 结构化数据提取 props 转换成数组
+    normalizeChildren(props: InnerBaseTableProps) {
         let { columns } = props;
-        const getChildren = children => {
-            const ret = [];
-            Children.forEach(children, child => {
-                if (child) {
-                    const props = { ...child.props };
-
-                    if (child.ref) {
-                        props.ref = child.ref;
+        const getChildren = (children: InnerBaseTableProps['children']) => {
+            const ret: NormalizedColumnProps[] = [];
+            Children.forEach(
+                children,
+                (
+                    child: ReactElement<TableChildProps> & {
+                        ref: Ref<unknown>;
+                        type: { _typeMark: string };
                     }
+                ) => {
+                    if (child) {
+                        const props = { ...child.props } as NormalizedColumnProps;
 
-                    if (
-                        !(
-                            child &&
-                            ['function', 'object'].indexOf(typeof child.type) > -1 &&
-                            (child.type._typeMark === 'column' ||
-                                child.type._typeMark === 'columnGroup')
-                        )
-                    ) {
-                        log.warning('Use <Table.Column/>, <Table.ColumnGroup/> as child.');
-                    }
-                    ret.push(props);
-                    if (child.props.children) {
-                        props.children = getChildren(child.props.children);
+                        if (child.ref) {
+                            props.ref = child.ref;
+                        }
+
+                        if (
+                            !(
+                                child &&
+                                ['function', 'object'].indexOf(typeof child.type) > -1 &&
+                                (child.type._typeMark === 'column' ||
+                                    child.type._typeMark === 'columnGroup')
+                            )
+                        ) {
+                            log.warning('Use <Table.Column/>, <Table.ColumnGroup/> as child.');
+                        }
+                        ret.push(props);
+                        if ('children' in child.props && child.props.children) {
+                            props.children = getChildren(child.props.children);
+                        }
                     }
                 }
-            });
+            );
             return ret;
         };
         if (props.children) {
@@ -449,11 +492,11 @@ class Table extends React.Component {
         return columns;
     }
 
-    fetchInfoFromBinaryChildren(children) {
+    fetchInfoFromBinaryChildren(children: BaseTableProps['columns']) {
         let hasGroupHeader = false;
-        const flatChildren = [],
-            groupChildren = [],
-            getChildren = (propsChildren = [], level) => {
+        const flatChildren: NormalizedColumnProps[] = [],
+            groupChildren: NormalizedColumnProps[][] = [],
+            getChildren = (propsChildren: BaseTableProps['columns'] = [], level: number) => {
                 groupChildren[level] = groupChildren[level] || [];
                 propsChildren.forEach(child => {
                     child.headerCellRowIndex = level;
@@ -467,13 +510,13 @@ class Table extends React.Component {
                     groupChildren[level].push(child);
                 });
             },
-            getColSpan = (children, colSpan) => {
+            getColSpan = (children: NormalizedColumnProps[], colSpan?: number) => {
                 colSpan = colSpan || 0;
                 children.forEach(child => {
                     if (child.children) {
                         colSpan = getColSpan(child.children, colSpan);
                     } else {
-                        colSpan += 1;
+                        colSpan! += 1;
                     }
                 });
                 return colSpan;
@@ -505,7 +548,7 @@ class Table extends React.Component {
         };
     }
 
-    renderColGroup(flatChildren) {
+    renderColGroup(flatChildren: NormalizedColumnProps[]) {
         const cols = flatChildren.map((col, index) => {
             const width = col.width;
             let style = {};
@@ -520,7 +563,7 @@ class Table extends React.Component {
         return <colgroup key="table-colgroup">{cols}</colgroup>;
     }
 
-    onSort = (dataIndex, order, sort) => {
+    onSort: HeaderProps['onSort'] = (dataIndex, order, sort) => {
         if (typeof this.props.sort === 'undefined') {
             this.setState(
                 {
@@ -535,16 +578,16 @@ class Table extends React.Component {
         }
     };
 
-    onFilter = filterParams => {
+    onFilter: HeaderProps['onFilter'] = filterParams => {
         this.props.onFilter(filterParams);
     };
 
-    onResizeChange = (dataIndex, value) => {
+    onResizeChange: HeaderProps['onResizeChange'] = (dataIndex, value) => {
         this.props.onResizeChange(dataIndex, value);
     };
 
     // 通过头部和扁平的结构渲染表格
-    renderTable(groupChildren, flatChildren) {
+    renderTable(groupChildren: NormalizedColumnProps[][], flatChildren: NormalizedColumnProps[]) {
         if (flatChildren.length || (!flatChildren.length && !this.props.lockType)) {
             const {
                 hasHeader,
@@ -572,7 +615,7 @@ class Table extends React.Component {
             const { sort } = this.state;
             const {
                 Header = HeaderComponent,
-                Wrapper = WrapperComponent,
+                Wrapper = WrapperComponent as WrapperLike,
                 Body = BodyComponent,
             } = components;
             const colGroup = this.renderColGroup(flatChildren);
@@ -648,52 +691,56 @@ class Table extends React.Component {
         }
     }
 
-    getResizeProxyDomRef = resizeProxyDom => {
+    getResizeProxyDomRef = (resizeProxyDom: HTMLDivElement | null) => {
         if (!resizeProxyDom) {
             return this.resizeProxyDomRef;
         }
         this.resizeProxyDomRef = resizeProxyDom;
     };
 
-    getWrapperRef = wrapper => {
+    getWrapperRef = (wrapper: InstanceType<WrapperLike> | null) => {
         if (!wrapper) {
             return this.wrapper;
         }
         this.wrapper = wrapper;
     };
 
-    getAffixRef = affixRef => {
+    getAffixRef = (affixRef: InstanceType<typeof Affix> | null) => {
         if (!affixRef) {
             return this.affixRef;
         }
         this.affixRef = affixRef;
     };
 
-    getHeaderCellRef = (i, j, cell) => {
-        const cellRef = `header_cell_${i}_${j}`;
+    getHeaderCellRef = (i: number, j: number, cell?: InstanceType<CellLike> | null) => {
+        const cellRef = `header_cell_${i}_${j}` as const;
         if (!cell) {
             return this[cellRef];
         }
         this[cellRef] = cell;
     };
 
-    getRowRef = (i, row) => {
-        const rowRef = `row_${i}`;
+    getRowRef: NonNullable<BodyProps['rowRef']> = (i, row) => {
+        const rowRef = `row_${i}` as const;
         if (!row) {
             return this[rowRef];
         }
         this[rowRef] = row;
     };
 
-    getCellRef = (i, j, cell) => {
-        const cellRef = `cell_${i}_${j}`;
+    getCellRef = (
+        i: number,
+        j: number,
+        cell?: InstanceType<CellLike> | HTMLTableCellElement | null
+    ) => {
+        const cellRef = `cell_${i}_${j}` as const;
         if (!cell) {
             return this[cellRef];
         }
-        this[cellRef] = cell;
+        this[cellRef] = cell as InstanceType<CellLike>;
     };
 
-    handleColHoverClass = (rowIndex, colIndex, isAdd) => {
+    handleColHoverClass = (rowIndex: number, colIndex: number, isAdd: boolean) => {
         const { crossline } = this.props;
         const funcName = isAdd ? 'addClass' : 'removeClass';
         if (crossline) {
@@ -702,7 +749,7 @@ class Table extends React.Component {
                     // in case of finding an unmounted component due to cached data
                     // need to clear refs of this.tableInc when dataSource Changed
                     // in virtual table
-                    const currentCol = findDOMNode(this.getCellRef(index, colIndex));
+                    const currentCol = findDOMNode(this.getCellRef(index, colIndex)) as Element;
                     currentCol && dom[funcName](currentCol, 'hovered');
                 } catch (error) {
                     return null;
@@ -711,13 +758,9 @@ class Table extends React.Component {
         }
     };
 
-    /**
-     * @param event
-     * @returns {Object} { rowIndex: string; colIndex: string }
-     */
-    findEventTarget = e => {
+    findEventTarget = (e: MouseEvent): { colIndex?: number; rowIndex?: number } => {
         const { prefix } = this.props;
-        const target = dom.getClosest(e.target, `td.${prefix}table-cell`);
+        const target = dom.getClosest(e.target as HTMLElement, `td.${prefix}table-cell`);
         const colIndex = target && target.getAttribute('data-next-table-col');
         const rowIndex = target && target.getAttribute('data-next-table-row');
 
@@ -725,10 +768,13 @@ class Table extends React.Component {
             // in case of finding an unmounted component due to cached data
             // need to clear refs of this.tableInc when dataSource Changed
             // in virtual table
+            // @ts-expect-error rowIndex, colIndex 应该转为 number
             const currentCol = findDOMNode(this.getCellRef(rowIndex, colIndex));
             if (currentCol === target) {
                 return {
+                    // @ts-expect-error rowIndex, colIndex 应该转为 number
                     colIndex,
+                    // @ts-expect-error rowIndex, colIndex 应该转为 number
                     rowIndex,
                 };
             }
@@ -739,7 +785,7 @@ class Table extends React.Component {
         return {};
     };
 
-    onBodyMouseOver = e => {
+    onBodyMouseOver = (e: MouseEvent) => {
         const { crossline } = this.props;
         if (!crossline) {
             return;
@@ -755,7 +801,7 @@ class Table extends React.Component {
         this.rowIndex = rowIndex;
     };
 
-    onBodyMouseOut = e => {
+    onBodyMouseOut = (e: MouseEvent) => {
         const { crossline } = this.props;
         if (!crossline) {
             return;
@@ -771,13 +817,13 @@ class Table extends React.Component {
         this.rowIndex = -1;
     };
 
-    addColIndex = (children, start = 0) => {
+    addColIndex = (children: NormalizedColumnProps[], start = 0) => {
         children.forEach((child, i) => {
             child.__colIndex = start + i;
         });
     };
 
-    getTableEl = ref => {
+    getTableEl = (ref: HTMLElement | null) => {
         this.tableEl = ref;
     };
 
@@ -785,8 +831,7 @@ class Table extends React.Component {
         const ret = this.normalizeChildrenState(this.props);
         this.groupChildren = ret.groupChildren;
         this.flatChildren = ret.flatChildren;
-        /* eslint-disable no-unused-vars, prefer-const */
-        let table = this.renderTable(ret.groupChildren, ret.flatChildren),
+        const table = this.renderTable(ret.groupChildren, ret.flatChildren),
             {
                 className,
                 style,
@@ -813,6 +858,7 @@ class Table extends React.Component {
                 lockType,
                 locale,
                 expandedIndexSimulate,
+                // @ts-expect-error refs 没有实际作用，应该可以去掉
                 refs,
                 pure,
                 rtl,
@@ -823,6 +869,7 @@ class Table extends React.Component {
                 loadingComponent: LoadingComponent = Loading,
                 tableLayout,
                 tableWidth,
+                // @ts-expect-error props 并不能拿到 ref，这里的实现应该是无效的
                 ref,
                 ...others
             } = this.props,
@@ -834,10 +881,11 @@ class Table extends React.Component {
                 'only-bottom-border': !hasBorder,
                 'no-header': !hasHeader,
                 zebra: isZebra,
-                [className]: className,
+                [className!]: className,
             });
 
         if (rtl) {
+            // @ts-expect-error others 无法附其他值，这里应该重新做一个变量
             others.dir = 'rtl';
         }
 

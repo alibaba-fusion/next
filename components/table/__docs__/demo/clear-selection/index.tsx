@@ -1,8 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Table, Button, Box } from '@alifd/next';
+import type { ColumnProps, RecordItem, TableProps } from '@alifd/next/types/table';
 
-const dataSource = (i, j) => {
+const dataSource = (i: number, j: number) => {
         const result = [];
         for (let a = i; a < j; a++) {
             result.push({
@@ -13,33 +14,34 @@ const dataSource = (i, j) => {
         }
         return result;
     },
-    render = (value, index, record) => {
+    render: ColumnProps['cell'] = (value, index, record) => {
         return <a href="javascript:;">Remove({record.id})</a>;
     };
 
 class App extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            rowSelection: {
-                onChange: this.onChange.bind(this),
-                onSelect: function (selected, record, records) {
-                    console.log('onSelect', selected, record, records);
-                },
-                onSelectAll: function (selected, records) {
-                    console.log('onSelectAll', selected, records);
-                },
-                selectedRowKeys: [100306660940, 100306660941],
-                getProps: record => {
-                    return {
-                        disabled: record.id === 100306660941,
-                    };
-                },
+    state: {
+        rowSelection: NonNullable<TableProps['rowSelection']>;
+        dataSource?: TableProps['dataSource'];
+        loading?: boolean;
+    } = {
+        rowSelection: {
+            onChange: this.onChange.bind(this),
+            onSelect: function (selected, record, records) {
+                console.log('onSelect', selected, record, records);
             },
-            dataSource: dataSource(0, 5),
-        };
-    }
-    onChange(ids, records) {
+            onSelectAll: function (selected, records) {
+                console.log('onSelectAll', selected, records);
+            },
+            selectedRowKeys: [100306660940, 100306660941],
+            getProps: record => {
+                return {
+                    disabled: record.id === 100306660941,
+                };
+            },
+        },
+        dataSource: dataSource(0, 5),
+    };
+    onChange(ids: number[], records: RecordItem[]) {
         const { rowSelection } = this.state;
         rowSelection.selectedRowKeys = ids;
         console.log('onChange', ids, records);
@@ -58,7 +60,7 @@ class App extends React.Component {
         const mode = rowSelection.mode;
         const selectedRowKeys = rowSelection.selectedRowKeys;
         rowSelection.mode = mode === 'single' ? 'multiple' : 'single';
-        rowSelection.selectedRowKeys = selectedRowKeys.length === 1 ? selectedRowKeys : [];
+        rowSelection.selectedRowKeys = selectedRowKeys!.length === 1 ? selectedRowKeys : [];
         this.setState({ rowSelection });
     }
     modifyDataSource() {

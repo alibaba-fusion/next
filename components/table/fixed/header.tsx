@@ -2,9 +2,9 @@ import React from 'react';
 import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
 import HeaderComponent from '../base/header';
+import type { FixedHeaderContext, FixedHeaderProps } from '../types';
 
-/* eslint-disable react/prefer-stateless-function */
-export default class FixedHeader extends React.Component {
+export default class FixedHeader extends React.Component<FixedHeaderProps> {
     static propTypes = {
         children: PropTypes.any,
         prefix: PropTypes.string,
@@ -19,12 +19,14 @@ export default class FixedHeader extends React.Component {
         lockType: PropTypes.oneOf(['left', 'right']),
     };
 
+    context: FixedHeaderContext;
+
     componentDidMount() {
-        this.context.getNode('header', findDOMNode(this));
+        this.context.getNode('header', findDOMNode(this) as HTMLElement);
     }
 
-    // 这里的 style={{overflow: 'unset'}} 可以删掉，只是为了解决用户js升级但是样式没升级的情况
-    // 这里的 style={{position: 'absolute', right: 0}} 也可以删掉，是为了兼容用户js升级但是样式没升级的情况
+    // 这里的 style={{overflow: 'unset'}} 可以删掉，只是为了解决用户 js 升级但是样式没升级的情况
+    // 这里的 style={{position: 'absolute', right: 0}} 也可以删掉，是为了兼容用户 js 升级但是样式没升级的情况
     render() {
         const { prefix, className, colGroup, tableWidth, ...others } = this.props;
         const { onFixedScrollSync, lockType } = this.context;

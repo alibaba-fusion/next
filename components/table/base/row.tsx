@@ -1,13 +1,16 @@
-import React from 'react';
+import React, { type ReactNode, type MouseEvent } from 'react';
 import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { obj, dom } from '../../util';
+import { obj, dom, type ClassPropsWithDefault } from '../../util';
 import { fetchDataByPath } from '../util';
+import type { CellLike, RecordItem, RowProps } from '../types';
 
 const noop = () => {};
 
-export default class Row extends React.Component {
+type InnerRowProps = ClassPropsWithDefault<RowProps, typeof Row.defaultProps>;
+
+export default class Row extends React.Component<RowProps> {
     static propTypes = {
         prefix: PropTypes.string,
         pure: PropTypes.bool,
@@ -38,8 +41,7 @@ export default class Row extends React.Component {
         onMouseEnter: noop,
         onMouseLeave: noop,
         cellRef: noop,
-        colGroup: {},
-        wrapper: row => row,
+        wrapper: (row: ReactNode) => row,
     };
 
     static contextTypes = {
@@ -47,7 +49,13 @@ export default class Row extends React.Component {
         lockType: PropTypes.oneOf(['left', 'right']),
     };
 
-    shouldComponentUpdate(nextProps) {
+    readonly props: InnerRowProps;
+    readonly context: {
+        notRenderCellIndex: number[];
+        lockType: 'left' | 'right';
+    };
+
+    shouldComponentUpdate(nextProps: InnerRowProps) {
         if (nextProps.pure) {
             const isEqual = obj.shallowEqual(this.props, nextProps);
             return !isEqual;
@@ -56,26 +64,26 @@ export default class Row extends React.Component {
         return true;
     }
 
-    onClick = e => {
+    onClick = (e: MouseEvent) => {
         const { record, rowIndex } = this.props;
         this.props.onClick(record, rowIndex, e);
     };
 
-    onMouseEnter = e => {
+    onMouseEnter = (e: MouseEvent) => {
         const { record, rowIndex, __rowIndex } = this.props;
         const row = __rowIndex || rowIndex;
         this.onRowHover(record, row, true, e);
     };
 
-    onMouseLeave = e => {
+    onMouseLeave = (e: MouseEvent) => {
         const { record, rowIndex, __rowIndex } = this.props;
         const row = __rowIndex || rowIndex;
         this.onRowHover(record, row, false, e);
     };
 
-    onRowHover(record, index, isEnter, e) {
+    onRowHover(record: RecordItem, index: number, isEnter: boolean, e: MouseEvent) {
         const { onMouseEnter, onMouseLeave } = this.props,
-            currentRow = findDOMNode(this);
+            currentRow = findDOMNode(this) as Element;
         if (isEnter) {
             onMouseEnter(record, index, e);
             currentRow && dom.addClass(currentRow, 'hovered');
@@ -85,7 +93,7 @@ export default class Row extends React.Component {
         }
     }
 
-    renderCells(record, rowIndex) {
+    renderCells(record: RecordItem, rowIndex?: number) {
         const {
             Cell,
             columns,
@@ -93,7 +101,7 @@ export default class Row extends React.Component {
             cellRef,
             prefix,
             primaryKey,
-            // __rowIndex 是连贯的table行的索引，只有在开启expandedIndexSimulate的ExpandedTable模式下__rowIndex可能会不等于rowIndex
+            // __rowIndex 是连贯的 table 行的索引，只有在开启 expandedIndexSimulate 的 ExpandedTable 模式下__rowIndex 可能会不等于 rowIndex
             __rowIndex,
             pure,
             locale,
@@ -105,7 +113,6 @@ export default class Row extends React.Component {
 
         const { lockType } = this.context;
         return columns.map((child, index) => {
-            /* eslint-disable no-unused-vars, prefer-const */
             const {
                 dataIndex,
                 align,
@@ -122,7 +129,7 @@ export default class Row extends React.Component {
             // tbody's cell merge should only by the way of <Table cellProps={} />
 
             const value = fetchDataByPath(record, dataIndex);
-            const attrs = getCellProps(rowIndex, colIndex, dataIndex, record) || {};
+            const attrs = getCellProps(rowIndex!, colIndex!, dataIndex!, record) || {};
 
             if (this.context.notRenderCellIndex) {
                 const matchCellIndex = this.context.notRenderCellIndex
@@ -135,8 +142,8 @@ export default class Row extends React.Component {
             }
             if ((attrs.colSpan && attrs.colSpan > 1) || (attrs.rowSpan && attrs.rowSpan > 1)) {
                 this._getNotRenderCellIndex(
-                    colIndex,
-                    rowIndex,
+                    colIndex!,
+                    rowIndex!,
                     attrs.colSpan || 1,
                     attrs.rowSpan || 1
                 );
@@ -148,9 +155,9 @@ export default class Row extends React.Component {
                 last:
                     lockType !== 'left' &&
                     (colIndex === columns.length - 1 ||
-                        colIndex + attrs.colSpan === columns.length), // 考虑合并单元格的情况
-                [child.className]: child.className,
-                [cellClass]: cellClass,
+                        colIndex! + attrs.colSpan! === columns.length), // 考虑合并单元格的情况
+                [child.className!]: child.className,
+                [cellClass!]: cellClass,
             });
 
             const newStyle = { ...attrs.style, ...cellStyle };
@@ -163,7 +170,9 @@ export default class Row extends React.Component {
                     style={newStyle}
                     data-next-table-col={colIndex}
                     data-next-table-row={rowIndex}
-                    ref={cell => cellRef(__rowIndex, colIndex, cell)}
+                    ref={(cell: InstanceType<CellLike> | null) =>
+                        cellRef(__rowIndex, colIndex!, cell)
+                    }
                     prefix={prefix}
                     pure={pure}
                     primaryKey={primaryKey}
@@ -181,7 +190,7 @@ export default class Row extends React.Component {
         });
     }
 
-    _getNotRenderCellIndex(colIndex, rowIndex, colSpan, rowSpan) {
+    _getNotRenderCellIndex(colIndex: number, rowIndex: number, colSpan: number, rowSpan: number) {
         const maxColIndex = colSpan;
         const maxRowIndex = rowSpan;
         const notRenderCellIndex = [];
@@ -194,7 +203,6 @@ export default class Row extends React.Component {
     }
 
     render() {
-        /* eslint-disable no-unused-vars*/
         const {
             prefix,
             className,
@@ -221,7 +229,7 @@ export default class Row extends React.Component {
         } = this.props;
         const cls = classnames({
             [`${prefix}table-row`]: true,
-            [className]: className,
+            [className!]: className,
         });
 
         const tr = (

@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import Affix from '../../affix';
+import type { StickyHeaderProps } from '../types';
 
-/* eslint-disable react/prefer-stateless-function*/
-export default class StickHeader extends React.Component {
+export default class StickHeader extends React.Component<StickyHeaderProps> {
     static propTypes = {
         prefix: PropTypes.string,
     };
@@ -14,7 +14,7 @@ export default class StickHeader extends React.Component {
         affixProps: PropTypes.object,
     };
 
-    getAffixRef = ref => {
+    getAffixRef = (ref: InstanceType<typeof Affix> | null) => {
         this.props.affixRef && this.props.affixRef(ref);
     };
 

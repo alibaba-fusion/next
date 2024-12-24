@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { type CSSProperties, type UIEvent } from 'react';
 import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
 import BodyComponent from '../base/body';
+import type { VirtualBodyProps } from '../types';
 
-/* eslint-disable react/prefer-stateless-function */
-export default class VirtualBody extends React.Component {
+export default class VirtualBody extends React.Component<VirtualBodyProps> {
     static propTypes = {
         children: PropTypes.any,
         prefix: PropTypes.string,
@@ -26,6 +26,8 @@ export default class VirtualBody extends React.Component {
         getLockNode: PropTypes.func,
         lockType: PropTypes.oneOf(['left', 'right']),
     };
+    tableNode: HTMLTableElement | null;
+    virtualScrollNode: HTMLDivElement | null;
 
     componentDidMount() {
         const bodyNode = findDOMNode(this);
@@ -37,15 +39,15 @@ export default class VirtualBody extends React.Component {
         this.context.getLockNode('body', bodyNode, this.context.lockType);
     }
 
-    tableRef = table => {
+    tableRef = (table: HTMLTableElement | null) => {
         this.tableNode = table;
     };
 
-    virtualScrollRef = virtualScroll => {
+    virtualScrollRef = (virtualScroll: HTMLDivElement | null) => {
         this.virtualScrollNode = virtualScroll;
     };
 
-    onScroll = current => {
+    onScroll = (current: UIEvent<HTMLDivElement>) => {
         // for fixed
         this.context.onFixedScrollSync(current);
         // for lock
@@ -60,10 +62,10 @@ export default class VirtualBody extends React.Component {
         const style = {
             width: tableWidth,
         };
-        const wrapperStyle = {
+        const wrapperStyle: CSSProperties = {
             position: 'relative',
         };
-        // todo 2.0 ，这里最好自己画滚动条
+        // todo 2.0，这里最好自己画滚动条
         if (bodyHeight > maxBodyHeight) {
             wrapperStyle.height = bodyHeight;
         }

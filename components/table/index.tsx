@@ -1,3 +1,4 @@
+import { type ComponentType } from 'react';
 import ConfigProvider from '../config-provider';
 import Base from './base';
 import tree from './tree';
@@ -11,54 +12,81 @@ import list from './list';
 import sticky from './sticky';
 import ListHeader from './list-header';
 import ListFooter from './list-footer';
-import { env } from '../util';
+import { env, type NonReactStatics } from '../util';
+import { assignSubComponent } from '../util/component';
+import type { TableProps } from './types';
 
 const { ieVersion } = env;
+
+// 动态切换类型的场景过多，无法通过类型推导，所以这里直接给出最终类型。
+type TypeFullType = ComponentType<TableProps> &
+    NonReactStatics<typeof Base> &
+    NonReactStatics<ReturnType<typeof selection>>;
 
 const ORDER_LIST = [fixed, lock, selection, expanded, virtual, tree, list, sticky];
 const Table = ORDER_LIST.reduce((ret, current) => {
     ret = current(ret);
     return ret;
-}, Base);
+}, Base) as unknown as TypeFullType;
 
-lock._typeMark = 'lock';
-expanded._typeMark = 'expanded';
-fixed._typeMark = 'fixed';
+(lock as typeof lock & { _typeMark: string })._typeMark = 'lock';
+(expanded as typeof expanded & { _typeMark: string })._typeMark = 'expanded';
+(fixed as typeof fixed & { _typeMark: string })._typeMark = 'fixed';
 
-const StickyLockTable = ORDER_LIST.reduce((ret, current) => {
+type CurrentType = ((base: typeof Base) => typeof Base) & { _typeMark?: string };
+const StickyLockTable = ORDER_LIST.reduce((ret, current: CurrentType) => {
     const newLock = !ieVersion;
     if (current._typeMark === 'lock') {
         ret = newLock ? stickyLock(ret) : lock(ret);
     } else if (current._typeMark === 'expanded') {
         ret = newLock ? expanded(ret, true) : expanded(ret);
     } else if (current._typeMark === 'fixed') {
+        // @ts-expect-error fixed 现在没有第二个参数
         ret = newLock ? fixed(ret, true) : fixed(ret);
     } else {
         ret = current(ret);
     }
     return ret;
-}, Base);
+}, Base) as unknown as TypeFullType;
 
-Table.Base = Base;
-Table.fixed = fixed;
-Table.lock = lock;
-Table.selection = selection;
-Table.expanded = expanded;
-Table.tree = tree;
-Table.virtual = virtual;
-Table.list = list;
-Table.sticky = sticky;
-
-Table.GroupHeader = ListHeader;
-Table.GroupFooter = ListFooter;
-
-Table.StickyLock = ConfigProvider.config(StickyLockTable, {
-    componentName: 'Table',
+const TableWithSub = assignSubComponent(Table, {
+    Base,
+    fixed,
+    lock,
+    selection,
+    expanded,
+    tree,
+    virtual,
+    list,
+    sticky,
+    GroupHeader: ListHeader,
+    GroupFooter: ListFooter,
+    StickyLock: ConfigProvider.config(StickyLockTable, {
+        componentName: 'Table',
+    }),
 });
 
-export default ConfigProvider.config(Table, {
+export type {
+    TableProps,
+    BaseTableProps,
+    GroupHeaderProps,
+    GroupFooterProps,
+    ColumnProps,
+    ColumnGroupProps,
+    HeaderProps,
+    BodyProps,
+    WrapperProps,
+    RowProps,
+    CellProps,
+    FilterProps,
+    SortProps,
+    RecordItem,
+    SelectionRowProps,
+} from './types';
+
+export default ConfigProvider.config(TableWithSub, {
     componentName: 'Table',
-    transform: /* istanbul ignore next */ (props, deprecated) => {
+    transform: (props: TableProps, deprecated) => {
         // fix https://github.com/alibaba-fusion/next/issues/4062
         if ('columns' in props && typeof props.columns !== 'undefined') {
             const { columns, ...others } = props;
@@ -106,7 +134,7 @@ export default ConfigProvider.config(Table, {
 
             const { getRowClassName, getRowProps, ...others } = props;
             if (getRowClassName) {
-                const newGetRowProps = (...args) => {
+                const newGetRowProps: TableProps['getRowProps'] = (...args) => {
                     return {
                         className: getRowClassName(...args),
                         ...(getRowProps ? getRowProps(...args) : {}),

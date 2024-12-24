@@ -1,8 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Table } from '@alifd/next';
+import type { ColumnProps } from '@alifd/next/types/table';
 
-const onChange = function (...args) {
+const onChange = function (...args: unknown[]) {
         console.log(...args);
     },
     dataSource = () => {
@@ -18,12 +19,12 @@ const onChange = function (...args) {
         }
         return result;
     },
-    render = (value, index, record) => {
+    render: ColumnProps['cell'] = (value, index, record) => {
         return <a>Remove({record.id})</a>;
     },
     rowSelection = {
         onChange: onChange,
-        getProps: record => {
+        getProps: (record: { id: number }) => {
             return {
                 disabled: record.id === 100306660942,
             };
