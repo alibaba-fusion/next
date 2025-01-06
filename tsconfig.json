@@ -23,5 +23,5 @@
             "@alifd/next/types/*": ["./components/*"]
         }
     },
-    "include": ["global.d.ts", "cypress/**/*.ts", "./components/**/*.ts", "./components/**/*.tsx", "tools"]
+    "include": ["*.ts", "cypress/**/*.ts", "./components/**/*.ts", "./components/**/*.tsx", "tools"]
 }

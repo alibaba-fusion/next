@@ -15,11 +15,11 @@ const distPath = resolve(CWD, 'dist');
 
 export function registryDist(file = __filename) {
     return registryTask(file, 'dist', async function () {
-        registryTask(file, 'dist:clean', () => {
+        await registryTask(file, 'dist:clean', () => {
             removeSync(distPath);
         });
-        registryTask(file, 'dist:next', pack);
-        registryTask(file, 'dist:next:minify', pack.bind(undefined, true));
+        await registryTask(file, 'dist:next', pack);
+        await registryTask(file, 'dist:next:minify', pack.bind(undefined, true));
         await registryTask(file, 'dist:adaptor', packAdaptor.run, packAdaptor.rollback);
     });
 }
