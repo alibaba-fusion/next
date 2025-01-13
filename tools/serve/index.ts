@@ -17,6 +17,7 @@ import { glob } from 'glob';
 import {
     ARGV,
     SRC_DIR_PATH,
+    CWD,
     TARGETS,
     findFile,
     logger,
@@ -25,6 +26,7 @@ import {
 } from '../utils';
 import { marked } from '../build/docs/utils';
 import { parseDemoMd } from '../build/docs/generate-docs';
+import postcssSass from 'postcss-scss';
 
 type Lang = 'zh' | 'en';
 
@@ -99,6 +101,20 @@ const demoPlugin = (dirName: string): VitePlugin => {
                 return !!t.jsEntry;
             });
     }
+    // 加载components.scss 文件
+    function loadComponentScss() {
+        // 加载顺序处理，按照component.scss中的顺序加载，避免导致样式覆盖
+        const filePath = readFileSync(resolve(CWD, './components.scss'), 'utf-8');
+        const list: string[] = [];
+        postcssSass.parse(filePath).walkAtRules('import', rule => {
+            const targetPath = rule.params.replace(/^"|"$/g, '');
+            if (targetPath) {
+                list.push(resolve(CWD, targetPath));
+            }
+        });
+        return list;
+    }
+
     const SCSS_REG = /^__scss/;
     const SCSS_VIRTUAL_REG = /^\0__scss\.scss/;
     const DOC_REG = /^__doc/;
@@ -140,8 +156,11 @@ const demoPlugin = (dirName: string): VitePlugin => {
         },
         load(id) {
             if (SCSS_VIRTUAL_REG.test(id)) {
-                const fixedFiles: string[] = [resolve(SRC_DIR_PATH, 'core/reset.scss')];
-                const mainFiles = glob.sync('*/main.scss', { cwd: SRC_DIR_PATH, absolute: true });
+                const fixedFiles: string[] = [
+                    resolve(SRC_DIR_PATH, 'core/reset.scss'),
+                    resolve(SRC_DIR_PATH, 'demo-helper/main.scss'),
+                ];
+                const mainFiles = loadComponentScss();
                 return fixedFiles
                     .concat(mainFiles)
                     .map(f => `@import "${f}";`)
