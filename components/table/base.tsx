@@ -17,16 +17,16 @@ import FilterComponent from './base/filter';
 import SortComponent from './base/sort';
 import Column from './column';
 import ColumnGroup from './column-group';
-import type {
+import {
+    CellLike,
+    RowLike,
     BaseTableContext,
     BaseTableProps,
     BaseTableState,
     BodyProps,
-    CellLike,
     ColumnProps,
     HeaderProps,
     NormalizedColumnProps,
-    RowLike,
     TableChildProps,
     WrapperLike,
 } from './types';
@@ -59,271 +59,63 @@ class Table extends React.Component<BaseTableProps, BaseTableState> {
 
     static propTypes = {
         ...ConfigProvider.propTypes,
-        /**
-         * 样式类名的品牌前缀
-         */
         prefix: PropTypes.string,
         pure: PropTypes.bool,
         rtl: PropTypes.bool,
-        /**
-         * 表格元素的 table-layout 属性，设为 fixed 表示内容不会影响列的布局
-         */
         tableLayout: PropTypes.oneOf(['fixed', 'auto']),
-        /**
-         * 表格的总长度，可以这么用：设置表格总长度、设置部分列的宽度，这样表格会按照剩余空间大小，自动其他列分配宽度
-         */
         tableWidth: PropTypes.number,
-        /**
-         * 自定义类名
-         */
         className: PropTypes.string,
-        /**
-         * 自定义内联样式
-         */
         style: PropTypes.object,
-        /**
-         * 尺寸 small 为紧凑模式
-         */
         size: PropTypes.oneOf(['small', 'medium']),
-        /**
-         * 表格展示的数据源
-         */
         dataSource: PropTypes.array,
         entireDataSource: PropTypes.array,
-        /**
-         * 点击表格每一行触发的事件
-         * @param record - 该行所对应的数据
-         * @param index - 该行所对应的序列
-         * @param e - DOM 事件对象
-         */
         onRowClick: PropTypes.func,
-        /**
-         * 悬浮在表格每一行的时候触发的事件
-         * @param record - 该行所对应的数据
-         * @param index - 该行所对应的序列
-         * @param e - DOM 事件对象
-         */
         onRowMouseEnter: PropTypes.func,
-        /**
-         * 离开表格每一行的时候触发的事件
-         * @param record - 该行所对应的数据
-         * @param index - 该行所对应的序列
-         * @param e - DOM 事件对象
-         */
         onRowMouseLeave: PropTypes.func,
-        /**
-         * 点击列排序触发的事件
-         * @param dataIndex - 指定的排序的字段
-         * @param order - 排序对应的顺序，有`desc`和`asc`两种
-         */
         onSort: PropTypes.func,
-        /**
-         * 点击过滤确认按钮触发的事件
-         * @param filterParams - 过滤的字段信息
-         */
         onFilter: PropTypes.func,
-        /**
-         * 重设列尺寸的时候触发的事件
-         * @param dataIndex - 指定重设的字段
-         * @param value - 列宽变动的数值
-         */
         onResizeChange: PropTypes.func,
-        /**
-         * 设置每一行的属性，如果返回值和其他针对行操作的属性冲突则无效。
-         * @param record - 该行所对应的数据
-         * @param index - 该行所对应的序列
-         * @returns 需要设置的行属性
-         */
         rowProps: PropTypes.func,
-        /**
-         * 设置单元格的属性，通过该属性可以进行合并单元格
-         * @param rowIndex - 该行所对应的序列
-         * @param colIndex - 该列所对应的序列
-         * @param dataIndex - 该列所对应的字段名称
-         * @param record - 该行对应的记录
-         * @returns 返回 td 元素的所支持的属性对象
-         */
         cellProps: PropTypes.func,
-        /**
-         * 虚拟滚动时向前保留渲染的行数
-         */
         keepForwardRenderRows: PropTypes.number,
-        /**
-         * 表格是否具有边框
-         */
         hasBorder: PropTypes.bool,
-        /**
-         * 表格是否具有头部
-         */
         hasHeader: PropTypes.bool,
-        /**
-         * 表格是否是斑马线
-         */
         isZebra: PropTypes.bool,
-        /**
-         * 表格是否在加载中
-         */
         loading: PropTypes.bool,
-        /**
-         * 自定义 Loading 组件
-         * 请务必传递 props, 使用方式：loadingComponent=\{props =\> \<Loading \{...props\}/\>\}
-         * @param props - 需要透传给组件的参数
-         * @returns 展示的组件
-         */
         loadingComponent: PropTypes.func,
-        /**
-         * 当前过滤的的 keys，使用此属性可以控制表格的头部的过滤选项中哪个菜单被选中，格式为 \{dataIndex: \{selectedKeys:[]\}\}
-         * 示例：
-         * 假设要控制 dataIndex 为 id 的列的过滤菜单中 key 为 one 的菜单项选中
-         * `<Table filterParams={{id: {selectedKeys: ['one']}}}/>`
-         */
         filterParams: PropTypes.object,
-        /**
-         * 当前排序的字段，使用此属性可以控制表格的字段的排序，格式为\{[dataIndex]: 'asc' | 'desc' \} , 例如  \{id: 'desc'\}
-         */
         sort: PropTypes.object,
-        /**
-         * 自定义排序按钮，例如上下排布的：`{desc: <Icon style={{top: '6px', left: '4px'}} type={'arrow-down'} size="small" />, asc: <Icon style={{top: '-6px', left: '4px'}} type={'arrow-up'} size="small" />}`
-         */
         sortIcons: PropTypes.object,
-        /**
-         * 自定义国际化文案对象
-         * ok 过滤器中确认按钮文案
-         * reset 过滤器中重置按钮文案
-         * empty 没有数据情况下 table 内的文案
-         * asc 排序升序状态下的文案
-         * desc 排序将序状态下的文案
-         * expanded 可折叠行，展开状态下的文案
-         * folded 可折叠行，折叠状态下的文案
-         * filter 过滤器文案
-         * selectAll header 里全选的按钮文案
-         */
         locale: PropTypes.object,
         components: PropTypes.object,
-        /**
-         * 等同于写子组件 Table.Column，子组件优先级更高
-         */
         columns: PropTypes.array,
-        /**
-         * 设置数据为空的时候的表格内容展现
-         */
         emptyContent: PropTypes.node,
-        /**
-         * dataSource 当中数据的主键，如果给定的数据源中的属性不包含该主键，会造成选择状态全部选中
-         */
         primaryKey: PropTypes.oneOfType([PropTypes.symbol, PropTypes.string]),
         lockType: PropTypes.oneOf(['left', 'right']),
         wrapperContent: PropTypes.any,
         refs: PropTypes.object,
-        /**
-         * 额外渲染行的渲染函数
-         * @param record - 该行所对应的数据
-         * @param index - 该行所对应的序列
-         * @returns 渲染内容
-         */
         expandedRowRender: PropTypes.func,
-        /**
-         * 设置行是否可展开，设置 false 为不可展开
-         * @param record - 该行所对应的数据
-         * @param index - 该行所对应的序列
-         * @returns 是否可展开
-         */
         rowExpandable: PropTypes.func,
-        /**
-         * 额外渲染行的缩进，是个二维数组 (eg:[1,1]) 分别表示左右两边的缩进
-         */
         expandedRowIndent: PropTypes.array,
-        /**
-         * 是否显示点击展开额外渲染行的 + 号按钮
-         */
         hasExpandedRowCtrl: PropTypes.bool,
-        /**
-         * 设置额外渲染行的属性
-         * @param record - 该行所对应的数据
-         * @param index - 该行所对应的序列
-         * @returns 额外渲染行的属性
-         */
         getExpandedColProps: PropTypes.func,
-        /**
-         * 当前展开的 Expand 行 或者 Tree 行 , 传入此属性为受控状态，一般配合 onRowOpen 使用
-         */
         openRowKeys: PropTypes.array,
-        /**
-         * 默认情况下展开的 Expand 行 或者 Tree 行，非受控模式
-         * @version 1.23.22
-         */
         defaultOpenRowKeys: PropTypes.array,
-        /**
-         * 在 Expand 行 或者 Tree 行 展开或者收起的时候触发的事件
-         * @param openRowKeys - 展开的渲染行的 key
-         * @param currentRowKey - 当前点击的渲染行的 key
-         * @param expanded - 当前点击是展开还是收起
-         * @param currentRecord - 当前点击额外渲染行的记录
-         */
         onRowOpen: PropTypes.func,
         onExpandedRowClick: PropTypes.func,
-        /**
-         * 表头是否固定，该属性配合 maxBodyHeight 使用，当内容区域的高度超过 maxBodyHeight 的时候，在内容区域会出现滚动条
-         */
         fixedHeader: PropTypes.bool,
-        /**
-         * 最大内容区域的高度，在`fixedHeader`为`true`的时候，超过这个高度会出现滚动条
-         */
         maxBodyHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-        /**
-         * 是否启用选择模式
-         * getProps `Function(record, index)=>Object` 获取 selection 的默认属性
-         * onChange `Function(selectedRowKeys:Array, records:Array)` 选择改变的时候触发的事件，**注意:** 其中 records 只会包含当前 dataSource 的数据，很可能会小于 selectedRowKeys 的长度。
-         * onSelect `Function(selected:Boolean, record:Object, records:Array)` 用户手动选择/取消选择某行的回调
-         * onSelectAll `Function(selected:Boolean, records:Array)` 用户手动选择/取消选择所有行的回调
-         * selectedRowKeys 设置了此属性，将 rowSelection 变为受控状态，接收值为该行数据的 primaryKey 的值
-         * mode 选择 selection 的模式，可选值为`single`, `multiple`，默认为`multiple`
-         * columnProps `Function()=>Object` 选择列 的 props，例如锁列、对齐等，可使用`Table.Column` 的所有参数
-         * titleProps `Function()=>Object` 选择列 表头的 props，仅在 `multiple` 模式下生效
-         * titleAddons `Function()=>Node` 选择列 表头添加的元素，在`single` `multiple` 下都生效
-         */
         rowSelection: PropTypes.object,
-        /**
-         * 表头是否是 sticky
-         */
         stickyHeader: PropTypes.bool,
-        /**
-         * 距离窗口顶部达到指定偏移量后触发
-         */
         offsetTop: PropTypes.number,
-        /**
-         * affix 组件的的属性
-         */
         affixProps: PropTypes.object,
-        /**
-         * 在 tree 模式下的缩进尺寸，仅在 isTree 为 true 时候有效
-         */
         indent: PropTypes.number,
-        /**
-         * 开启 Table 的 tree 模式，接收的数据格式中包含 children 则渲染成 tree table
-         */
         isTree: PropTypes.bool,
-        /**
-         * 是否开启虚拟滚动
-         */
         useVirtual: PropTypes.bool,
         rowHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.func]),
-        /**
-         * 滚动到第几行，需要保证行高相同。1.22.15 版本之前仅在虚拟滚动场景下生效，之后在所有情况下生效
-         * @version 1.22.15
-         */
         scrollToRow: PropTypes.number,
-        /**
-         * 在内容区域滚动的时候触发的函数
-         */
         onBodyScroll: PropTypes.func,
-        /**
-         * 开启时，getExpandedColProps() / rowProps() / expandedRowRender() 的第二个参数 index (该行所对应的序列) 将按照 01,2,3,4...的顺序返回，否则返回真实 index(0,2,4,6... / 1,3,5,7...)
-         */
         expandedIndexSimulate: PropTypes.bool,
-        /**
-         * 在 hover 时出现十字参考轴，适用于表头比较复杂，需要做表头分类的场景。
-         */
         crossline: PropTypes.bool,
         lengths: PropTypes.object,
     };

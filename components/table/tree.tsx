@@ -14,36 +14,6 @@ export default function tree(BaseComponent: typeof Base) {
         static TreeRow = RowComponent;
         static TreeCell = CellComponent;
         static propTypes = {
-            /**
-             * 默认情况下展开的树形表格，传入了此属性代表 tree 的展开为受控操作
-             */
-            // openRowKeys: PropTypes.array,
-            /**
-             * 默认情况下展开的 Expand 行 或者 Tree 行，非受控模式
-             * @version 1.23.22
-             */
-            // defaultOpenRowKeys: PropTypes.array,
-            /**
-             * 点击 tree 展开或者关闭的时候触发的事件
-             * @param openRowKeys - tree 模式下展开的 key
-             * @param currentRowKey - 当前点击行的 key
-             * @param opened - 当前点击是展开还是收起
-             * @param currentRecord - 当前点击行的记录
-             */
-            // onRowOpen: PropTypes.func,
-            /**
-             * dataSource 当中数据的主键，如果给定的数据源中的属性不包含该主键，会造成选择状态全部选中
-             */
-            // primaryKey: PropTypes.oneOfType([PropTypes.symbol, PropTypes.string]),
-            /**
-             * 在 tree 模式下的缩进尺寸，仅在 isTree 为 true 时候有效
-             */
-            // indent: PropTypes.number,
-            /**
-             * 开启 Table 的 tree 模式，接收的数据格式中包含 children 则渲染成 tree table
-             */
-            // isTree: PropTypes.bool,
-            // locale: PropTypes.object,
             ...BaseComponent.propTypes,
         };
 

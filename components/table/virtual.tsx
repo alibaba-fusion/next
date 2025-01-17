@@ -13,22 +13,6 @@ export default function virtual(BaseComponent: typeof Base) {
     class VirtualTable extends React.Component<VirtualTableProps, VirtualTableState> {
         static VirtualBody = VirtualBody;
         static propTypes = {
-            /**
-             * 是否开启虚拟滚动
-             */
-            // useVirtual: PropTypes.bool,
-            /**
-             * 设置行高
-             */
-            // rowHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.func]),
-            // maxBodyHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-            // primaryKey: PropTypes.oneOfType([PropTypes.symbol, PropTypes.string]),
-            // dataSource: PropTypes.array,
-            /**
-             * 在内容区域滚动的时候触发的函数
-             */
-            // onBodyScroll: PropTypes.func,
-            // keepForwardRenderRows: PropTypes.number,
             ...BaseComponent.propTypes,
         };
 

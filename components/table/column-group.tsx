@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import type { ColumnGroupProps } from './types';
 
-export default class ColumnGroup extends React.Component {
+export default class ColumnGroup extends React.Component<ColumnGroupProps> {
     static propTypes = {
         /**
          * 表头显示的内容

@@ -8,21 +8,9 @@ import type { GroupHeaderProps } from './types';
  **/
 export default class ListHeader extends React.Component<GroupHeaderProps> {
     static propTypes = {
-        /**
-         * 行渲染的逻辑
-         */
         cell: PropTypes.oneOfType([PropTypes.element, PropTypes.node, PropTypes.func]),
-        /**
-         * 是否在 Children 上面渲染 selection
-         */
         hasChildrenSelection: PropTypes.bool,
-        /**
-         * 是否在 GroupHeader 上面渲染 selection
-         */
         hasSelection: PropTypes.bool,
-        /**
-         * 当 dataSouce 里没有 children 时，是否使用内容作为数据
-         */
         useFirstLevelDataWhenNoChildren: PropTypes.bool,
     };
 

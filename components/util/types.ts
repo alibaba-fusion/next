@@ -1,4 +1,4 @@
-import type { ComponentType, ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import type { ComponentCommonProps } from '../config-provider/types';
 
 export interface IconsType {

@@ -1,4 +1,4 @@
-import React, { Children, ReactElement, type KeyboardEvent, type UIEvent } from 'react';
+import React, { Children, type ReactElement, type KeyboardEvent, type UIEvent } from 'react';
 import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
@@ -18,51 +18,6 @@ export default function expanded(BaseComponent: typeof Base, stickyLock?: boolea
     class ExpandedTable extends React.Component<ExpandedTableProps> {
         static ExpandedRow = RowComponent;
         static propTypes = {
-            /**
-             * 额外渲染行的渲染函数
-             * @param record - 该行所对应的数据
-             * @param index - 该行所对应的序列
-             */
-            // expandedRowRender: PropTypes.func,
-            /**
-             * 设置行是否可展开，设置 false 为不可展开
-             * @param record - 该行所对应的数据
-             * @param index - 该行所对应的序列
-             * @returns 是否可展开
-             * @version 1.21
-             */
-            // rowExpandable: PropTypes.func,
-            /**
-             * 额外渲染行的缩进
-             */
-            // expandedRowIndent: PropTypes.array,
-            /**
-             * 默认情况下展开的渲染行或者 Tree, 传入此属性为受控状态
-             */
-            // openRowKeys: PropTypes.array,
-            /**
-             * 默认情况下展开的 Expand 行 或者 Tree 行，非受控模式
-             * @version 1.23.22
-             */
-            // defaultOpenRowKeys: PropTypes.array,
-            /**
-             * 是否显示点击展开额外渲染行的 + 号按钮
-             */
-            // hasExpandedRowCtrl: PropTypes.bool,
-            /**
-             * 设置额外渲染行的属性
-             */
-            // getExpandedColProps: PropTypes.func,
-            /**
-             * 在额外渲染行或者 Tree 展开或者收起的时候触发的事件
-             * @param openRowKeys - 展开的渲染行的 key
-             * @param currentRowKey - 当前点击的渲染行的 key
-             * @param expanded - 当前点击是展开还是收起
-             * @param currentRecord - 当前点击额外渲染行的记录
-             */
-            // onRowOpen: PropTypes.func,
-            // onExpandedRowClick: PropTypes.func,
-            // locale: PropTypes.object,
             ...BaseComponent.propTypes,
         };
 

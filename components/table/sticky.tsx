@@ -11,24 +11,10 @@ export default function sticky(BaseComponent: typeof Base) {
     class StickyTable extends React.Component<StickyTableProps> {
         static StickyHeader = StickyHeader;
         static propTypes = {
-            /**
-             * 表头是否是 sticky
-             */
-            // stickyHeader: PropTypes.bool,
-            /**
-             * 距离窗口顶部达到指定偏移量后触发
-             */
-            // offsetTop: PropTypes.number,
-            /**
-             * affix 组件的的属性
-             */
-            // affixProps: PropTypes.object,
-            // components: PropTypes.object,
             ...BaseComponent.propTypes,
         };
 
         static defaultProps = {
-            // components: {},
             ...BaseComponent.defaultProps,
         };
 

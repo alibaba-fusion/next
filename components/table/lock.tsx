@@ -1,4 +1,4 @@
-import React, { Children, ReactElement } from 'react';
+import React, { Children, type ReactElement } from 'react';
 import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
@@ -41,10 +41,6 @@ export default function lock(BaseComponent: typeof Base) {
         static LockHeader = LockHeader;
         static propTypes = {
             scrollToCol: PropTypes.number,
-            /**
-             * 指定滚动到某一行，仅在`useVirtual`的时候生效
-             */
-            // scrollToRow: PropTypes.number,
             ...BaseComponent.propTypes,
         };
 
