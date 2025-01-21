@@ -442,6 +442,36 @@ describe('Nav', () => {
             cy.get('#icononly-switch-item-2').should('have.css', 'padding-left', '40px');
         });
 
+        it('should align center when iconOnly and width < 58', () => {
+            cy.mount(
+                <div style={{ width: 40 }}>
+                    <Nav iconOnlyWidth="100%" iconOnly hasArrow hasTooltip>
+                        <Item icon="account">三个字</Item>
+                        <Item icon="account">四个字的</Item>
+                        <Item icon="account">五个字导航</Item>
+                        <Item icon={'atm'}>六个字的导航</Item>
+                        <Item icon={<span>QAQ</span>}>七个字的长导航</Item>
+                        <SubNav icon="account" label="Sub Nav">
+                            <Item icon="account">Item 1</Item>
+                            <Item icon="account">Item 2</Item>
+                            <Item icon="account">Item 3</Item>
+                            <Item icon="account">Item 4</Item>
+                        </SubNav>
+                    </Nav>
+                </div>
+            );
+            cy.get('.next-nav').then($el => {
+                const { width: navWidth, left: navLeft } = $el[0].getBoundingClientRect();
+                const { width, left } = document
+                    .querySelector('.next-menu-item.next-nav-item')!
+                    .getBoundingClientRect();
+                const target = Math.round(Math.abs(left - navLeft));
+                const expected = (navWidth - width) >> 1;
+                expect(width).not.equal(0);
+                expect(target).equal(expected);
+            });
+        });
+
         it('should support fixed', () => {
             cy.mount(
                 <Nav
