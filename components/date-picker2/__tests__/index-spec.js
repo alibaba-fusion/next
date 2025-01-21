@@ -861,6 +861,94 @@ describe('Picker', () => {
         });
     });
 
+    describe('RangePicker arrow', () => {
+        it('align tl bl', () => {
+            return co(function* () {
+                wrapper = render(<RangePicker popupAlign="tl bl" />);
+                const inputBegin = wrapper.find('.next-input')[0];
+                ReactTestUtils.Simulate.click(inputBegin);
+                yield delay(300);
+                assert.equal(findArrowDom().offsetTop, 13);
+                assert.equal(findArrowDom().style.left, `${getArrowLeft()}px`);
+                wrapper.unmount();
+            });
+        });
+        it('align tr br', () => {
+            return co(function* () {
+                wrapper = render(
+                    <div
+                        style={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                        }}
+                    >
+                        <div style={{ flex: 1 }}></div>
+                        <div style={{ width: 300 }}>
+                            <RangePicker dev={true} popupAlign="tr br" />
+                        </div>
+                    </div>
+                );
+                const inputBegin = wrapper.find('.next-input')[0];
+                ReactTestUtils.Simulate.click(inputBegin);
+                yield delay(300);
+                assert.equal(findArrowDom().offsetTop, 13);
+                assert.equal(findArrowDom().style.left, `${getArrowLeft()}px`);
+                wrapper.unmount();
+            });
+        });
+
+        it('align br tr', () => {
+            return co(function* () {
+                wrapper = render(
+                    <div
+                        style={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            height: 400,
+                            alignItems: 'end',
+                        }}
+                    >
+                        <div style={{ flex: 1 }}></div>
+                        <div style={{ width: 300 }}>
+                            <RangePicker popupAlign="br tr" />
+                        </div>
+                    </div>
+                );
+                const inputBegin = wrapper.find('.next-input')[0];
+                ReactTestUtils.Simulate.click(inputBegin);
+                yield delay(300);
+                const count = findOverlayDom().offsetHeight - findArrowDom().offsetTop;
+                assert.equal(count, 25);
+                assert.equal(findArrowDom().style.left, `${getArrowLeft()}px`);
+                wrapper.unmount();
+            });
+        });
+
+        it('align bl tl', () => {
+            return co(function* () {
+                wrapper = render(
+                    <div
+                        style={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            height: 400,
+                            alignItems: 'end',
+                        }}
+                    >
+                        <RangePicker popupAlign="bl tl" />
+                    </div>
+                );
+                const inputBegin = wrapper.find('.next-input')[0];
+                ReactTestUtils.Simulate.click(inputBegin);
+                yield delay(300);
+                const count = findOverlayDom().offsetHeight - findArrowDom().offsetTop;
+                assert.equal(count, 25);
+                assert.equal(findArrowDom().style.left, `${getArrowLeft()}px`);
+                wrapper.unmount();
+            });
+        });
+    });
+
     describe('event', () => {
         it('onChange', () => {
             let changeCount = 0;
@@ -1359,4 +1447,21 @@ function hasClassNames(node, classNames) {
 
 function showTimePanel() {
     return !!wrapper.find('.next-time-picker2-panel').length;
+}
+
+function findArrowDom() {
+    return document.querySelector('.next-range-picker2-arrow');
+}
+
+function findOverlayDom() {
+    return document.querySelector('.next-date-picker2-overlay');
+}
+
+function getArrowLeft() {
+    const inputBegin = wrapper.find('.next-input')[0];
+    const { left: arrowLeft } = inputBegin.getBoundingClientRect();
+    const { left: panelLeft } = findOverlayDom().getBoundingClientRect();
+    const offset = Math.round(Math.abs(arrowLeft - panelLeft));
+    const inputOffsetLeft = inputBegin.offsetLeft;
+    return offset + inputOffsetLeft;
 }

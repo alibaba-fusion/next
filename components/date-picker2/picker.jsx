@@ -425,11 +425,11 @@ class Picker extends React.Component {
                 if (isRange) {
                     const updatedInputValue = [...inputValue];
                     updatedInputValue[inputType] = updatedInputValue[inputType] + ' ';
-                    this.setState({ inputValue: updatedInputValue })
+                    this.setState({ inputValue: updatedInputValue });
                 } else {
                     this.setState({
-                        inputValue: inputValue + ' '
-                    })
+                        inputValue: inputValue + ' ',
+                    });
                 }
                 break;
             }
@@ -441,7 +441,13 @@ class Picker extends React.Component {
     handleChange = (v, eventType) => {
         const { format } = this.props;
         const { isRange, showOk, value, preValue } = this.state;
-        const forceEvents = ['KEYDOWN_ENTER', 'CLICK_PRESET', 'CLICK_OK', 'INPUT_CLEAR', 'VISIBLE_CHANGE'];
+        const forceEvents = [
+            'KEYDOWN_ENTER',
+            'CLICK_PRESET',
+            'CLICK_OK',
+            'INPUT_CLEAR',
+            'VISIBLE_CHANGE',
+        ];
         const isTemporary = showOk && !forceEvents.includes(eventType);
 
         // 面板收起时候，将值设置为确认值
@@ -566,15 +572,37 @@ class Picker extends React.Component {
         return left;
     };
 
+    getRangeInputStartClientRect = () => {
+        const rect =
+            this.dateInput &&
+            this.dateInput.input &&
+            this.dateInput.input[DATE_INPUT_TYPE.BEGIN] &&
+            this.dateInput.input &&
+            this.dateInput.input[DATE_INPUT_TYPE.BEGIN].getInputNode().getBoundingClientRect();
+        return rect || {};
+    };
+
     getPopupOffsetLeft = () => {
         const inputOffsetLeft = this.getRangeInputOffsetLeft();
         const popupElement = this.popupRef.current;
         const popupElementWidth = popupElement ? popupElement.offsetWidth : 0;
+        // 计算弹层相对于输入框的偏移量
+        let { left: inputLeft = 0 } = this.getRangeInputStartClientRect();
+        const popupElementLeft = popupElement ? popupElement.getBoundingClientRect().left || 0 : 0;
+        const offset = popupElementWidth ? Math.round(Math.abs(popupElementLeft - inputLeft)) : 0;
+
+        // 没有的时候，默认不偏移，要不然会因为 css 中的 transform 属性导致会有偏移动画
+        if (!popupElementWidth || (!inputOffsetLeft && inputOffsetLeft !== 0)) {
+            return {
+                arrowLeft: 0,
+                panelLeft: 0,
+            };
+        }
 
         // 弹层宽度大于输入元素长度，只偏移 arrow
         if (popupElementWidth > 1.2 * inputOffsetLeft) {
             return {
-                arrowLeft: inputOffsetLeft,
+                arrowLeft: inputOffsetLeft + offset,
                 panelLeft: 0,
             };
         } else {
@@ -587,7 +615,13 @@ class Picker extends React.Component {
     };
 
     renderArrow = left => {
-        return <div key="arrow" className={`${this.props.prefix}range-picker2-arrow`} style={{ left }} />;
+        return (
+            <div
+                key="arrow"
+                className={`${this.props.prefix}range-picker2-arrow`}
+                style={{ left }}
+            />
+        );
     };
 
     render() {
@@ -641,7 +675,10 @@ class Picker extends React.Component {
 
             return (
                 <div className={previewCls}>
-                    {renderNode(renderPreview, isRange ? inputValue.join('-') : inputValue, [curValue, this.props])}
+                    {renderNode(renderPreview, isRange ? inputValue.join('-') : inputValue, [
+                        curValue,
+                        this.props,
+                    ])}
                 </div>
             );
         }
@@ -698,13 +735,20 @@ class Picker extends React.Component {
         };
 
         const DateNode = isRange ? (
-            <RangePanel justBeginInput={justBeginInput} onCalendarChange={onCalendarChange} {...panelProps} />
+            <RangePanel
+                justBeginInput={justBeginInput}
+                onCalendarChange={onCalendarChange}
+                {...panelProps}
+            />
         ) : (
             <DatePanel {...panelProps} />
         );
 
         // 底部节点
-        const oKable = !!(!this.checkValueDisabled(inputValue) && (isRange ? inputValue && inputValue[inputType] : inputValue));
+        const oKable = !!(
+            !this.checkValueDisabled(inputValue) &&
+            (isRange ? inputValue && inputValue[inputType] : inputValue)
+        );
         const shouldShowFooter = showOk || preset || extraFooterRender;
 
         const footerNode = shouldShowFooter ? (
@@ -774,7 +818,11 @@ class Picker extends React.Component {
                 >
                     {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
                     <div onMouseDown={handleMouseDown} style={{ marginLeft: panelLeft }}>
-                        <div dir={rtl ? 'rtl' : undefined} className={`${prefixCls}-wrapper`} ref={this.popupRef}>
+                        <div
+                            dir={rtl ? 'rtl' : undefined}
+                            className={`${prefixCls}-wrapper`}
+                            ref={this.popupRef}
+                        >
                             {isRange ? this.renderArrow(arrowLeft) : null}
                             {DateNode}
                             {this.state.panelMode !== this.props.mode ? null : footerNode}
