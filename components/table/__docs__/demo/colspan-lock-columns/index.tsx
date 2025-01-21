@@ -46,7 +46,6 @@ const dataSource = [
 
 ReactDOM.render(
     <Table.StickyLock
-        type="primary"
         dataSource={dataSource}
         cellProps={(rowIndex, colIndex) => {
             if (colIndex === 0) {

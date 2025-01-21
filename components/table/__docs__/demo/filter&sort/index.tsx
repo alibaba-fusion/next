@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Table, Button, Icon } from '@alifd/next';
+import type { ColumnProps, TableProps } from '@alifd/next/types/table';
 
 const dataSource = () => {
         const result = [];
@@ -13,22 +14,19 @@ const dataSource = () => {
         }
         return result;
     },
-    render = (value, index, record) => {
+    render: ColumnProps['cell'] = (value, index, record) => {
         return <a href="javascript:;">Remove({record.id})</a>;
     };
 
 class App extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            dataSource: dataSource(),
-            filterMode: 'multiple',
-            sort: {
-                id: 'desc',
-            },
-        };
-    }
-    onSort(dataIndex, order) {
+    state = {
+        dataSource: dataSource(),
+        filterMode: 'multiple' as const,
+        sort: {
+            id: 'desc' as const,
+        },
+    };
+    onSort: TableProps['onSort'] = (dataIndex: 'id', order) => {
         console.log(dataIndex, order, '======');
         const dataSource = this.state.dataSource.sort(function (a, b) {
             const result = a[dataIndex] - b[dataIndex];
@@ -38,10 +36,11 @@ class App extends React.Component {
             dataSource,
             sort: { id: order },
         });
-    }
-    onFilter(filterParams) {
+    };
+    onFilter: TableProps['onFilter'] = filterParams => {
         let ds = dataSource();
-        Object.keys(filterParams).forEach(key => {
+        console.log(filterParams);
+        Object.keys(filterParams).forEach((key: 'title') => {
             const selectedKeys = filterParams[key].selectedKeys;
             if (selectedKeys.length) {
                 ds = ds.filter(record => {
@@ -52,12 +51,12 @@ class App extends React.Component {
             }
         });
         this.setState({ dataSource: ds });
-    }
-    changeMode() {
+    };
+    changeMode = () => {
         this.setState({
             filterMode: 'single',
         });
-    }
+    };
     render() {
         const filters = [
             {
@@ -106,15 +105,13 @@ class App extends React.Component {
         return (
             <div>
                 <p>
-                    <Button onClick={this.changeMode.bind(this)}>
-                        Change filter menu to single select
-                    </Button>
+                    <Button onClick={this.changeMode}>Change filter menu to single select</Button>
                 </p>
                 <Table
                     dataSource={this.state.dataSource}
-                    onSort={this.onSort.bind(this)}
+                    onSort={this.onSort}
                     sort={this.state.sort}
-                    onFilter={this.onFilter.bind(this)}
+                    onFilter={this.onFilter}
                 >
                     <Table.Column title="Id" dataIndex="id" sortable />
                     <Table.Column

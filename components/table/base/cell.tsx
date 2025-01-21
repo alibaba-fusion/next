@@ -1,0 +1,139 @@
+import React, { type ReactNode } from 'react';
+import PropTypes from 'prop-types';
+import classnames from 'classnames';
+import { type ClassPropsWithDefault, obj, pickAttrs } from '../../util';
+import type { CellProps } from '../types';
+
+type InnerCellProps = ClassPropsWithDefault<CellProps, typeof Cell.defaultProps>;
+
+export default class Cell extends React.Component<CellProps> {
+    static propTypes = {
+        prefix: PropTypes.string,
+        pure: PropTypes.bool,
+        primaryKey: PropTypes.oneOfType([PropTypes.symbol, PropTypes.string]),
+        className: PropTypes.string,
+        record: PropTypes.any,
+        value: PropTypes.any,
+        isIconLeft: PropTypes.bool,
+        colIndex: PropTypes.number,
+        rowIndex: PropTypes.number,
+        // 经过锁列调整后的列索引，lock right 的列会从非 0 开始
+        __colIndex: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+        title: PropTypes.any,
+        width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+        context: PropTypes.any,
+        cell: PropTypes.oneOfType([PropTypes.element, PropTypes.node, PropTypes.func]),
+        align: PropTypes.oneOf(['left', 'center', 'right']),
+        component: PropTypes.oneOf(['td', 'th', 'div']),
+        children: PropTypes.any,
+        style: PropTypes.object,
+        innerStyle: PropTypes.object,
+        filterMode: PropTypes.oneOf(['single', 'multiple']),
+        filterMenuProps: PropTypes.object,
+        filterProps: PropTypes.object,
+        filters: PropTypes.array,
+        sortable: PropTypes.bool,
+        sortDirections: PropTypes.arrayOf(PropTypes.oneOf(['desc', 'asc', 'default'])),
+        lock: PropTypes.any,
+        type: PropTypes.oneOf(['header', 'body']),
+        resizable: PropTypes.bool,
+        asyncResizable: PropTypes.bool,
+        __normalized: PropTypes.bool,
+    };
+
+    static defaultProps = {
+        component: 'td',
+        type: 'body',
+        isIconLeft: false,
+        cell: (value: unknown) => value,
+        prefix: 'next-',
+    };
+
+    readonly props: InnerCellProps;
+
+    shouldComponentUpdate(nextProps: CellProps) {
+        if (nextProps.pure) {
+            const isEqual = obj.shallowEqual(this.props, nextProps);
+            return !isEqual;
+        }
+        return true;
+    }
+
+    render() {
+        const {
+            prefix,
+            className,
+            cell,
+            value,
+            resizable,
+            asyncResizable,
+            colIndex,
+            rowIndex,
+            __colIndex,
+            record,
+            context,
+            align,
+            style = {},
+            component: Tag,
+            children,
+            title,
+            width,
+            innerStyle,
+            primaryKey,
+            __normalized,
+            filterMode,
+            filterMenuProps,
+            filterProps,
+            filters,
+            sortable,
+            sortDirections,
+            lock,
+            pure,
+            locale,
+            expandedIndexSimulate,
+            rtl,
+            isIconLeft,
+            type,
+            htmlTitle,
+            wordBreak,
+            ...others
+        } = this.props;
+        const tagStyle = { ...style };
+        const cellProps = { value, index: rowIndex, record, context };
+        let content: ReactNode = cell;
+        if (React.isValidElement(content)) {
+            // header 情况下，props.cell 为 column.title，不需要传递这些 props
+            content = React.cloneElement(content, type === 'header' ? undefined : cellProps);
+        } else if (typeof content === 'function') {
+            content = content(value, rowIndex, record, context);
+        }
+        if (align) {
+            tagStyle.textAlign = align;
+            if (rtl) {
+                tagStyle.textAlign =
+                    align === 'left' ? 'right' : align === 'right' ? 'left' : align;
+            }
+        }
+        const cls = classnames({
+            [`${prefix}table-cell`]: true,
+            [`${prefix}table-word-break-${wordBreak}`]: !!wordBreak,
+            [className!]: className,
+        });
+
+        return (
+            <Tag {...pickAttrs(others)} className={cls} style={tagStyle} role="gridcell">
+                <div
+                    className={`${prefix}table-cell-wrapper`}
+                    ref={this.props.getCellDomRef}
+                    style={innerStyle}
+                    title={htmlTitle}
+                    data-next-table-col={__colIndex}
+                    data-next-table-row={rowIndex}
+                >
+                    {isIconLeft ? children : content}
+                    {isIconLeft ? content : children}
+                </div>
+            </Tag>
+        );
+    }
+}

@@ -116,14 +116,41 @@ export interface BaseLocale extends LocaleConfig {
         shortMaxTagPlaceholder: string;
     };
     Table: {
+        /**
+         * 没有数据情况下 table 内的文案
+         */
         empty: string;
+        /**
+         * 过滤器中确认按钮文案
+         */
         ok: string;
+        /**
+         * 过滤器中重置按钮文案
+         */
         reset: string;
+        /**
+         * 排序升序状态下的文案
+         */
         asc: string;
+        /**
+         * 排序将序状态下的文案
+         */
         desc: string;
+        /**
+         * 可折叠行，展开状态下的文案
+         */
         expanded: string;
+        /**
+         * 可折叠行，折叠状态下的文案
+         */
         folded: string;
+        /**
+         * 过滤器文案
+         */
         filter: string;
+        /**
+         * header 里全选的按钮文案
+         */
         selectAll: string;
     };
     TimePicker: {

@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Table } from '@alifd/next';
+import type { TableProps } from '@alifd/next/types/table';
 
 const dataSource = () => {
     const result = [];
@@ -22,15 +23,14 @@ const propsConf = {
     },
 };
 
-const setRowProps = (record, index) => {
+const setRowProps: TableProps['rowProps'] = (record, index) => {
     if (index === 2) {
         return propsConf;
     }
 };
 
-const setCellProps = (rowIndex, colIndex, dataIndex, record) => {
+const setCellProps: TableProps['cellProps'] = (rowIndex, colIndex) => {
     if (rowIndex === 0 && colIndex === 0) {
-        console.log(record);
         return propsConf;
     }
 };
