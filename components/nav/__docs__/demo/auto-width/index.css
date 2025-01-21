@@ -1,0 +1,10 @@
+.demo-ctl {
+    background-color: #f1f1f1;
+    border-left: 4px solid #0d599a;
+    color: #0a7ac3;
+    margin-bottom: 20px;
+    padding: 5px;
+}
+.demo-ctl .next-radio-group {
+    margin: 5px;
+}

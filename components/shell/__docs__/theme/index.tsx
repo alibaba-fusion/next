@@ -161,6 +161,7 @@ class RenderShell extends React.Component<ShellThemeProps> {
                                     embeddable
                                     direction={globalDir}
                                     hozInLine
+                                    iconOnlyWidth="100%"
                                 >
                                     <Nav.Item icon="account">Nav Item 1</Nav.Item>
                                     <Nav.Item icon="calendar">Nav Item 2</Nav.Item>

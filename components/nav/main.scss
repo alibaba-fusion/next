@@ -381,6 +381,12 @@ $nav-icononly-width: 58px;
             text-overflow: clip;
         }
 
+        #{$menu-prefix}-item#{$nav-prefix}-item {
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
         // #{$menu-prefix}-item-text > span,
         // #{$nav-prefix}-group-label > #{$menu-prefix}-item-inner > span {
         //     opacity: 0;
