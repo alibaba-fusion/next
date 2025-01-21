@@ -1,537 +1,384 @@
 import React from 'react';
-import Enzyme, { mount } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
-import assert from 'power-assert';
-import Promise from 'promise-polyfill';
-import sinon from 'sinon';
+import PropTypes from 'prop-types';
 import Loading from '../../loading';
 import Icon from '../../icon';
-import Checkbox from '../../checkbox';
-import Table from '../index';
+import Table, { type TableProps } from '../index';
+import '../style';
 
-/* eslint-disable */
-Enzyme.configure({ adapter: new Adapter() });
+const dataSource = [
+    { id: '1', name: 'test' },
+    { id: '2', name: 'test2' },
+];
+
+const table = (
+    <Table dataSource={dataSource}>
+        <Table.Column dataIndex="id" />
+        <Table.Column dataIndex="name" />
+    </Table>
+);
+
+const stickyLock = (
+    <Table.StickyLock dataSource={dataSource}>
+        <Table.Column dataIndex="id" />
+        <Table.Column dataIndex="name" />
+    </Table.StickyLock>
+);
 
 describe('Table', () => {
-    let dataSource = [
-            { id: '1', name: 'test' },
-            { id: '2', name: 'test2' },
-        ],
-        table,
-        wrapper,
-        timeout,
-        stickyLock,
-        stickyLockWrapper,
-        timeoutStickyLock;
-
-    beforeEach(() => {
-        table = (
-            <Table dataSource={dataSource}>
-                <Table.Column dataIndex="id" />
-                <Table.Column dataIndex="name" />
-            </Table>
-        );
-
-        stickyLock = (
-            <Table.StickyLock dataSource={dataSource}>
-                <Table.Column dataIndex="id" />
-                <Table.Column dataIndex="name" />
-            </Table.StickyLock>
-        );
-
-        wrapper = mount(table);
-        stickyLockWrapper = mount(stickyLock);
-        timeout = (props, callback) => {
-            return new Promise(resolve => {
-                wrapper.setProps(props);
-                setTimeout(function () {
-                    resolve();
-                }, 10);
-            }).then(callback);
-        };
-
-        timeoutStickyLock = (props, callback) => {
-            return new Promise(resolve => {
-                stickyLockWrapper.setProps(props);
-                setTimeout(function () {
-                    resolve();
-                }, 10);
-            }).then(callback);
-        };
-    });
-
-    afterEach(() => {
-        table = null;
-        stickyLockWrapper = null;
-    });
-
     it('should mount table', () => {
-        assert(wrapper.find('.next-table-body .next-table-row').length === 2);
+        cy.mount(table);
+        cy.get('.next-table-body .next-table-row').should('have.length', 2);
     });
 
-    it('should render checkboxMode', done => {
-        timeout(
-            {
-                rowSelection: {
-                    getProps: record => {
-                        if (record.id === '1') {
-                            return {
-                                disabled: true,
-                            };
-                        }
-                    },
-                },
-            },
-            () => {
-                assert(wrapper.find(Checkbox).length === 3);
-                assert(wrapper.find('.next-checkbox-wrapper.disabled').length === 1);
-                wrapper.find('.next-checkbox').at(2).find('input').simulate('click');
-                wrapper.find('.next-checkbox').at(2).find('input').simulate('change');
-                done();
-            }
-        );
-    });
-
-    it('should support rowSelect control', done => {
-        timeout(
-            {
-                rowSelection: {
-                    selectedRowKeys: ['1'],
-                },
-            },
-            () => {
-                assert(wrapper.find('.next-checkbox-wrapper.checked').length === 1);
-                done();
-            }
-        );
-    });
-
-    it('should render when dataSource is [] & children is null', done => {
-        timeout(
-            {
-                dataSource: [],
-                children: [],
-            },
-            () => {
-                assert(wrapper);
-                done();
-            }
-        );
-    });
-
-    it('should render when dataSource is made of string', done => {
-        timeout(
-            {
-                dataSource: ['string1', 'string2'],
-                children: [<Table.Column cell={(value, index, record) => record} />],
-            },
-            () => {
-                assert(wrapper);
-                done();
-            }
-        );
-    });
-
-    it('should render RadioMode', done => {
-        timeout(
-            {
-                rowSelection: {
-                    mode: 'single',
-                },
-            },
-            () => {
-                assert(wrapper.find('.next-radio').length === 2);
-                done();
-            }
-        );
-    });
-
-    it('should support columnProps/titleProps/titleAddons of rowSelection', done => {
-        timeout(
-            {
-                rowSelection: {
-                    columnProps: () => {
-                        return {
-                            lock: 'right',
-                            width: 90,
-                            align: 'center',
-                        };
-                    },
-                    titleAddons: () => {
-                        return <div id="table-titleAddons">请选择</div>;
-                    },
-                    titleProps: () => {
+    it('should render checkboxMode', () => {
+        cy.mount(table).as('Demo');
+        cy.rerender<TableProps>('Demo', {
+            rowSelection: {
+                getProps: record => {
+                    if (record.id === '1') {
                         return {
                             disabled: true,
-                            children: '>',
                         };
-                    },
+                    }
                 },
             },
-            () => {
-                assert(wrapper.find('#table-titleAddons').at(0).text() === '请选择');
-                assert(wrapper.find('colgroup').at(2).props().children[0].props.style.width === 90);
-                assert(wrapper.find('th .next-checkbox-wrapper').at(1).hasClass('disabled'));
-                assert(
-                    wrapper.find('th .next-checkbox-wrapper .next-checkbox-label').at(0).text() ===
-                        '>'
-                );
-                done();
-            }
-        );
+        });
+        cy.get('.next-checkbox').should('have.length', 3);
+        cy.get('.next-checkbox-wrapper.disabled').should('have.length', 1);
     });
 
-    it('should support events', done => {
-        const onRowClick = sinon.spy();
-        const onRowMouseEnter = sinon.spy();
-        const onRowMouseLeave = sinon.spy();
-        timeout(
-            {
-                onRowClick,
-                onRowMouseEnter,
-                onRowMouseLeave,
+    it('should support rowSelect control', () => {
+        cy.mount(table).as('Demo');
+        cy.rerender<TableProps>('Demo', {
+            rowSelection: {
+                selectedRowKeys: ['1'],
             },
-            () => {
-                const row = wrapper.find('.next-table-body .next-table-row').first();
-                row.simulate('click');
-                assert(onRowClick.called);
-                row.simulate('mouseenter');
-                assert(onRowMouseEnter.called);
-                row.simulate('mouseleave');
-                assert(onRowMouseLeave.called);
-                done();
-            }
-        );
+        });
+        cy.get('.next-checkbox-wrapper.checked').should('have.length', 1);
     });
 
-    it('should support sort', done => {
-        const onSort = (dataIndex, order) => {
-            assert(dataIndex === 'id');
-            assert(order === 'desc');
-        };
+    it('should render when dataSource is [] & children is null', () => {
+        cy.mount(table).as('Demo');
+        cy.rerender<TableProps>('Demo', {
+            dataSource: [],
+            children: [],
+        });
+        cy.get('.next-table-empty').should('exist');
+        cy.rerender<TableProps>('Demo', {
+            dataSource: [],
+            children: null,
+        });
+        cy.get('.next-table-empty').should('exist');
+    });
 
-        timeout(
-            {
-                children: [
-                    <Table.Column dataIndex="id" sortable />,
-                    <Table.Column dataIndex="name" />,
-                ],
-                onSort,
+    it('should render when dataSource is made of string', () => {
+        cy.mount(table).as('Demo');
+        cy.rerender<TableProps>('Demo', {
+            // @ts-expect-error 参考 types 里 RecordItem 的描述
+            dataSource: ['string1', 'string2'],
+            children: [<Table.Column key={1} cell={(value, index, record) => record} />],
+        });
+        cy.get('.next-table-body .next-table-row').should('have.length', 2);
+    });
+
+    it('should render RadioMode', () => {
+        cy.mount(table).as('Demo');
+        cy.rerender<TableProps>('Demo', {
+            rowSelection: {
+                mode: 'single',
             },
-            () => {
-                const sortNode = wrapper.find('.next-table-header .next-table-sort');
-                sortNode.simulate('click');
-                done();
-            }
-        );
+        });
+        cy.get('.next-radio').should('have.length', 2);
     });
 
-    it('should support tableLayout&tableWidth', done => {
-        timeout(
-            {
-                children: [
-                    <Table.Column dataIndex="id" sortable />,
-                    <Table.Column dataIndex="name" />,
-                ],
-                tableLayout: 'fixed',
-                tableWidth: 1200,
-            },
-            () => {
-                const tablewrapper = wrapper.find('.next-table');
-                const table = wrapper.find('.next-table table');
-
-                assert(tablewrapper.hasClass('next-table-layout-fixed'));
-                assert(table.at(0).props().style.width === 1200);
-                done();
-            }
-        );
-    });
-    it('should support sortIcons', done => {
-        const onSort = (dataIndex, order) => {
-            assert(dataIndex === 'id');
-            assert(order === 'desc');
-        };
-
-        timeout(
-            {
-                children: [
-                    <Table.Column dataIndex="id" sortable />,
-                    <Table.Column dataIndex="name" />,
-                ],
-                onSort,
-                sortIcons: {
-                    desc: (
-                        <Icon
-                            style={{ top: '6px', left: '4px' }}
-                            type={'arrow-down'}
-                            size="small"
-                        />
-                    ),
-                    asc: (
-                        <Icon style={{ top: '-6px', left: '4px' }} type={'arrow-up'} size="small" />
-                    ),
+    it('should support columnProps/titleProps/titleAddons of rowSelection', () => {
+        cy.mount(table).as('Demo');
+        cy.rerender<TableProps>('Demo', {
+            rowSelection: {
+                columnProps: () => {
+                    return {
+                        lock: 'right',
+                        width: 90,
+                        align: 'center',
+                    };
+                },
+                titleAddons: () => {
+                    return <div id="table-titleAddons">请选择</div>;
+                },
+                titleProps: () => {
+                    return {
+                        disabled: true,
+                        children: '>',
+                    };
                 },
             },
-            () => {
-                const sortNode = wrapper.find('.next-table-header .next-table-sort');
-                assert(sortNode.find('.next-icon-arrow-down'));
-                assert(sortNode.find('.next-icon-arrow-up'));
-                sortNode.simulate('click');
-                done();
-            }
-        );
+        });
+        cy.get('#table-titleAddons').eq(0).should('have.text', '请选择');
+        cy.get('colgroup col').eq(2).should('have.css', 'width', '90px');
+        cy.get('th .next-checkbox-wrapper').eq(0).should('have.class', 'disabled');
+        cy.get('th .next-checkbox-wrapper .next-checkbox-label').eq(0).should('have.text', '>');
     });
 
-    it('should support getRowProps for setting className', done => {
-        const getRowProps = record => {
+    it('should support events', () => {
+        const onRowClick = cy.spy();
+        const onRowMouseEnter = cy.spy();
+        const onRowMouseLeave = cy.spy();
+        cy.mount(table).as('Demo');
+        cy.rerender<TableProps>('Demo', {
+            onRowClick,
+            onRowMouseEnter,
+            onRowMouseLeave,
+        });
+        cy.get('.next-table-body .next-table-row').first().trigger('click');
+        cy.wrap(onRowClick).should('be.called');
+        // React 的 mouseEnter 事件是通过监听 mouseover 实现的
+        cy.get('.next-table-body .next-table-row').first().trigger('mouseover');
+        cy.wrap(onRowMouseEnter).should('be.called');
+        // React 的 mouseLeave 事件是通过监听 mouseout 实现的
+        cy.get('.next-table-body .next-table-row').first().trigger('mouseout');
+        cy.wrap(onRowMouseLeave).should('be.called');
+    });
+
+    it('should support sort', () => {
+        const onSort = cy.spy();
+
+        cy.mount(table).as('Demo');
+        cy.rerender<TableProps>('Demo', {
+            children: [
+                <Table.Column key={1} dataIndex="id" sortable />,
+                <Table.Column key={2} dataIndex="name" />,
+            ],
+            onSort,
+        });
+        cy.get('.next-table-header .next-table-sort').first().click();
+        cy.wrap(onSort).should('be.calledWith', 'id', 'desc');
+    });
+
+    it('should support tableLayout&tableWidth', () => {
+        cy.mount(table).as('Demo');
+        cy.rerender<TableProps>('Demo', {
+            children: [
+                <Table.Column key="id" dataIndex="id" sortable />,
+                <Table.Column key="name" dataIndex="name" />,
+            ],
+            tableLayout: 'fixed',
+            tableWidth: 1200,
+        });
+        cy.get('.next-table').should('have.class', 'next-table-layout-fixed');
+        cy.get('.next-table table').should('have.css', 'width', '1200px');
+    });
+    it('should support sortIcons', () => {
+        const onSort = cy.spy();
+
+        cy.mount(table).as('Demo');
+        cy.rerender<TableProps>('Demo', {
+            children: [
+                <Table.Column key="id" dataIndex="id" sortable />,
+                <Table.Column key="name" dataIndex="name" />,
+            ],
+            onSort,
+            sortIcons: {
+                desc: <Icon style={{ top: '6px', left: '4px' }} type={'arrow-down'} size="small" />,
+                asc: <Icon style={{ top: '-6px', left: '4px' }} type={'arrow-up'} size="small" />,
+            },
+        });
+        cy.get('.next-table-header .next-table-sort .next-icon-arrow-down').should('exist');
+        cy.get('.next-table-header .next-table-sort .next-icon-arrow-up').should('exist');
+        cy.get('.next-table-header .next-table-sort').first().click();
+        cy.wrap(onSort).should('be.calledWith', 'id', 'desc');
+    });
+
+    it('should support getRowProps for setting className', () => {
+        const getRowProps: TableProps['getRowProps'] = record => {
             if (record.id === '1') {
                 return { className: 'rowClassName' };
             }
         };
-        timeout(
-            {
-                getRowProps,
-            },
-            () => {
-                const row = wrapper.find('.next-table-body .next-table-row').first();
-                assert(row.hasClass('rowClassName'));
-                done();
-            }
-        );
+        cy.mount(table).as('Demo');
+        cy.rerender<TableProps>('Demo', {
+            getRowProps,
+        });
+        cy.get('.next-table-body .next-table-row').first().should('have.class', 'rowClassName');
     });
 
-    it('should support rowProps for setting className', done => {
-        const rowProps = record => {
+    it('should support rowProps for setting className', () => {
+        const rowProps: TableProps['rowProps'] = record => {
             if (record.id === '1') {
                 return { className: 'rowClassName' };
             }
         };
-        timeout(
-            {
-                rowProps,
-            },
-            () => {
-                const row = wrapper.find('.next-table-body .next-table-row').first();
-                assert(row.hasClass('rowClassName'));
-                done();
-            }
-        );
+        cy.mount(table).as('Demo');
+        cy.rerender<TableProps>('Demo', {
+            rowProps,
+        });
+        cy.get('.next-table-body .next-table-row').first().should('have.class', 'rowClassName');
     });
 
-    it('should support fixedHeader, isZebra, hasBorder, loading', done => {
-        timeout(
-            {
-                fixedHeader: true,
-            },
-            () => {
-                assert(wrapper.find('div.next-table-fixed').length === 1);
-            }
-        )
-            .then(() => {
-                return timeout(
-                    {
-                        isZebra: true,
-                    },
-                    () => {
-                        assert(wrapper.find('div.zebra').length === 1);
-                    }
-                );
-            })
-            .then(() => {
-                return timeout(
-                    {
-                        hasBorder: false,
-                    },
-                    () => {
-                        assert(wrapper.find('div.only-bottom-border').length === 1);
-                    }
-                );
-            })
-            .then(() => {
-                return timeout(
-                    {
-                        loading: true,
-                    },
-                    () => {
-                        wrapper.debug();
-                        assert(wrapper.find(Loading).length === 1);
-                    }
-                );
-            })
-            .then(() => {
-                const loadingIndicator = <div className="test-custom-loading">Loading...</div>;
-                const CustomLoading = ({ className }) => (
-                    <Loading className={className} indicator={loadingIndicator} />
-                );
+    it('should support fixedHeader, isZebra, hasBorder, loading', () => {
+        cy.mount(table).as('Demo');
+        cy.rerender<TableProps>('Demo', {
+            fixedHeader: true,
+        });
+        cy.get('.next-table-fixed').should('exist');
+        cy.rerender<TableProps>('Demo', {
+            isZebra: true,
+        });
+        cy.get('.zebra').should('exist');
+        cy.rerender<TableProps>('Demo', {
+            hasBorder: false,
+        });
+        cy.get('.only-bottom-border').should('exist');
+        cy.rerender<TableProps>('Demo', {
+            loading: true,
+        });
+        cy.get('.next-loading').should('exist');
+        const loadingIndicator = <div className="test-custom-loading">Loading...</div>;
+        const CustomLoading: TableProps['loadingComponent'] = ({ className }) => (
+            <Loading className={className} indicator={loadingIndicator} />
+        );
+        CustomLoading.propTypes = {
+            className: PropTypes.string,
+        };
+        cy.rerender<TableProps>('Demo', {
+            loading: true,
+            loadingComponent: CustomLoading,
+        });
+        cy.get('.test-custom-loading').should('exist');
+    });
 
-                return timeout(
-                    {
-                        loading: true,
-                        loadingComponent: CustomLoading,
-                    },
-                    () => {
-                        wrapper.debug();
-                        assert(wrapper.find(CustomLoading).length === 1);
-                        assert(wrapper.find('div.test-custom-loading').length === 1);
-                        done();
-                    }
-                );
+    it('should support expandedRowRender getExpandedColProps with expandedIndexSimulate', () => {
+        cy.mount(table).as('Demo');
+        const cellHandler = cy.spy();
+        cy.rerender<TableProps>('Demo', {
+            children: [
+                <Table.Column key="id" dataIndex="id" width={200} />,
+                <Table.Column
+                    key="custom"
+                    cell={(record, index) => {
+                        cellHandler(index);
+                    }}
+                    width={200}
+                />,
+            ],
+            expandedRowRender: (record: { name: string }, index) => record.name + index,
+            getRowProps: (record: { id: string }, index) => {
+                expect(Number(record.id)).equal(index + 1);
+                return { className: `next-myclass-${index}` };
+            },
+            getExpandedColProps: (record: { id: string }, index) => {
+                expect(Number(record.id)).equal(index + 1);
+            },
+            expandedIndexSimulate: true,
+            expandedRowIndent: [1, 1],
+        });
+        cy.wrap(cellHandler).should('be.calledTwice');
+        cy.get('.next-table-body .next-table-expanded-ctrl').eq(0).click();
+        cy.get('.next-table-body .next-table-expanded-row')
+            .eq(0)
+            .invoke('text')
+            .then(text => {
+                expect(text.trim()).equal('test0');
+            });
+        cy.get('.next-table-body .next-table-expanded-ctrl').eq(1).click();
+        cy.get('.next-table-body .next-table-expanded-row')
+            .eq(1)
+            .invoke('text')
+            .then(text => {
+                expect(text.trim()).equal('test21');
+            });
+        cy.get('.next-table-body .next-table-expanded-row td')
+            .eq(0)
+            .invoke('text')
+            .then(text => {
+                expect(text.trim()).equal('');
+            });
+        cy.get('.next-table-body .next-table-expanded-row')
+            .eq(0)
+            .find('td')
+            .last()
+            .invoke('text')
+            .then(text => {
+                expect(text.trim()).equal('');
             });
     });
 
-    it('should support expandedRowRender getExpandedColProps with expandedIndexSimulate', done => {
-        const arr = [];
-        timeout(
-            {
-                children: [
-                    <Table.Column dataIndex="id" width={200} />,
-                    <Table.Column
-                        cell={(record, index) => {
-                            arr.push(index);
-                        }}
-                        width={200}
-                    />,
-                ],
-                expandedRowRender: (record, index) => record.name + index,
-                getRowProps: (record, index) => {
-                    assert(record.id == index + 1);
-                    return { className: `next-myclass-${index}` };
-                },
-                getExpandedColProps: (record, index) => {
-                    assert(record.id == index + 1);
-                },
-                expandedIndexSimulate: true,
+    it('should support expandedRowEvents', () => {
+        const onRowOpen = cy.spy();
+        cy.mount(table).as('Demo');
+        cy.rerender<TableProps>('Demo', {
+            expandedRowRender: (record: { name: string }, index) => record.name + index,
+            onRowOpen: rowKeys => {
+                onRowOpen(rowKeys[0]);
             },
-            () => {
-                assert(arr.toString() === '0,1');
-
-                let expandedCtrl0 = wrapper
-                    .find('.next-table-body .next-table-expanded-ctrl')
-                    .at(0);
-                expandedCtrl0.simulate('click');
-                let expandedRow0 = wrapper.find('.next-table-body .next-table-expanded-row').at(0);
-
-                assert(expandedRow0.text().replace(/\s$|^\s/g, '') === 'test' + '0');
-
-                let expandedCtrl1 = wrapper
-                    .find('.next-table-body .next-table-expanded-ctrl')
-                    .at(1);
-                expandedCtrl1.simulate('click');
-                let expandedRow1 = wrapper.find('.next-table-body .next-table-expanded-row').at(1);
-
-                assert(expandedRow1.text().replace(/\s$|^\s/g, '') === 'test2' + '1');
-            }
-        ).then(() => {
-            return timeout(
-                {
-                    expandedRowIndent: [2, 1],
-                },
-                () => {
-                    let expandedRowTdFirst = wrapper
-                            .find('.next-table-body .next-table-expanded-row td')
-                            .first(),
-                        expandedRowTdSecond = wrapper
-                            .find('.next-table-body .next-table-expanded-row td')
-                            .at(1);
-                    assert(expandedRowTdFirst.text().replace(/\s$|^\s/g, '') === '');
-                    assert(expandedRowTdSecond.text().replace(/\s$|^\s/g, '') === '');
-                    done();
-                }
-            );
         });
+        cy.get('.next-table-body .next-table-expanded-row').should('not.exist');
+        cy.get('.next-table-body .next-table-expanded-ctrl').first().click();
+        cy.wrap(onRowOpen).should('be.calledWith', '1');
     });
 
-    it('should support expandedRowEvents', done => {
-        timeout(
-            {
-                expandedRowRender: record => record.name,
-                onRowOpen: rowKeys => {
-                    assert(rowKeys[0] === '1');
-                    done();
-                },
-            },
-            () => {
-                let expandedRow = wrapper.find('.next-table-body .next-table-expanded-row').first();
-                assert(expandedRow.length === 0);
-                let expandedCtrl = wrapper
-                    .find('.next-table-body .next-table-expanded-ctrl')
-                    .first();
-                expandedCtrl.simulate('click');
-            }
-        );
+    it('should support rowExpandable', () => {
+        cy.mount(table).as('Demo');
+        cy.rerender<TableProps>('Demo', {
+            dataSource: [
+                { id: '1', name: 'test', expandable: false },
+                { id: '2', name: 'test2', expandable: true },
+                { id: '3', name: 'test3', expandable: true },
+            ],
+            expandedRowRender: (record: { name: string }) => record.name,
+            rowExpandable: (record: { expandable: boolean }) => record.expandable,
+        });
+        cy.get('.next-table-row').should('have.length', 3);
+        cy.get('.next-table-prerow .next-table-cell-wrapper .next-icon').should('have.length', 2);
     });
 
-    it('should support rowExpandable', done => {
-        timeout(
-            {
-                dataSource: [
-                    { id: '1', name: 'test', expandable: false },
-                    { id: '2', name: 'test2', expandable: true },
-                    { id: '3', name: 'test3', expandable: true },
-                ],
-                expandedRowRender: record => record.name,
-                rowExpandable: record => record.expandable,
-            },
-            () => {
-                let expandedTotal = wrapper.find('.next-table-row');
-                let expandedIcon = wrapper.find(
-                    '.next-table-prerow .next-table-cell-wrapper .next-icon'
-                );
-
-                assert(expandedTotal.length - expandedIcon.length === 1);
-                done();
-            }
-        );
-    });
-
-    it('should support multiple header', done => {
-        timeout(
-            {
-                children: [
-                    <Table.ColumnGroup title="group1">
-                        <Table.Column dataIndex="id" />
-                        <Table.Column dataIndex="name" />
-                    </Table.ColumnGroup>,
-                    <Table.ColumnGroup title="group2">
-                        <Table.Column dataIndex="id" />
-                        <Table.Column dataIndex="name" />
-                    </Table.ColumnGroup>,
-                ],
-            },
-            () => {
-                let header = wrapper.find('.next-table-header tr');
-                assert(header.length === 2);
-                assert(header.first().text().replace(/\s/g, '') === 'group1group2');
-                done();
-            }
-        );
+    it('should support multiple header', () => {
+        cy.mount(table).as('Demo');
+        cy.rerender<TableProps>('Demo', {
+            children: [
+                <Table.ColumnGroup key="group1" title="group1">
+                    <Table.Column dataIndex="id" />
+                    <Table.Column dataIndex="name" />
+                </Table.ColumnGroup>,
+                <Table.ColumnGroup key="group2" title="group2">
+                    <Table.Column dataIndex="id" />
+                    <Table.Column dataIndex="name" />
+                </Table.ColumnGroup>,
+            ],
+        });
+        cy.get('.next-table-header tr').should('have.length', 2);
+        cy.get('.next-table-header tr')
+            .first()
+            .invoke('text')
+            .then(text => {
+                expect(text.trim()).equal('group1group2');
+            });
     });
 
     it('should support filter', () => {
-        let id;
-        const onFilter = (...args) => {
+        const onFilterSpy = cy.spy();
+        const onFilter: TableProps['onFilter'] = (...args) => {
                 console.log('on filter', args);
-                id = args[0].id.selectedKeys[0];
+                onFilterSpy(args[0].id.selectedKeys[0]);
             },
             filters = [
                 {
-                    label: 'Nano 包含1',
+                    label: 'Nano 包含 1',
                     value: 1,
                 },
                 {
-                    label: 'Nano 包含3',
+                    label: 'Nano 包含 3',
                     value: 3,
                 },
                 {
-                    label: 'Nano 包含2',
+                    label: 'Nano 包含 2',
                     value: 2,
                     children: [
                         {
-                            label: 'Nano 包含12',
+                            label: 'Nano 包含 12',
                             value: 22,
                         },
                         {
-                            label: 'Nano 包含23',
+                            label: 'Nano 包含 23',
                             value: 23,
                         },
                     ],
@@ -540,100 +387,92 @@ describe('Table', () => {
                     label: '其他',
                     children: [
                         {
-                            label: 'Nano 包含4',
+                            label: 'Nano 包含 4',
                             value: 4,
                         },
                         {
-                            label: 'Nano 包含5',
+                            label: 'Nano 包含 5',
                             value: 5,
                         },
                     ],
                 },
             ];
-        wrapper.setProps({
+        cy.mount(table).as('Demo');
+        cy.rerender('Demo', {
             onFilter,
-            children: [<Table.Column dataIndex="id" filters={filters} />],
-        });
+            children: [<Table.Column key="id" dataIndex="id" filters={filters} />],
+        }).as('Demo2');
 
-        assert(wrapper.find('next-table-filter-active').length === 0);
+        cy.get('next-table-filter-active').should('not.exist');
 
-        wrapper.find('.next-icon-filter').simulate('click');
-        wrapper.find('.next-btn').at(0).simulate('click');
-
-        assert.deepEqual(id, undefined);
-        wrapper.find('.next-icon-filter').simulate('click');
-        wrapper.find('.next-menu-item').at(1).simulate('click');
-        wrapper.find('.next-btn').at(0).simulate('click');
-        assert.deepEqual(id, '3');
-
-        assert(wrapper.find('next-table-filter-active'));
-        wrapper.setProps({
+        cy.get('.next-icon-filter').click();
+        cy.get('.next-btn').first().click();
+        cy.wrap(onFilterSpy).should('be.calledWith', undefined);
+        cy.get('.next-icon-filter').click();
+        cy.get('.next-menu-item').eq(1).click();
+        cy.get('.next-btn').first().click();
+        cy.wrap(onFilterSpy).should('be.calledWith', '3');
+        cy.get('.next-table-filter-active').should('exist');
+        cy.rerender('Demo2', {
             filterParams: {
                 id: {
                     selectedKeys: '1',
                 },
             },
         });
-        wrapper.find('.next-icon-filter').simulate('click');
-        wrapper.find('.next-btn').at(0).simulate('click');
-        assert.deepEqual(id, '1');
-        wrapper.find('.next-icon-filter').simulate('click');
-        assert.deepEqual(
-            wrapper.find('.next-menu-item').at(0).props().className.indexOf('next-selected') > -1,
-            true
-        );
+        cy.get('.next-icon-filter').click();
+        cy.get('.next-btn').eq(0).click();
+        cy.wrap(onFilterSpy).should('be.calledWith', '1');
+        cy.get('.next-icon-filter').click();
+        cy.get('.next-menu-item').eq(0).should('have.class', 'next-selected');
     });
 
     it('should support lock', () => {
-        wrapper.setProps({
+        cy.mount(table).as('Demo');
+        cy.rerender<TableProps>('Demo', {
             children: [
-                <Table.Column dataIndex="id" lock width={200} />,
-                <Table.Column dataIndex="id" lock="right" width={200} />,
+                <Table.Column key="id" dataIndex="id" lock width={200} />,
+                <Table.Column key="name" dataIndex="name" lock="right" width={200} />,
             ],
-        });
-        wrapper.debug();
-        assert(wrapper.find('div.next-table-lock-left').length === 1);
-        assert(wrapper.find('div.next-table-lock-right').length === 1);
-        assert(wrapper.find('div.next-table-empty').length === 0);
-        //Fix #21
-        wrapper.setProps({
+        }).as('Demo2');
+        cy.get('.next-table-lock-left').should('exist');
+        cy.get('.next-table-lock-right').should('exist');
+        cy.get('.next-table-empty').should('not.exist');
+        cy.rerender('Demo2', {
             dataSource: [],
         });
-        assert(wrapper.find('div.next-table-empty').length !== 0);
+        cy.get('.next-table-empty').should('exist');
     });
 
     it('should support async virtual', () => {
-        wrapper.setProps({
+        cy.mount(table).as('Demo');
+        cy.rerender<TableProps>('Demo', {
             dataSource: [],
             useVirtual: true,
             children: [
-                <Table.Column dataIndex="id" lock width={200} />,
-                <Table.Column dataIndex="id" lock="right" width={200} />,
+                <Table.Column key="id" dataIndex="id" lock width={200} />,
+                <Table.Column key="name" dataIndex="name" lock="right" width={200} />,
             ],
+        }).as('Demo2');
+        cy.rerender('Demo2', {
+            dataSource: new Array(40).fill((i: number) => {
+                return {
+                    id: `${i}`,
+                    name: `test${i}`,
+                };
+            }),
         });
-        assert(wrapper.find('div.next-table-empty').length !== 0);
-
-        const dataSource = new Array(40).fill(i => {
-            return {
-                id: i + '',
-                name: `test${i}`,
-            };
-        });
-        wrapper.setProps({
-            useVirtual: true,
-            dataSource,
-        });
-
-        assert(wrapper.find('div.next-table-empty').length === 0);
-        assert(wrapper.find('tr.next-table-row').length < 40);
+        cy.get('.next-table-empty').should('not.exist');
+        cy.get('.next-table-row').its('length').should('be.lt', 40);
     });
 
     it('should support virtual + list table', () => {
-        timeout({
+        cy.mount(table).as('Demo');
+        cy.rerender<TableProps>('Demo', {
             children: [
-                <Table.GroupHeader cell={<div>header</div>} />,
-                <Table.Column dataIndex="id" />,
-                <Table.GroupFooter cell={<div>footer</div>} />,
+                <Table.GroupHeader key="header" cell={<div>header</div>} />,
+                <Table.Column key="id" dataIndex="id" />,
+                <Table.GroupFooter key="footer" cell={<div>footer</div>} />,
             ],
             useVirtual: true,
             dataSource: [
@@ -652,253 +491,163 @@ describe('Table', () => {
                     name: 'test2',
                 },
             ],
-        }).then(() => {
-            assert(wrapper.find('tr.next-table-group-header').length === 2);
-            assert(wrapper.find('tr.next-table-group-footer').length === 2);
-            done();
         });
+        cy.get('.next-table-group-header').should('have.length', 2);
+        cy.get('.next-table-group-footer').should('have.length', 2);
     });
 
-    it('should support lock row mouseEnter mouseLeave', done => {
-        wrapper.setProps({
+    it('should support lock row mouseEnter mouseLeave', () => {
+        const onRowClick = cy.spy();
+        const onRowMouseEnter = cy.spy();
+        const onRowMouseLeave = cy.spy();
+        cy.mount(table).as('Demo');
+        cy.rerender<TableProps>('Demo', {
             children: [
-                <Table.Column dataIndex="id" lock width={200} />,
-                <Table.Column dataIndex="id" lock="right" width={200} />,
+                <Table.Column key="id" dataIndex="id" lock width={200} />,
+                <Table.Column key="name" dataIndex="name" lock="right" width={200} />,
+            ],
+            onRowClick,
+            onRowMouseEnter,
+            onRowMouseLeave,
+        });
+        cy.get('.next-table-body .next-table-row').first().click();
+        cy.wrap(onRowClick).should('be.called');
+        cy.get('.next-table-body .next-table-row').first().trigger('mouseover');
+        cy.wrap(onRowMouseEnter).should('be.called');
+        cy.get('.next-table-body .next-table-row').first().trigger('mouseout');
+        cy.wrap(onRowMouseLeave).should('be.called');
+    });
+
+    it('should support treeMode', () => {
+        cy.mount(table).as('Demo');
+        cy.rerender<TableProps>('Demo', {
+            dataSource: [
+                {
+                    id: '1',
+                    name: 'test',
+                    children: [
+                        {
+                            id: '12',
+                            name: '12test',
+                        },
+                    ],
+                },
+                {
+                    id: '2',
+                    name: 'test2',
+                },
+            ],
+            isTree: true,
+        });
+        cy.get('.next-table-row.hidden').should('have.length', 1);
+        cy.get('.next-table-row .next-icon-arrow-right.next-table-tree-arrow').click();
+        cy.get('.next-table-row.hidden').should('have.length', 0);
+        cy.get('.next-table-row')
+            .eq(1)
+            .find('.next-table-cell-wrapper')
+            .first()
+            .should('have.css', 'padding-left', '24px');
+    });
+
+    it('header should support colspan', () => {
+        cy.mount(table).as('Demo');
+        cy.rerender<TableProps>('Demo', {
+            children: [
+                <Table.Column key="id" dataIndex="id" />,
+                <Table.Column key="name" dataIndex="name" />,
             ],
         });
-        const onRowClick = sinon.spy();
-        const onRowMouseEnter = sinon.spy();
-        const onRowMouseLeave = sinon.spy();
-        timeout(
-            {
-                onRowClick,
-                onRowMouseEnter,
-                onRowMouseLeave,
-            },
-            () => {
-                const row = wrapper.find('.next-table-body .next-table-row').first();
-                row.simulate('click');
-                assert(onRowClick.called);
-                row.simulate('mouseenter');
-                assert(onRowMouseEnter.called);
-                row.simulate('mouseleave');
-                assert(onRowMouseLeave.called);
-                done();
-            }
-        );
-    });
-
-    it('should support treeMode', done => {
-        timeout(
-            {
-                dataSource: [
-                    {
-                        id: '1',
-                        name: 'test',
-                        children: [
-                            {
-                                id: '12',
-                                name: '12test',
-                            },
-                        ],
-                    },
-                    {
-                        id: '2',
-                        name: 'test2',
-                    },
-                ],
-                isTree: true,
-            },
-            () => {
-                assert(wrapper.find('.next-table-row.hidden').length === 1);
-                let treeNode = wrapper.find(
-                    '.next-table-row .next-icon-arrow-right.next-table-tree-arrow'
-                );
-                treeNode.simulate('click');
-                assert(wrapper.find('.next-table-row.hidden').length === 0);
-                assert(
-                    wrapper
-                        .find('.next-table-row')
-                        .at(1)
-                        .find('.next-table-cell-wrapper')
-                        .first()
-                        .props().style.paddingLeft === 24
-                );
-                done();
-            }
-        );
-    });
-
-    it('header should support colspan', done => {
-        wrapper.setProps({});
-
-        timeout(
-            {
-                children: [<Table.Column dataIndex="id" />, <Table.Column dataIndex="name" />],
-            },
-            () => {
-                assert(wrapper.find('.next-table-header th').length === 2);
-            }
-        ).then(() => {
-            timeout(
-                {
-                    children: [
-                        <Table.Column dataIndex="id" colSpan="2" />,
-                        <Table.Column dataIndex="name" colSpan="0" />,
-                    ],
-                },
-                () => {
-                    assert(wrapper.find('.next-table-header th').length === 1);
-                    done();
-                }
-            );
-        });
-    });
-
-    it('should support colspan & rowspan', done => {
-        wrapper.setProps({});
-        timeout(
-            {
-                dataSource: [
-                    { id: '1', name: 'test' },
-                    { id: '2', name: 'test2' },
-                    { id: '3', name: 'test3' },
-                ],
-                cellProps: (rowIndex, colIndex) => {
-                    if (rowIndex == 0 && colIndex == 1) {
-                        return {
-                            rowSpan: 3,
-                        };
-                    }
-                },
-            },
-            () => {
-                assert(/test/.test(wrapper.find('.next-table-row').at(0).find('td').at(1).text()));
-                assert(wrapper.find('.next-table-row').at(1).find('td').length === 1);
-                assert(wrapper.find('.next-table-row').at(2).find('td').length === 1);
-            }
-        ).then(() => {
-            timeout(
-                {
-                    dataSource: [
-                        { id: '1', name: 'test' },
-                        { id: '2', name: 'test2' },
-                        { id: '3', name: 'test3' },
-                    ],
-                    cellProps: (rowIndex, colIndex) => {
-                        if (rowIndex == 0 && colIndex == 0) {
-                            return {
-                                colSpan: 2,
-                            };
-                        }
-                    },
-                },
-                () => {
-                    done();
-                    assert(/1/.test(wrapper.find('.next-table-row').at(0).find('td').at(0).text()));
-                }
-            );
-        });
-    });
-
-    it('should support colspan & rowspan', done => {
-        wrapper.setProps({});
-        timeout(
-            {
-                dataSource: [
-                    { id: '1', name: 'test' },
-                    { id: '2', name: 'test2' },
-                    { id: '3', name: 'test3' },
-                ],
-                getCellProps: (rowIndex, colIndex) => {
-                    if (rowIndex == 0 && colIndex == 1) {
-                        return {
-                            rowSpan: 3,
-                        };
-                    }
-                },
-            },
-            () => {
-                assert(/test/.test(wrapper.find('.next-table-row').at(0).find('td').at(1).text()));
-                assert(wrapper.find('.next-table-row').at(1).find('td').length === 1);
-                assert(wrapper.find('.next-table-row').at(2).find('td').length === 1);
-            }
-        ).then(() => {
-            timeout(
-                {
-                    dataSource: [
-                        { id: '1', name: 'test' },
-                        { id: '2', name: 'test2' },
-                        { id: '3', name: 'test3' },
-                    ],
-                    getCellProps: (rowIndex, colIndex) => {
-                        if (rowIndex == 0 && colIndex == 0) {
-                            return {
-                                colSpan: 2,
-                            };
-                        }
-                    },
-                },
-                () => {
-                    done();
-                    assert(/1/.test(wrapper.find('.next-table-row').at(0).find('td').at(0).text()));
-                }
-            );
-        });
-    });
-
-    it('should support getRowProps', done => {
-        timeout(
-            {
-                dataSource: [
-                    { id: '1', name: 'test' },
-                    { id: '2', name: 'test2' },
-                    { id: '3', name: 'test3' },
-                ],
-                getRowProps: (record, index) => {
-                    if (index == 0) {
-                        return {
-                            'data-props': 'rowprops',
-                        };
-                    }
-                },
-            },
-            () => {
-                assert(wrapper.find('.next-table-row').at(0).prop('data-props') === 'rowprops');
-                done();
-            }
-        );
-    });
-
-    it('should support rowProps', done => {
-        timeout(
-            {
-                dataSource: [
-                    { id: '1', name: 'test' },
-                    { id: '2', name: 'test2' },
-                    { id: '3', name: 'test3' },
-                ],
-                rowProps: (record, index) => {
-                    if (index == 0) {
-                        return {
-                            'data-props': 'rowprops',
-                        };
-                    }
-                },
-            },
-            () => {
-                assert(wrapper.find('.next-table-row').at(0).prop('data-props') === 'rowprops');
-                done();
-            }
-        );
-    });
-
-    it('should support list Header', done => {
-        timeout({
+        cy.get('.next-table-header th').should('have.length', 2);
+        cy.rerender<TableProps>('Demo', {
             children: [
-                <Table.GroupHeader cell={<div>header</div>} />,
-                <Table.Column dataIndex="id" />,
-                <Table.GroupFooter cell={<div>footer</div>} />,
+                <Table.Column key="id" dataIndex="id" colSpan="2" />,
+                <Table.Column key="name" dataIndex="name" colSpan="0" />,
+            ],
+        });
+        cy.get('.next-table-header th').should('have.length', 1);
+    });
+
+    it('should support colspan & rowspan', () => {
+        cy.mount(table).as('Demo');
+        cy.rerender<TableProps>('Demo', {
+            dataSource: [
+                { id: '1', name: 'test' },
+                { id: '2', name: 'test2' },
+                { id: '3', name: 'test3' },
+            ],
+            cellProps: (rowIndex, colIndex) => {
+                if (rowIndex === 0 && colIndex === 1) {
+                    return {
+                        rowSpan: 3,
+                    };
+                }
+            },
+        });
+        cy.get('.next-table-row').eq(0).find('td').eq(1).should('have.text', 'test');
+        cy.get('.next-table-row').eq(1).find('td').should('have.length', 1);
+        cy.get('.next-table-row').eq(2).find('td').should('have.length', 1);
+        cy.rerender<TableProps>('Demo', {
+            dataSource: [
+                { id: '1', name: 'test' },
+                { id: '2', name: 'test2' },
+                { id: '3', name: 'test3' },
+            ],
+            cellProps: (rowIndex, colIndex) => {
+                if (rowIndex === 0 && colIndex === 0) {
+                    return {
+                        colSpan: 2,
+                    };
+                }
+            },
+        });
+        cy.get('.next-table-row').eq(0).find('td').eq(0).should('have.text', '1');
+    });
+
+    it('should support getRowProps', () => {
+        cy.mount(table).as('Demo');
+        cy.rerender<TableProps>('Demo', {
+            dataSource: [
+                { id: '1', name: 'test' },
+                { id: '2', name: 'test2' },
+                { id: '3', name: 'test3' },
+            ],
+            getRowProps: (record, index) => {
+                if (index === 0) {
+                    return {
+                        'data-props': 'rowprops',
+                    };
+                }
+            },
+        });
+        cy.get('.next-table-row').eq(0).should('have.attr', 'data-props', 'rowprops');
+    });
+
+    it('should support rowProps', () => {
+        cy.mount(table).as('Demo');
+        cy.rerender<TableProps>('Demo', {
+            dataSource: [
+                { id: '1', name: 'test' },
+                { id: '2', name: 'test2' },
+                { id: '3', name: 'test3' },
+            ],
+            rowProps: (record, index) => {
+                if (index === 0) {
+                    return {
+                        'data-props': 'rowprops',
+                    };
+                }
+            },
+        });
+        cy.get('.next-table-row').eq(0).should('have.attr', 'data-props', 'rowprops');
+    });
+
+    it('should support list Header', () => {
+        cy.mount(table).as('Demo');
+        cy.rerender<TableProps>('Demo', {
+            children: [
+                <Table.GroupHeader key="header" cell={<div>header</div>} />,
+                <Table.Column key="id" dataIndex="id" />,
+                <Table.GroupFooter key="footer" cell={<div>footer</div>} />,
             ],
             dataSource: [
                 {
@@ -916,264 +665,220 @@ describe('Table', () => {
                     name: 'test2',
                 },
             ],
-        }).then(() => {
-            assert(wrapper.find('tr.next-table-group-header').length === 2);
-            assert(wrapper.find('tr.next-table-group-footer').length === 2);
-            done();
         });
+        cy.get('.next-table-group-header').should('have.length', 2);
+        cy.get('.next-table-group-footer').should('have.length', 2);
     });
 
     it('should render null when ColGroup, GroupHeader, Col', () => {
-        const colgroup = mount(<Table.ColumnGroup />);
-        const col = mount(<Table.Column />);
-        const groupHeader = mount(<Table.GroupHeader />);
+        cy.mount(<Table.ColumnGroup />);
+        cy.get('div').should('have.length', 1);
+        cy.mount(<Table.Column />);
+        cy.get('div').should('have.length', 1);
+        cy.mount(<Table.GroupHeader />);
+        cy.get('div').should('have.length', 1);
     });
 
-    it('should support stickyHeader', done => {
-        timeout(
-            {
-                stickyHeader: true,
-            },
-            () => {
-                assert(wrapper.find('div.next-table-affix').length === 1);
-                done();
-            }
-        );
+    it('should support stickyHeader', () => {
+        cy.mount(table).as('Demo');
+        cy.rerender<TableProps>('Demo', {
+            stickyHeader: true,
+        });
+        cy.get('.next-table-affix').should('exist');
     });
 
-    it('should support resize', done => {
-        timeout(
-            {
-                children: [
-                    <Table.Column dataIndex="id" resizable width={200} />,
-                    <Table.Column dataIndex="name" width={200} />,
-                ],
-                onResizeChange: (dataIndex, value) => {
-                    console.log(dataIndex, value);
-                },
+    it('should support resize', () => {
+        cy.mount(table).as('Demo');
+        cy.rerender<TableProps>('Demo', {
+            children: [
+                <Table.Column key="id" dataIndex="id" resizable width={200} />,
+                <Table.Column key="name" dataIndex="name" width={200} />,
+            ],
+            onResizeChange: (dataIndex, value) => {
+                console.log(dataIndex, value);
             },
-            () => {
-                wrapper.find('.next-table-resize-handler').simulate('mousedown', { pageX: 0 });
-                assert(document.body.style.cursor === 'ew-resize');
-                document.dispatchEvent(new Event('mousemove', { pageX: 0 }));
-                document.dispatchEvent(new Event('mouseup'));
-
-                setTimeout(() => {
-                    assert(document.body.style.cursor === '');
-                    done();
-                }, 100);
-            }
-        );
+        });
+        cy.get('.next-table-resize-handler').first().trigger('mousedown', { pageX: 0 });
+        cy.get('body').should('have.css', 'cursor', 'ew-resize');
+        cy.get('body').trigger('mousemove', { pageX: 0 });
+        cy.get('body').trigger('mouseup');
+        cy.get('body').should('have.css', 'cursor', 'auto');
     });
 
-    it('should support rtl', done => {
-        timeout(
-            {
-                children: [
-                    <Table.Column dataIndex="id" lock width={200} />,
-                    <Table.Column dataIndex="name" width={200} />,
-                ],
-                rtl: true,
-            },
-            () => {
-                assert(wrapper.find('.next-table[dir="rtl"]').length === 3);
-                done();
-            }
-        );
+    it('should support rtl', () => {
+        cy.mount(table).as('Demo');
+        cy.rerender<TableProps>('Demo', {
+            rtl: true,
+            children: [
+                <Table.Column key="id" dataIndex="id" lock width={200} />,
+                <Table.Column key="name" dataIndex="name" width={200} />,
+            ],
+        });
+        cy.get('.next-table[dir="rtl"]').should('have.length', 3);
     });
 
-    it('should support rtl resize', done => {
-        timeout(
-            {
-                children: [
-                    <Table.Column dataIndex="id" resizable width={200} />,
-                    <Table.Column dataIndex="name" width={200} />,
-                ],
-                rtl: true,
-                onResizeChange: (dataIndex, value) => {
-                    console.log(dataIndex, value);
-                },
+    it('should support rtl resize', () => {
+        cy.mount(table).as('Demo');
+        cy.rerender<TableProps>('Demo', {
+            rtl: true,
+            children: [
+                <Table.Column key="id" dataIndex="id" resizable width={200} />,
+                <Table.Column key="name" dataIndex="name" width={200} />,
+            ],
+            onResizeChange: (dataIndex, value) => {
+                console.log(dataIndex, value);
             },
-            () => {
-                wrapper.find('.next-table-resize-handler').simulate('mousedown', { pageX: 0 });
-                assert(document.body.style.cursor === 'ew-resize');
-                document.dispatchEvent(new Event('mousemove', { pageX: 0 }));
-                document.dispatchEvent(new Event('mouseup'));
-
-                setTimeout(() => {
-                    assert(document.body.style.cursor === '');
-                    done();
-                }, 100);
-            }
-        );
+        });
+        cy.get('.next-table-resize-handler').first().trigger('mousedown', { pageX: 0 });
+        cy.get('body').should('have.css', 'cursor', 'ew-resize');
+        cy.get('body').trigger('mousemove', { pageX: 0 });
+        cy.get('body').trigger('mouseup');
+        cy.get('body').should('have.css', 'cursor', 'auto');
     });
 
     it('should support dataSource [] => [{},{}] => []', () => {
-        wrapper.setProps({
+        cy.mount(table).as('Demo');
+        cy.rerender<TableProps>('Demo', {
             children: [
-                <Table.Column dataIndex="id" lock width={200} />,
-                <Table.Column dataIndex="id" lock="right" width={200} />,
+                <Table.Column key="id" dataIndex="id" lock width={200} />,
+                <Table.Column key="id2" dataIndex="id" lock="right" width={200} />,
             ],
-        });
-        wrapper.debug();
-        assert(wrapper.find('div.next-table-lock-left').length === 1);
-        assert(wrapper.find('div.next-table-lock-right').length === 1);
-        assert(wrapper.find('div.next-table-empty').length === 0);
-
-        wrapper.setProps({
+        }).as('Demo2');
+        cy.get('.next-table-lock-left').should('have.length', 1);
+        cy.get('.next-table-lock-right').should('have.length', 1);
+        cy.get('.next-table-empty').should('have.length', 0);
+        cy.rerender<TableProps>('Demo2', {
             dataSource: [],
-        });
-        assert(wrapper.find('div.next-table-empty').length !== 0);
-
-        wrapper.setProps({
+        }).as('Demo3');
+        cy.get('.next-table-empty').should('have.length', 1);
+        cy.rerender<TableProps>('Demo3', {
             dataSource: [
                 { id: '1', name: 'test' },
                 { id: '2', name: 'test2' },
             ],
-        });
-
-        assert(wrapper.find('div.next-table-lock-left').length === 1);
-        assert(wrapper.find('div.next-table-lock-right').length === 1);
-        assert(wrapper.find('div.next-table-empty').length === 0);
+        }).as('Demo4');
+        cy.get('.next-table-lock-left').should('have.length', 1);
+        cy.get('.next-table-lock-right').should('have.length', 1);
+        cy.get('.next-table-empty').should('have.length', 0);
     });
 
     it('should support lock scroll x', () => {
         const ds = new Array(30).fill(1).map((val, i) => {
-            return { id: i, name: 'test' + i };
+            return { id: i, name: `test${i}` };
         });
-        wrapper.setProps({
+        cy.mount(table).as('Demo');
+        cy.rerender<TableProps>('Demo', {
             children: [
-                <Table.Column dataIndex="id" lock width={200} />,
-                <Table.Column dataIndex="name" width={500} />,
-                <Table.Column dataIndex="id" lock="right" width={700} />,
+                <Table.Column key="id" dataIndex="id" lock width={200} />,
+                <Table.Column key="name" dataIndex="name" width={500} />,
+                <Table.Column key="id2" dataIndex="id" lock="right" width={700} />,
             ],
-            fixedHeader: true,
             dataSource: ds,
+            fixedHeader: true,
         });
-
-        assert(wrapper.find('div.next-table-lock-left').length === 1);
-        assert(wrapper.find('div.next-table-lock-right').length === 1);
-
-        wrapper
-            .find('div.next-table-lock .next-table-inner .next-table-body')
-            .at(1)
-            .props()
-            .onLockScroll({
-                target: {
-                    scrollLeft: 30,
-                    scrollTop: 20,
-                },
+        cy.get('.next-table-lock-left').should('have.length', 1);
+        cy.get('.next-table-lock-right').should('have.length', 1);
+        cy.get('div.next-table-lock-left .next-table-body').then($ele => {
+            $ele.scrollTop(100);
+        });
+        cy.get('.next-table-body').eq(0).should('have.prop', 'scrollTop', 100);
+        cy.get('div.next-table-lock-right .next-table-body').should('have.prop', 'scrollTop', 100);
+        cy.get('div.next-table-lock-right .next-table-body').then($ele => {
+            $ele.scrollTop(200);
+        });
+        cy.get('.next-table-body').eq(0).should('have.prop', 'scrollTop', 200);
+        cy.get('div.next-table-lock-left .next-table-body').should('have.prop', 'scrollTop', 200);
+        cy.get('.next-table-body')
+            .eq(0)
+            .then($ele => {
+                $ele.scrollTop(300);
             });
-
-        wrapper
-            .find('div.next-table-lock-right .next-table-body')
-            .at(1)
-            .props()
-            .onLockScroll({
-                target: {
-                    scrollLeft: 30,
-                    scrollTop: 20,
-                },
-            });
+        cy.get('div.next-table-lock-left .next-table-body').should('have.prop', 'scrollTop', 300);
+        cy.get('div.next-table-lock-right .next-table-body').should('have.prop', 'scrollTop', 300);
     });
 
-    it('should support StickyLock', done => {
+    it('should support StickyLock', () => {
         const ds = new Array(30).fill(1).map((val, i) => {
-            return { id: i, name: 'test' + i };
+            return { id: i, name: `test${i}` };
         });
-        stickyLockWrapper.setProps({
+        cy.mount(stickyLock).as('Demo');
+        cy.rerender<TableProps>('Demo', {
             children: [
-                <Table.Column dataIndex="id" lock width={200} />,
-                <Table.Column dataIndex="name" width={500} />,
-                <Table.Column dataIndex="id" lock="right" width={700} />,
+                <Table.Column key="id" dataIndex="id" lock width={200} />,
+                <Table.Column key="name" dataIndex="name" width={500} />,
+                <Table.Column key="id2" dataIndex="id" lock="right" width={700} />,
             ],
             dataSource: ds,
         });
-
-        wrapper.setProps({
-            children: [
-                <Table.Column dataIndex="id" lock width={200} />,
-                <Table.Column dataIndex="name" width={500} />,
-                <Table.Column dataIndex="name" width={500} />,
-                <Table.Column dataIndex="id" lock="right" width={700} />,
-            ],
-            dataSource: ds,
-            tableWidth: 1000,
-        });
-
-        assert(stickyLockWrapper.find('div.next-table-lock-left').length === 0);
-        assert(stickyLockWrapper.find('div.next-table-lock-right').length === 0);
-        assert(
-            stickyLockWrapper
-                .find('div.next-table-lock tr td.next-table-fix-left.next-table-fix-left-last')
-                .at(0)
-                .instance().style.position === 'sticky'
+        cy.get('.next-table-lock-left').should('not.exist');
+        cy.get('.next-table-lock-right').should('not.exist');
+        cy.get('div.next-table-lock tr td.next-table-fix-left.next-table-fix-left-last')
+            .eq(0)
+            .should('have.css', 'position', 'sticky');
+        cy.get('div.next-table-lock tr td.next-table-fix-left.next-table-fix-left-last').should(
+            'have.length',
+            ds.length
         );
-        wrapper.update();
-        stickyLockWrapper.update();
-
-        setTimeout(() => {
-            // assert(wrapper.find('div.next-table-lock.next-table-scrolling-to-right').length === 1);
-            // assert(stickyLockWrapper.find('div.next-table-lock.next-table-scrolling-to-right').length === 1);
-            assert(
-                stickyLockWrapper.find(
-                    'div.next-table-lock tr td.next-table-fix-left.next-table-fix-left-last'
-                ).length === ds.length
-            );
-            done();
-        }, 500);
     });
 
     it('should support align alignHeader', () => {
-        wrapper.setProps({
+        cy.mount(table).as('Demo');
+        cy.rerender<TableProps>('Demo', {
             children: [
                 <Table.Column
+                    key="id"
                     title="id"
+                    dataIndex="id"
                     align="right"
                     alignHeader="left"
-                    dataIndex="id"
                     width={200}
                 />,
-                <Table.Column title="name" align="left" dataIndex="name" width={200} />,
-                <Table.Column title="id" alignHeader="right" dataIndex="id" width={200} />,
+                <Table.Column key="name" title="name" dataIndex="name" align="left" width={200} />,
+                <Table.Column
+                    key="id2"
+                    title="id"
+                    dataIndex="id"
+                    alignHeader="right"
+                    width={200}
+                />,
             ],
         });
-
-        assert(wrapper.find('thead tr th').at(0).props().style.textAlign === 'left');
-        assert(wrapper.find('thead tr th').at(1).props().style.textAlign === 'left');
-        assert(wrapper.find('thead tr th').at(2).props().style.textAlign === 'right');
-
-        assert(wrapper.find('tbody tr').at(0).find('td').at(0).props().style.textAlign === 'right');
-        assert(wrapper.find('tbody tr').at(0).find('td').at(1).props().style.textAlign === 'left');
-        assert(
-            wrapper.find('tbody tr').at(0).find('td').at(2).props().style.textAlign === undefined
-        );
+        cy.get('thead tr th').eq(0).should('have.css', 'text-align', 'left');
+        cy.get('thead tr th').eq(1).should('have.css', 'text-align', 'left');
+        cy.get('thead tr th').eq(2).should('have.css', 'text-align', 'right');
+        cy.get('tbody tr').eq(0).find('td').eq(0).should('have.css', 'text-align', 'right');
+        cy.get('tbody tr').eq(0).find('td').eq(1).should('have.css', 'text-align', 'left');
+        cy.get('tbody tr').eq(0).find('td').eq(2).should('have.css', 'text-align', 'start');
     });
 
     it('should support align alignHeader rtl', () => {
-        wrapper.setProps({
+        cy.mount(table).as('Demo');
+        cy.rerender<TableProps>('Demo', {
+            rtl: true,
             children: [
                 <Table.Column
+                    key="id"
                     title="id"
+                    dataIndex="id"
                     align="right"
                     alignHeader="left"
-                    dataIndex="id"
                     width={200}
                 />,
-                <Table.Column title="name" align="left" dataIndex="name" width={200} />,
-                <Table.Column title="id" alignHeader="right" dataIndex="id" width={200} />,
+                <Table.Column key="name" title="name" dataIndex="name" align="left" width={200} />,
+                <Table.Column
+                    key="id2"
+                    title="id"
+                    dataIndex="id"
+                    alignHeader="right"
+                    width={200}
+                />,
             ],
-            rtl: true,
         });
-
-        assert(wrapper.find('thead tr th').at(0).props().style.textAlign === 'right');
-        assert(wrapper.find('thead tr th').at(1).props().style.textAlign === 'right');
-        assert(wrapper.find('thead tr th').at(2).props().style.textAlign === 'left');
-
-        assert(wrapper.find('tbody tr').at(0).find('td').at(0).props().style.textAlign === 'left');
-        assert(wrapper.find('tbody tr').at(0).find('td').at(1).props().style.textAlign === 'right');
-        assert(
-            wrapper.find('tbody tr').at(0).find('td').at(2).props().style.textAlign === undefined
-        );
+        cy.get('thead tr th').eq(0).should('have.css', 'text-align', 'right');
+        cy.get('thead tr th').eq(1).should('have.css', 'text-align', 'right');
+        cy.get('thead tr th').eq(2).should('have.css', 'text-align', 'left');
+        cy.get('tbody tr').eq(0).find('td').eq(0).should('have.css', 'text-align', 'left');
+        cy.get('tbody tr').eq(0).find('td').eq(1).should('have.css', 'text-align', 'right');
+        cy.get('tbody tr').eq(0).find('td').eq(2).should('have.css', 'text-align', 'start');
     });
 });

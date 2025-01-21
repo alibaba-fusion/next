@@ -1,5 +1,5 @@
 // 这个文件看起来没有被使用到
-import React, { Ref, type LegacyRef } from 'react';
+import React, { type Ref } from 'react';
 import Loading from '../loading';
 import BodyComponent from './base/body';
 import HeaderComponent from './base/header';

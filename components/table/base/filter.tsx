@@ -168,11 +168,11 @@ class Filter extends React.Component<FilterProps, FilterState> {
         const { visible, selectedKeys } = this.state;
         const { subMenuSelectable, ...others } = filterMenuProps || {};
 
-        function renderMenuItem(item: { value: Key; label: ReactNode }) {
+        function renderMenuItem(item: { value?: Key; label: ReactNode }) {
             return <Menu.Item key={item.value}>{item.label}</Menu.Item>;
         }
 
-        function renderSubMenu(parent: { value: Key; label: ReactNode }, children: FilterItem[]) {
+        function renderSubMenu(parent: { value?: Key; label: ReactNode }, children: FilterItem[]) {
             return (
                 <Menu.SubMenu
                     label={parent.label}

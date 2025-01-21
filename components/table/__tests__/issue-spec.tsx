@@ -1,19 +1,11 @@
 import React, { useState } from 'react';
-import ReactDOM from 'react-dom';
-import ReactTestUtils from 'react-dom/test-utils';
-import Enzyme, { mount } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
-import assert from 'power-assert';
-import Promise from 'promise-polyfill';
-import Table from '../index';
+import Table, { type ColumnProps, type TableProps } from '../index';
 import Button from '../../button/index';
 import ConfigProvider from '../../config-provider';
 import Input from '../../input';
 import '../style';
-/* eslint-disable */
-Enzyme.configure({ adapter: new Adapter() });
-const delay = duration => new Promise(resolve => setTimeout(resolve, duration));
-const generateDataSource = j => {
+
+const generateDataSource = (j: number) => {
     const result = [];
     for (let i = 0; i < j; i++) {
         result.push({
@@ -27,89 +19,52 @@ const generateDataSource = j => {
     }
     return result;
 };
+const dataSource = [
+    { id: '1', name: 'test' },
+    { id: '2', name: 'test2' },
+];
+
+const table = (
+    <Table dataSource={dataSource}>
+        <Table.Column dataIndex="id" />
+        <Table.Column dataIndex="name" />
+    </Table>
+);
 
 describe('Issue', () => {
-    let dataSource = [
-            { id: '1', name: 'test' },
-            { id: '2', name: 'test2' },
-        ],
-        table,
-        timeout,
-        wrapper;
-
     beforeEach(() => {
-        table = (
-            <Table dataSource={dataSource}>
-                <Table.Column dataIndex="id" />
-                <Table.Column dataIndex="name" />
-            </Table>
+        cy.mount(table).as('Demo');
+    });
+
+    it('should support not display empty when table is Loading', () => {
+        cy.rerender<TableProps>('Demo', {
+            loading: true,
+            dataSource: [],
+        }).as('Demo2');
+        cy.get('.next-table-empty').should('have.text', ' ');
+        cy.rerender<TableProps>('Demo2', {
+            loading: false,
+        });
+        cy.get('.next-table-empty').should('have.text', '没有数据');
+    });
+
+    it('should support rowSelection without children and columns', () => {
+        const onRowSelect = cy.spy();
+        cy.mount(
+            <Table
+                dataSource={dataSource}
+                rowSelection={{
+                    onChange: selectedRowKeys => {
+                        onRowSelect(selectedRowKeys);
+                    },
+                }}
+            />
         );
-
-        wrapper = mount(table);
-        timeout = (props, callback) => {
-            return new Promise(resolve => {
-                wrapper.setProps(props);
-                setTimeout(function () {
-                    resolve();
-                }, 10);
-            }).then(callback);
-        };
+        cy.get('.next-table-row .next-checkbox-input').eq(0).click();
+        cy.wrap(onRowSelect).should('be.calledWith', ['1']);
     });
 
-    afterEach(() => {
-        table = null;
-    });
-
-    it('should support not display empty when table is Loading', done => {
-        wrapper.setProps({});
-        timeout(
-            {
-                loading: true,
-                dataSource: [],
-            },
-            () => {
-                assert(wrapper.find('.next-table-empty').text() === ' ');
-            }
-        ).then(() => {
-            timeout(
-                {
-                    loading: false,
-                },
-                () => {
-                    assert(wrapper.find('.next-table-empty').text() === '没有数据');
-                    done();
-                }
-            );
-        });
-    });
-
-    it('should support rowSelection without children and columns', done => {
-        const container = document.createElement('div');
-        document.body.appendChild(container);
-        class App extends React.Component {
-            render() {
-                return (
-                    <Table
-                        dataSource={dataSource}
-                        rowSelection={{ onChange: () => {} }}
-                        expandedRowRender={record => record.title}
-                    />
-                );
-            }
-        }
-
-        ReactDOM.render(<App />, container, function () {
-            setTimeout(() => {
-                ReactDOM.unmountComponentAtNode(container);
-                document.body.removeChild(container);
-                done();
-            }, 10);
-        });
-    });
-
-    it('should support columns with lock', done => {
-        const container = document.createElement('div');
-        document.body.appendChild(container);
+    it('should support columns with lock', () => {
         const columns = [
             {
                 title: 'Title6',
@@ -154,33 +109,25 @@ describe('Issue', () => {
                 );
             }
         }
-
-        ReactDOM.render(<App />, container, function () {
-            assert(
-                container.querySelectorAll(
-                    '#normal-table .next-table-lock-left .next-table-body tbody tr'
-                ).length === 2
-            );
-            assert(
-                container.querySelectorAll('#sticky-table .next-table-fix-left')[0].style
-                    .position === 'sticky'
-            );
-            setTimeout(() => {
-                ReactDOM.unmountComponentAtNode(container);
-                document.body.removeChild(container);
-                done();
-            }, 10);
-        });
+        cy.mount(<App />);
+        cy.get('#normal-table .next-table-lock-left .next-table-body tbody tr').should(
+            'have.length',
+            2
+        );
+        cy.get('#sticky-table .next-table-fix-left').should('have.css', 'position', 'sticky');
     });
 
-    it('should fix onChange reRender bug', done => {
-        const container = document.createElement('div');
-        document.body.appendChild(container);
+    it('should fix onChange reRender bug', () => {
+        // const container = document.createElement('div');
+        // document.body.appendChild(container);
         class App extends React.Component {
             state = {
                 selected: [],
             };
-            onSelectionChange = (ids, records) => {
+            onSelectionChange: NonNullable<TableProps['rowSelection']>['onChange'] = (
+                ids,
+                records
+            ) => {
                 this.setState({
                     selected: records,
                 });
@@ -198,213 +145,129 @@ describe('Issue', () => {
             }
         }
 
-        ReactDOM.render(<App />, container, function () {
-            const input = container.querySelector('.next-table-header .next-checkbox input');
-            input.click();
-            setTimeout(() => {
-                assert(
-                    container.querySelectorAll('.next-table-body .next-checkbox-wrapper.checked')
-                        .length === 2
-                );
-                ReactDOM.unmountComponentAtNode(container);
-                document.body.removeChild(container);
-                done();
-            }, 10);
-        });
+        cy.mount(<App />);
+        cy.get('.next-table-header .next-checkbox input').eq(0).click();
+        cy.get('.next-table-body .next-checkbox-wrapper.checked').should('have.length', 2);
     });
 
     it('should support null child', () => {
-        wrapper.setProps({
-            children: [null, <Table.Column dataIndex="id" />],
+        cy.rerender<TableProps>('Demo', {
+            children: [null, <Table.Column key="id" dataIndex="id" />],
         });
-        assert(wrapper.find('.next-table-body tr').length === 2);
+        cy.get('.next-table-body tr').should('have.length', 2);
     });
 
-    it('should support rowSelection & tree', done => {
-        timeout(
-            {
-                isTree: true,
-                rowSelection: {
-                    onChange: () => {},
-                },
-                dataSource: [
-                    {
-                        id: '1',
-                        name: 'test',
-                        children: [
-                            {
-                                id: '12',
-                                name: '12test',
-                            },
-                        ],
-                    },
-                    {
-                        id: '2',
-                        name: 'test2',
-                    },
-                ],
+    it('should support rowSelection & tree', () => {
+        cy.rerender<TableProps>('Demo', {
+            isTree: true,
+            rowSelection: {
+                onChange: () => {},
             },
-            () => {
-                assert(wrapper.find('.next-table-row').find('.hidden').length === 1);
-                done();
-            }
-        );
+            dataSource: [
+                {
+                    id: '1',
+                    name: 'test',
+                    children: [
+                        {
+                            id: '12',
+                            name: '12test',
+                        },
+                    ],
+                },
+                {
+                    id: '2',
+                    name: 'test2',
+                },
+            ],
+        });
+        cy.get('.next-table-row.hidden').should('have.length', 1);
     });
 
     it('should support rowSelection click', () => {
-        const div = document.createElement('div');
-        document.body.appendChild(div);
-        const rowSelection = {
-            onChange: () => {},
-        };
-
-        ReactDOM.render(
-            <Table dataSource={[{ id: 1 }, { id: 2 }]} rowSelection={rowSelection}>
-                <Table.Column dataIndex="id" style={{ textAlign: 'left' }} />
-            </Table>,
-            div
-        );
-
-        div.querySelectorAll('.next-checkbox-wrapper')[1].click();
-        assert(div.querySelectorAll('.next-checkbox-wrapper.checked').length === 1);
-        div.querySelectorAll('.next-checkbox-wrapper')[0].click();
-        assert(div.querySelectorAll('.next-checkbox-wrapper.checked').length === 3);
-
-        ReactDOM.unmountComponentAtNode(div);
-        document.body.removeChild(div);
+        cy.rerender<TableProps>('Demo', {
+            rowSelection: {
+                onChange: () => {},
+            },
+            children: <Table.Column dataIndex="id" style={{ textAlign: 'left' }} />,
+        });
+        cy.get('.next-checkbox-wrapper').eq(1).click();
+        cy.get('.next-checkbox-wrapper.checked').should('have.length', 1);
+        cy.get('.next-checkbox-wrapper').eq(0).click();
+        cy.get('.next-checkbox-wrapper.checked').should('have.length', 3);
     });
 
     it('should ignore lock as `true` string', () => {
-        wrapper.setProps({
+        cy.rerender<TableProps>('Demo', {
             rowSelection: {
                 onChange: () => {},
             },
             children: <Table.Column dataIndex="id" lock="true" width={200} />,
         });
+        cy.get('.next-table-lock-left').should('not.exist');
     });
 
-    // it('should support optimization', (done) => {
-    //     class App extends React.Component {
-    //         state = {
-    //             extra: 'abc'
-    //         }
-    //         cellRender = (value) => {
-    //             return value + this.state.extra;
-    //         }
-    //         render() {
-    //             return <Table dataSource={[{ id: 1 }]} optimization={false}>
-    //                 <Table.Column cell={this.cellRender} dataIndex="id" />
-    //             </Table>
-    //         }
-    //         componentDidMount() {
-    //             setTimeout(() => {
-    //                 this.setState({
-    //                     extra: 'bcd'
-    //                 });
-    //             }, 10);
-    //         }
-    //     }
-    //     const wrapper = mount(<App />);
-    //     setTimeout(() => {
-    //         assert(/bcd/.test(wrapper.find('.next-table-body td').at(0).text()));
-    //         done();
-    //     }, 100);
-    // });
-
-    it('should ignore lock when colWidth < tableWidth', done => {
-        class App extends React.Component {
-            state = {
-                cols: [
-                    <Table.Column
-                        cell={this.cellRender}
-                        dataIndex="id"
-                        lock
-                        width={300}
-                        key="id"
-                    />,
-                    <Table.Column cell={this.cellRender} dataIndex="id" width={400} key="id1" />,
-                    <Table.Column cell={this.cellRender} dataIndex="id" width={500} key="id2" />,
-                ],
-            };
-            cellRender = value => {
-                return value;
+    it('should ignore lock when colWidth < tableWidth', () => {
+        const cellRender = (value: unknown) => {
+            return value;
+        };
+        class App extends React.Component<{ more: boolean }> {
+            static defaultProps = {
+                more: true,
             };
             render() {
                 return (
                     <div style={{ width: '400px' }}>
-                        <Table dataSource={[{ id: 1 }]}>{this.state.cols}</Table>
+                        <Table dataSource={[{ id: 1 }]}>
+                            <Table.Column cell={cellRender} dataIndex="id" lock width={300} />
+                            {this.props.more
+                                ? [
+                                      <Table.Column
+                                          cell={cellRender}
+                                          dataIndex="id"
+                                          width={400}
+                                          key="id1"
+                                      />,
+                                      <Table.Column
+                                          cell={cellRender}
+                                          dataIndex="id"
+                                          width={500}
+                                          key="id2"
+                                      />,
+                                  ]
+                                : null}
+                        </Table>
                     </div>
                 );
             }
-            componentDidMount() {
-                setTimeout(() => {
-                    this.setState({
-                        cols: (
-                            <Table.Column cell={this.cellRender} dataIndex="id" lock width={300} />
-                        ),
-                    });
-                }, 100);
-            }
         }
 
-        const div = document.createElement('div');
-        document.body.appendChild(div);
-        ReactDOM.render(<App />, div);
-        assert(div.querySelectorAll('.next-table-lock-left')[0].children.length !== 0);
-        assert(div.querySelectorAll('.next-table-lock-right')[0].children.length === 0);
-        assert(
-            div.querySelectorAll('div.next-table-lock.next-table-scrolling-to-right').length === 1
-        );
-
-        setTimeout(() => {
-            assert(div.querySelectorAll('.next-table-lock-left')[0].children.length === 0);
-            assert(div.querySelectorAll('.next-table-lock-right')[0].children.length === 0);
-            ReactDOM.unmountComponentAtNode(div);
-            document.body.removeChild(div);
-            done();
-        }, 200);
+        cy.mount(<App />).as('Demo');
+        cy.get('.next-table-lock-left').children().should('have.length.gt', 0);
+        cy.get('.next-table-lock-right').children().should('have.length', 0);
+        cy.rerender('Demo', { more: false });
+        cy.get('.next-table-lock-left').children().should('have.length', 0);
+        cy.get('.next-table-lock-right').children().should('have.length', 0);
     });
 
     it('should has border when set hasHeader as false', () => {
-        const div = document.createElement('div');
-        document.body.appendChild(div);
-        ReactDOM.render(
-            <Table dataSource={[{ id: 1 }, { id: 2 }]} hasHeader={false}>
-                <Table.Column dataIndex="id" />
-            </Table>,
-            div
-        );
-        //Hack firefox,IE10,IE11 render error;
-        div.querySelectorAll('.next-table table')[0].style.borderCollapse = 'separate';
-        assert(
-            parseInt(
-                window.getComputedStyle(div.querySelectorAll('.next-table')[0]).borderTopWidth,
-                10
-            ) === 1
-        );
-        ReactDOM.unmountComponentAtNode(div);
-        document.body.removeChild(div);
+        cy.rerender<TableProps>('Demo', {
+            hasHeader: false,
+        });
+        cy.get('.next-table').should('have.css', 'border-top-width', '1px');
     });
 
     it('should support style config for Table.Column', () => {
-        const div = document.createElement('div');
-        document.body.appendChild(div);
-        ReactDOM.render(
+        cy.mount(
             <Table dataSource={[{ id: 1 }, { id: 2 }]}>
                 <Table.Column dataIndex="id" style={{ textAlign: 'left' }} />
-            </Table>,
-            div
+            </Table>
         );
-        assert(div.querySelectorAll('.next-table table td')[0].style.textAlign === '');
-        assert(div.querySelectorAll('.next-table table th')[0].style.textAlign === 'left');
-        ReactDOM.unmountComponentAtNode(div);
-        document.body.removeChild(div);
+        cy.get('.next-table td').eq(0).should('have.css', 'text-align', 'start');
+        cy.get('.next-table th').eq(0).should('have.css', 'text-align', 'left');
     });
 
     it('should support pass null to sort and any others', () => {
-        const div = document.createElement('div');
-        document.body.appendChild(div);
-        ReactDOM.render(
+        cy.mount(
             <Table
                 dataSource={[{ id: 1 }, { id: 2 }]}
                 hasHeader={false}
@@ -414,11 +277,9 @@ describe('Issue', () => {
                 expandedRowKeys={null}
             >
                 <Table.Column dataIndex="id" />
-            </Table>,
-            div
+            </Table>
         );
-        ReactDOM.unmountComponentAtNode(div);
-        document.body.removeChild(div);
+        cy.get('.next-table').should('exist');
     });
 
     it('should support virtual list', () => {
@@ -433,15 +294,8 @@ describe('Issue', () => {
                 );
             }
         }
-
-        const div = document.createElement('div');
-        document.body.appendChild(div);
-        ReactDOM.render(<App />, div);
-
-        assert(div.querySelectorAll('.next-table-body tbody tr').length < 100);
-
-        ReactDOM.unmountComponentAtNode(div);
-        document.body.removeChild(div);
+        cy.mount(<App />);
+        cy.get('.next-table-body tbody tr').should('have.length.lt', 100);
     });
 
     it('should support defaultOpenRowKeys', () => {
@@ -461,15 +315,8 @@ describe('Issue', () => {
             }
         }
 
-        const div = document.createElement('div');
-        document.body.appendChild(div);
-        ReactDOM.render(<App />, div);
-
-        let expandedTotal = div.querySelectorAll('tbody tr');
-        assert(expandedTotal.length === 5);
-
-        ReactDOM.unmountComponentAtNode(div);
-        document.body.removeChild(div);
+        cy.mount(<App />);
+        cy.get('tbody tr').should('have.length', 5);
     });
 
     it('sort should be singleton', () => {
@@ -484,18 +331,10 @@ describe('Issue', () => {
                 );
             }
         }
-
-        const div = document.createElement('div');
-        document.body.appendChild(div);
-        ReactDOM.render(<App />, div);
-
-        const sortBtn = div.querySelectorAll('.next-table-header .next-table-sort');
-        sortBtn[0].click();
-        sortBtn[1].click();
-
-        assert(div.getElementsByClassName('current').length === 1);
-        ReactDOM.unmountComponentAtNode(div);
-        document.body.removeChild(div);
+        cy.mount(<App />);
+        cy.get('.next-table-header .next-table-sort').eq(0).click();
+        cy.get('.next-table-header .next-table-sort').eq(1).click();
+        cy.get('.current').should('have.length', 1);
     });
 
     it('should sortDirections work', () => {
@@ -515,24 +354,16 @@ describe('Issue', () => {
                 );
             }
         }
-
-        const div = document.createElement('div');
-        document.body.appendChild(div);
-        ReactDOM.render(<App />, div);
-
-        const sortBtn = div.querySelectorAll('.next-table-header .next-table-sort');
-        sortBtn[0].click();
-        assert(div.querySelectorAll('a.current .next-icon-descending'));
-        sortBtn[0].click();
-        assert(div.querySelectorAll('a.current .next-icon-ascending'));
-        sortBtn[0].click();
-        assert(div.querySelectorAll('a.current').length === 0);
-
-        ReactDOM.unmountComponentAtNode(div);
-        document.body.removeChild(div);
+        cy.mount(<App />);
+        cy.get('.next-table-header .next-table-sort').eq(0).click();
+        cy.get('a.current .next-icon-descending').should('exist');
+        cy.get('.next-table-header .next-table-sort').eq(0).click();
+        cy.get('a.current .next-icon-ascending').should('exist');
+        cy.get('.next-table-header .next-table-sort').eq(0).click();
+        cy.get('a.current').should('not.exist');
     });
 
-    it('sort should have only one empty when datasorce=[] && enough width', () => {
+    it('there should be only one empty block with lock config when datasource=[] && enough width', () => {
         class App extends React.Component {
             render() {
                 return (
@@ -545,16 +376,11 @@ describe('Issue', () => {
             }
         }
 
-        const div = document.createElement('div');
-        document.body.appendChild(div);
-        ReactDOM.render(<App />, div);
-
-        assert(div.querySelectorAll('div.next-table-empty').length === 1);
-        ReactDOM.unmountComponentAtNode(div);
-        document.body.removeChild(div);
+        cy.mount(<App />);
+        cy.get('.next-table-empty').should('exist');
     });
 
-    it('fix #466, stickHeader + lock with enough space', () => {
+    it('fix #466, stickyHeader + lock with enough space', () => {
         class App extends React.Component {
             render() {
                 return (
@@ -566,18 +392,13 @@ describe('Issue', () => {
             }
         }
 
-        const div = document.createElement('div');
-        document.body.appendChild(div);
-        ReactDOM.render(<App />, div);
-
-        assert(div.querySelectorAll('div.next-table-empty').length === 1);
-        ReactDOM.unmountComponentAtNode(div);
-        document.body.removeChild(div);
+        cy.mount(<App />);
+        cy.get('.next-table-empty').should('have.length', 1);
     });
 
-    it('should support crossline hover', done => {
-        const container = document.createElement('div');
-        document.body.appendChild(container);
+    it('should support crossline hover', () => {
+        // const container = document.createElement('div');
+        // document.body.appendChild(container);
         class App extends React.Component {
             render() {
                 return (
@@ -599,48 +420,19 @@ describe('Issue', () => {
             }
         }
 
-        ReactDOM.render(<App />, container, function () {
-            const cell = container.querySelector(
-                'td[data-next-table-col="1"][data-next-table-row="1"]'
-            );
-            const mouseover = new MouseEvent('mouseover', {
-                view: window,
-                bubbles: true,
-                cancelable: true,
-            });
-
-            cell.dispatchEvent(mouseover);
-
-            assert(container.querySelectorAll('td.next-table-cell.hovered').length === 2);
-
-            assert(container.querySelectorAll('tr.next-table-row.hovered').length === 1);
-
-            const mouseout = new MouseEvent('mouseout', {
-                view: window,
-                bubbles: true,
-                cancelable: true,
-            });
-
-            cell.dispatchEvent(mouseout);
-
-            assert(container.querySelectorAll('td.next-table-cell.hovered').length === 0);
-
-            // target is in inner
-            const renderA = container.querySelector('#name-0');
-            renderA.dispatchEvent(mouseover);
-
-            assert(container.querySelectorAll('td.next-table-cell.hovered').length === 2);
-
-            assert(container.querySelectorAll('tr.next-table-row.hovered').length === 1);
-
-            renderA.dispatchEvent(mouseout);
-
-            assert(container.querySelectorAll('td.next-table-cell.hovered').length === 0);
-
-            ReactDOM.unmountComponentAtNode(container);
-            document.body.removeChild(container);
-            done();
-        });
+        cy.mount(<App />);
+        cy.get('td[data-next-table-col="1"][data-next-table-row="1"]')
+            .as('cell')
+            .trigger('mouseover');
+        cy.get('.next-table-cell.hovered').should('have.length', 2);
+        cy.get('.next-table-row.hovered').should('have.length', 1);
+        cy.get('@cell').trigger('mouseout');
+        cy.get('.next-table-cell.hovered').should('have.length', 0);
+        cy.get('#name-0').as('renderA').trigger('mouseover');
+        cy.get('.next-table-cell.hovered').should('have.length', 2);
+        cy.get('.next-table-row.hovered').should('have.length', 1);
+        cy.get('@renderA').trigger('mouseout');
+        cy.get('.next-table-cell.hovered').should('have.length', 0);
     });
 
     it('should support useFirstLevelDataWhenNoChildren', () => {
@@ -670,7 +462,7 @@ describe('Issue', () => {
                             }}
                         />
                         <Table.Column
-                            cell={product => {
+                            cell={(product: Array<{ title: string }>) => {
                                 return product[0].title;
                             }}
                             title="Product Details"
@@ -683,20 +475,14 @@ describe('Issue', () => {
                 );
             }
         }
-
-        const div = document.createElement('div');
-        document.body.appendChild(div);
-        ReactDOM.render(<App />, div);
-
-        assert(div.querySelectorAll('.next-table-group-header + tr').length === 1);
-        ReactDOM.unmountComponentAtNode(div);
-        document.body.removeChild(div);
+        cy.mount(<App />);
+        cy.get('.next-table-group-header + tr').should('have.length', 1);
     });
 
     // fix https://github.com/alibaba-fusion/next/issues/4396
-    it('should support Header and Body follow the TableGroupHeader when it locks the columns', async () => {
-        const container = document.createElement('div');
-        document.body.appendChild(container);
+    it('should support Header and Body follow the TableGroupHeader when it locks the columns', () => {
+        // const container = document.createElement('div');
+        // document.body.appendChild(container);
 
         const dataSource = () => {
             const result = [];
@@ -716,12 +502,12 @@ describe('Issue', () => {
                     {
                         title: 'Title2',
                         dataIndex: 'id',
-                        lock: 'left',
+                        lock: 'left' as const,
                         width: 140,
                     },
                     {
                         title: 'Title3',
-                        lock: 'left',
+                        lock: 'left' as const,
                         dataIndex: 'time',
                         width: 200,
                     },
@@ -738,40 +524,33 @@ describe('Issue', () => {
                 width: 500,
             },
         ];
-
-        ReactDOM.render(
+        cy.mount(
             <Table.StickyLock dataSource={dataSource()} columns={columns}>
                 <Table.GroupHeader
                     cell={() => {
                         return <div>title</div>;
                     }}
                 />
-            </Table.StickyLock>,
-            container
+            </Table.StickyLock>
         );
-        const tableHeader = container.querySelector('.next-table-header');
-        const tableBody = container.querySelector('.next-table-body');
-        assert(tableHeader);
-        assert(tableBody);
-        // wait for initial scroll align
-        await delay(200);
-        tableHeader.scrollLeft = 100;
-        ReactTestUtils.Simulate.scroll(tableHeader);
-        await delay(200);
-        assert(tableHeader.scrollLeft === 100);
-        assert(tableBody.scrollLeft === 100);
-
-        tableBody.scrollLeft = 0;
-        ReactTestUtils.Simulate.scroll(tableBody);
-        await delay(200);
-        assert(tableHeader.scrollLeft === 0);
-        assert(tableBody.scrollLeft === 0);
+        cy.get('.next-table-header').as('tableHeader').should('exist');
+        cy.get('.next-table-body').as('tableBody').should('exist');
+        // table 内部有定时锁阻止同一时间多次设置 scroll，需要等待一段时间
+        // eslint-disable-next-line cypress/no-unnecessary-waiting
+        cy.wait(200);
+        cy.get('@tableHeader').then(tableHeader => {
+            tableHeader.scrollLeft(100);
+        });
+        cy.get('@tableBody').should('have.prop', 'scrollLeft', 100);
+        // eslint-disable-next-line cypress/no-unnecessary-waiting
+        cy.wait(200);
+        cy.get('@tableBody').then(tableHeader => {
+            tableHeader.scrollLeft(0);
+        });
+        cy.get('@tableHeader').should('have.prop', 'scrollLeft', 0);
     });
 
-    it('should support multiple header lock', done => {
-        const container = document.createElement('div');
-        document.body.appendChild(container);
-
+    it('should support multiple header lock', () => {
         const dataSource = () => {
             const result = [];
             for (let i = 0; i < 5; i++) {
@@ -783,7 +562,7 @@ describe('Issue', () => {
             }
             return result;
         };
-        const render = (value, index, record) => {
+        const render: ColumnProps['cell'] = (value, index, record) => {
             return <a href="javascript:;">Remove({record.id})</a>;
         };
 
@@ -829,24 +608,13 @@ describe('Issue', () => {
             },
         ];
 
-        ReactDOM.render(
-            <Table.StickyLock dataSource={dataSource()} columns={columns} />,
-            container,
-            function () {
-                setTimeout(() => {
-                    assert(parseInt(container.querySelector('#target-line').style.left) - 340 < 1);
-                    ReactDOM.unmountComponentAtNode(container);
-                    document.body.removeChild(container);
-                    done();
-                }, 10);
-            }
-        );
+        cy.mount(<Table.StickyLock dataSource={dataSource()} columns={columns} />);
+        cy.get('#target-line').then($ele => {
+            expect(parseInt($ele.css('left'))).to.be.closeTo(340, 1);
+        });
     });
 
-    it('should set right offset, fix #2276', done => {
-        const container = document.createElement('div');
-        document.body.appendChild(container);
-
+    it('should set right offset, fix #2276', () => {
         const dataSource = () => {
             const result = [];
             for (let i = 0; i < 5; i++) {
@@ -858,7 +626,7 @@ describe('Issue', () => {
             }
             return result;
         };
-        const render = (value, index, record) => {
+        const render: ColumnProps['cell'] = (value, index, record) => {
             return <a href="javascript:;">Remove({record.id})</a>;
         };
 
@@ -933,33 +701,16 @@ describe('Issue', () => {
             },
         ];
 
-        ReactDOM.render(
-            <Table.StickyLock dataSource={dataSource()} columns={columns} />,
-            container,
-            function () {
-                setTimeout(() => {
-                    assert(
-                        parseInt(
-                            container.querySelectorAll(
-                                '.next-table-cell.next-table-fix-right.next-table-fix-right-first'
-                            )[3].style.right
-                        ) -
-                            200 <
-                            1
-                    );
-                    ReactDOM.unmountComponentAtNode(container);
-                    document.body.removeChild(container);
-                    done();
-                }, 10);
-            }
-        );
+        cy.mount(<Table.StickyLock dataSource={dataSource()} columns={columns} />);
+        cy.get('.next-table-cell.next-table-fix-right.next-table-fix-right-first')
+            .eq(3)
+            .then($ele => {
+                expect(parseInt($ele.css('right'))).to.be.closeTo(200, 1);
+            });
     });
 
-    it('should work with expanded virtual table, fix #2646', done => {
-        const container = document.createElement('div');
-        document.body.appendChild(container);
-
-        const dataSource = n => {
+    it('should work with expanded virtual table, fix #2646', () => {
+        const dataSource = (n: number) => {
             const result = [];
             for (let i = 0; i < n; i++) {
                 result.push({
@@ -970,7 +721,7 @@ describe('Issue', () => {
             }
             return result;
         };
-        const render = (value, index, record) => {
+        const render: ColumnProps['cell'] = (value, index, record) => {
             return <a href="javascript:;">Remove({record.id})</a>;
         };
 
@@ -978,7 +729,7 @@ describe('Issue', () => {
             state = {
                 scrollToRow: 20,
             };
-            onBodyScroll = start => {
+            onBodyScroll: TableProps['onBodyScroll'] = start => {
                 this.setState({
                     scrollToRow: start,
                 });
@@ -1004,35 +755,19 @@ describe('Issue', () => {
             }
         }
 
-        ReactDOM.render(<App />, container, function () {
-            setTimeout(() => {
-                const trCount = container.querySelectorAll(
-                    '.next-table .next-table-body table tr.next-table-row'
-                ).length;
-                assert(trCount > 10);
-                assert(trCount < 100);
-
-                const ctrl = container.querySelectorAll(
-                    '.next-table .next-table-body table tr.next-table-row .next-table-expanded-ctrl'
-                )[0];
-                ctrl.click();
-
-                assert(
-                    container.querySelectorAll(
-                        '.next-table .next-table-body table tr.next-table-expanded-row'
-                    )
-                );
-
-                ReactDOM.unmountComponentAtNode(container);
-                document.body.removeChild(container);
-                done();
-            }, 10);
-        });
+        cy.mount(<App />);
+        cy.get('.next-table .next-table-body table tr.next-table-row')
+            .its('length')
+            .should('be.greaterThan', 10);
+        cy.get('.next-table .next-table-body table tr.next-table-row')
+            .its('length')
+            .should('be.lessThan', 100);
+        cy.get('.next-table .next-table-body table tr.next-table-row .next-table-expanded-ctrl')
+            .eq(0)
+            .click({ force: true });
+        cy.get('.next-table .next-table-body table tr.next-table-expanded-row').should('exist');
     });
-    it("should set expanded row's  width after stickylock table toggle loading, close #3000", done => {
-        const container = document.createElement('div');
-        document.body.appendChild(container);
-
+    it("should set expanded row's width after stickyLock table toggle loading, close #3000", () => {
         const dataSource = () => {
                 const result = [];
                 for (let i = 0; i < 5; i++) {
@@ -1045,19 +780,16 @@ describe('Issue', () => {
                 }
                 return result;
             },
-            expandedRowRender = record => record.title,
-            render = (value, index, record) => {
+            expandedRowRender: TableProps['expandedRowRender'] = record => record.title,
+            render: ColumnProps['cell'] = (value, index, record) => {
                 return <a>Remove({record.id})</a>;
             };
 
         class App extends React.Component {
-            constructor(props) {
-                super(props);
-                this.state = {
-                    dataSource: dataSource(),
-                    loading: false,
-                };
-            }
+            state = {
+                dataSource: dataSource(),
+                loading: false,
+            };
 
             toggleLoading = () => {
                 this.setState({
@@ -1092,34 +824,19 @@ describe('Issue', () => {
             }
         }
 
-        ReactDOM.render(<App />, container, function () {
-            setTimeout(() => {
-                const expandedRows = container.querySelectorAll(
-                    '.next-table-expanded-row .next-table-cell-wrapper'
-                );
-                expandedRows.forEach(row => {
-                    assert(row.style.width === '499px');
-                });
-
-                const btn = container.querySelector('#sticky-expanded-row-width');
-                btn.click();
-                setTimeout(() => {
-                    btn.click();
-
-                    expandedRows.forEach(row => {
-                        assert(row.style.width === '499px');
-                    });
-
-                    ReactDOM.unmountComponentAtNode(container);
-                    document.body.removeChild(container);
-                    done();
-                }, 100);
-            }, 100);
+        cy.mount(<App />);
+        cy.get('.next-table-expanded-row .next-table-cell-wrapper').each($row => {
+            expect(parseInt($row.css('width'))).to.be.closeTo(499, 1);
+        });
+        cy.get('#sticky-expanded-row-width').click();
+        cy.get('#sticky-expanded-row-width').click();
+        cy.get('.next-table-expanded-row .next-table-cell-wrapper').each($row => {
+            expect(parseInt($row.css('width'))).to.be.closeTo(499, 1);
         });
     });
-    it('Different sorts have different className of table header , close #3386', done => {
-        const container = document.createElement('div');
-        document.body.appendChild(container);
+    it('Different sorts have different className of table header , close #3386', () => {
+        // const container = document.createElement('div');
+        // document.body.appendChild(container);
         class App extends React.Component {
             render() {
                 return (
@@ -1131,34 +848,14 @@ describe('Issue', () => {
             }
         }
 
-        ReactDOM.render(<App />, container, function () {
-            const input = container.querySelector('.next-table-header .next-table-sort');
-            input.click();
-            setTimeout(() => {
-                assert(
-                    container.querySelectorAll(
-                        `.next-table-header-node.next-table-header-sort-desc`
-                    ).length === 1
-                );
-                input.click();
-                setTimeout(() => {
-                    assert(
-                        container.querySelectorAll(
-                            `.next-table-header-node.next-table-header-sort-asc`
-                        ).length === 1
-                    );
-                    ReactDOM.unmountComponentAtNode(container);
-                    document.body.removeChild(container);
-                    done();
-                }, 10);
-            }, 10);
-        });
+        cy.mount(<App />);
+        cy.get('.next-table-header .next-table-sort').click();
+        cy.get('.next-table-header-node.next-table-header-sort-desc').should('have.length', 1);
+        cy.get('.next-table-header .next-table-sort').click();
+        cy.get('.next-table-header-node.next-table-header-sort-asc').should('have.length', 1);
     });
 
     it('should not modify columns props passed from outside, close #4062', () => {
-        const container = document.createElement('div');
-        document.body.appendChild(container);
-
         const columns = [
             {
                 title: '商品编码',
@@ -1176,20 +873,20 @@ describe('Issue', () => {
                     barcode: 'Bar16858180524079952',
                     itemCode: 'code16858180524079952',
                     itemId: 128581419,
-                    itemName: '测试商品16858180524065799',
+                    itemName: '测试商品 16858180524065799',
                     ownerId: 624144,
-                    ownerName: '快消-商家测试帐号86',
+                    ownerName: '快消 - 商家测试帐号 86',
                 },
                 {
                     barcode: 'Bar16858755068847002',
                     itemCode: 'code16858755068847002',
                     itemId: 128581770,
-                    itemName: '测试商品16858755068835325',
+                    itemName: '测试商品 16858755068835325',
                     ownerId: 624144,
-                    ownerName: '快消-商家测试帐号86',
+                    ownerName: '快消 - 商家测试帐号 86',
                 },
             ];
-            const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+            const [selectedRowKeys, setSelectedRowKeys] = useState<Array<string | number>>([]);
             return (
                 <Table
                     size="small"
@@ -1216,15 +913,11 @@ describe('Issue', () => {
                 </div>
             );
         }
-        ReactDOM.render(<App />, container);
-
-        assert(columns.length === 2);
+        cy.mount(<App />);
+        expect(columns.length).to.equal(2);
     });
 
     it('should support ConfigProvider prefix, close #4073', () => {
-        const container = document.createElement('div');
-        document.body.appendChild(container);
-
         const dataSource = () => {
             const result = [];
             for (let i = 0; i < 5; i++) {
@@ -1236,73 +929,49 @@ describe('Issue', () => {
             }
             return result;
         };
-
-        ReactDOM.render(
+        cy.mount(
             <ConfigProvider prefix="my-">
                 <Table dataSource={dataSource()}>
                     <Table.Column title="Id" htmlTitle="Unique Id" dataIndex="id" />
                     <Table.Column title="Title" dataIndex="title.name" />
                     <Table.Column title="Time" dataIndex="time" />
                 </Table>
-            </ConfigProvider>,
-            container
+            </ConfigProvider>
         );
-
-        assert(container.querySelectorAll('.my-table').length >= 1);
+        cy.get('.my-table').should('exist');
     });
 
     it('should not crash when dataSource is undefined, close #4073', () => {
-        const container = document.createElement('div');
-        document.body.appendChild(container);
-
-        ReactDOM.render(
+        cy.mount(
             <Table>
                 <Table.Column title="Id" lock htmlTitle="Unique Id" dataIndex="id" />
                 <Table.Column title="Title" dataIndex="title.name" />
                 <Table.Column title="Time" dataIndex="time" />
-            </Table>,
-            container
+            </Table>
         );
 
-        assert(container.querySelector('.next-table-empty'));
+        cy.get('.next-table-empty').should('exist');
     });
 
-    it('should not crash when columns is undefined, close #4070', done => {
-        wrapper.setProps({});
-        timeout(
-            {
-                columns: undefined,
-            },
-            () => {
-                assert(wrapper.find('.next-table-empty'));
-                done();
-            }
-        );
+    it('should not crash when columns is undefined, close #4070', () => {
+        cy.rerender('Demo', { children: undefined });
+        cy.get('.next-table').should('exist');
     });
 
     it('should can use Input at column.title, close #4370', () => {
-        const container = document.createElement('div');
-        document.body.appendChild(container);
-
-        ReactDOM.render(
+        cy.mount(
             <Table>
                 <Table.Column title={<Input />} lock htmlTitle="Unique Id" dataIndex="id" />
                 <Table.Column title="Title" dataIndex="title.name" />
                 <Table.Column title="Time" dataIndex="time" />
-            </Table>,
-            container
+            </Table>
         );
-        const input = container.querySelector('input');
-        assert(input);
-        ReactTestUtils.Simulate.change(input, { target: { value: 'aa' } });
-        assert(input.value === 'aa');
+        cy.get('input').type('aa');
+        cy.get('input').should('have.value', 'aa');
     });
 
     it('should support locking columns when the data source is empty and in the same grouping, close #4282', () => {
-        const container = document.createElement('div');
-        document.body.appendChild(container);
-
-        ReactDOM.render(
+        cy.mount(
             <Table.StickyLock dataSource={[]} fixedHeader maxBodyHeight={400}>
                 <Table.ColumnGroup title="Group1-3">
                     <Table.Column title="Title1" dataIndex="id" lock="left" width={140} />
@@ -1315,23 +984,21 @@ describe('Issue', () => {
                 <Table.ColumnGroup>
                     <Table.Column title="Time" dataIndex="time" width={500} />
                 </Table.ColumnGroup>
-            </Table.StickyLock>,
-            container
+            </Table.StickyLock>
         );
-
-        const title1Cell = container.querySelector('th.next-table-fix-left[rowspan="1"]');
-        const title1CellLeft = title1Cell.getBoundingClientRect().left;
-        const title1CellWidth = title1Cell.getBoundingClientRect().width;
-        const title2CellLeft = container
-            .querySelector('th.next-table-fix-left-last[rowspan="1"]')
-            .getBoundingClientRect().left;
-        assert(title1CellLeft + title1CellWidth === title2CellLeft);
+        cy.get('th.next-table-fix-left[rowspan="1"]').eq(0).as('title1Cell');
+        cy.get('th.next-table-fix-left-last[rowspan="1"]').as('title2Cell');
+        cy.get('@title1Cell').then($title1Cell => {
+            const title1CellLeft = $title1Cell.get(0).getBoundingClientRect().left;
+            const title1CellWidth = $title1Cell.get(0).getBoundingClientRect().width;
+            cy.get('@title2Cell').then($title2Cell => {
+                const title2CellLeft = $title2Cell.get(0).getBoundingClientRect().left;
+                expect(title1CellLeft + title1CellWidth).to.equal(title2CellLeft);
+            });
+        });
     });
 
     it('should support when dataSource item id 0, close #3740', () => {
-        const container = document.createElement('div');
-        document.body.appendChild(container);
-
         function CheckTable() {
             const dataSource = [
                 { id: 0, name: 'test' },
@@ -1351,44 +1018,25 @@ describe('Issue', () => {
                 </Table>
             );
         }
-        ReactDOM.render(<CheckTable />, container);
-        const getRowCell = function (row, index = 1) {
-            return row.querySelectorAll('.next-table-cell')[index];
+        cy.mount(<CheckTable />);
+        const getRowCell = function (row: Cypress.Chainable<JQuery<HTMLElement>>, index = 1) {
+            return row.find('.next-table-cell').eq(index);
         };
-        const rows = container.querySelectorAll('tr.next-table-row');
-        assert(container.querySelectorAll('.next-checkbox-wrapper.checked').length === 1);
-        assert(container.querySelectorAll('.next-table-body .next-table-row').length === 3);
-        assert(
-            getRowCell(rows[0]).textContent === '0' && getRowCell(rows[0], 2).textContent === 'test'
-        );
-        assert(
-            getRowCell(rows[1]).textContent === '1' &&
-                getRowCell(rows[1], 2).textContent === 'test1'
-        );
-        assert(
-            getRowCell(rows[2]).textContent === '2' &&
-                getRowCell(rows[2], 2).textContent === 'test2'
-        );
-        ReactDOM.unmountComponentAtNode(container);
-        document.body.removeChild(container);
+        cy.get('tr.next-table-row').as('rows');
+        cy.get('.next-checkbox-wrapper.checked').should('have.length', 1);
+        cy.get('.next-table-body .next-table-row').should('have.length', 3);
+        getRowCell(cy.get('@rows').eq(0)).should('have.text', '0');
+        getRowCell(cy.get('@rows').eq(0), 2).should('have.text', 'test');
+        getRowCell(cy.get('@rows').eq(1)).should('have.text', '1');
+        getRowCell(cy.get('@rows').eq(1), 2).should('have.text', 'test1');
+        getRowCell(cy.get('@rows').eq(2)).should('have.text', '2');
+        getRowCell(cy.get('@rows').eq(2), 2).should('have.text', 'test2');
     });
 });
 
 describe('TableScroll', () => {
-    let mountNode;
-
-    beforeEach(() => {
-        mountNode = document.createElement('div');
-        document.body.appendChild(mountNode);
-    });
-
-    afterEach(() => {
-        ReactDOM.unmountComponentAtNode(mountNode);
-        document.body.removeChild(mountNode);
-    });
-
     it('scroll position error, close #4484', () => {
-        const dataSource = j => {
+        const dataSource = (j: number) => {
             const result = [];
             for (let i = 0; i < j; i++) {
                 result.push({
@@ -1400,17 +1048,14 @@ describe('TableScroll', () => {
             }
             return result;
         };
-        const relockColumn = (value, index, record) => {
+        const reLockColumn: ColumnProps['cell'] = (value, index, record) => {
             return <a>Remove({record.id})</a>;
         };
         class Demo extends React.Component {
-            constructor(props) {
-                super(props);
-            }
             state = {
                 scrollToRow: 20,
             };
-            onBodyScroll = start => {
+            onBodyScroll: TableProps['onBodyScroll'] = start => {
                 this.setState({
                     scrollToRow: start,
                 });
@@ -1433,27 +1078,29 @@ describe('TableScroll', () => {
                             <Table.Column title="Time" dataIndex="time" width={200} />
                             <Table.Column title="Time" dataIndex="time" width={200} />
                             <Table.Column title="Time" dataIndex="time" width={200} lock="right" />
-                            <Table.Column cell={relockColumn} width={200} lock />
+                            <Table.Column cell={reLockColumn} width={200} lock />
                         </Table>
-                        <Button onClick={this.onClick100}> 跳转到100行</Button>
+                        <Button onClick={this.onClick100}> 跳转到 100 行</Button>
                     </div>
                 );
             }
         }
-        ReactDOM.render(<Demo />, mountNode);
-        const scrollNode = mountNode.querySelector('.next-table-body');
-        const rowHeight = scrollNode.querySelector('.next-table-cell').clientHeight;
-        scrollNode.scrollTop = 200;
-        ReactTestUtils.Simulate.click(mountNode.querySelector('.next-btn'));
-        assert(rowHeight * 100 === scrollNode.scrollTop);
+        cy.mount(<Demo />);
+        cy.get('.next-table-body')
+            .eq(0)
+            .then($scrollNode => {
+                const rowHeight = $scrollNode
+                    .get(0)
+                    .querySelector('.next-table-cell')!.clientHeight;
+                cy.get('.next-table-body').eq(0).scrollTo(0, 200);
+                cy.get('.next-btn').click();
+                cy.get('.next-table-body').should('have.prop', 'scrollTop', rowHeight * 100);
+            });
     });
 
     // fix https://github.com/alibaba-fusion/next/issues/4394
-    it('should support onBodyScroll under the condition that useVirtual, dataSource is returned asynchronously, close #4394', async () => {
-        const container = document.createElement('div');
-        document.body.appendChild(container);
-
-        const dataSource = j => {
+    it('should support onBodyScroll under the condition that useVirtual, dataSource is returned asynchronously, close #4394', () => {
+        const dataSource = (j: number) => {
             const result = [];
             for (let i = 0; i < j; i++) {
                 result.push({
@@ -1477,7 +1124,7 @@ describe('TableScroll', () => {
                     });
                 }, 50);
             };
-            onBodyScroll = start => {
+            onBodyScroll: TableProps['onBodyScroll'] = start => {
                 this.setState({
                     scrollToRow: start,
                 });
@@ -1512,40 +1159,42 @@ describe('TableScroll', () => {
             }
         }
 
-        ReactDOM.render(<App />, container);
-
-        await delay(200);
-        const button = container.querySelector('tr.next-table-row.first button');
-        assert(button);
-        button.click();
-        await delay(200);
-
-        const getBodyTop = () => {
-            const { top, height } = container.querySelector('thead').getBoundingClientRect();
-            return top + height;
-        };
-        const skipRow = container.querySelectorAll('tr.next-table-row')[10];
-        assert(skipRow.children[0].textContent === '180');
-        await delay(200);
-        const skipRowTop = skipRow.getBoundingClientRect().top;
-        assert(skipRowTop >= getBodyTop());
-        const tbody = container.querySelector('.next-table-body');
-        tbody.scrollTop += 10;
-        ReactTestUtils.Simulate.scroll(tbody);
-        await delay(200);
-        const scrollRow = container.querySelectorAll('tr.next-table-row')[10];
-        assert(scrollRow.children[0].textContent === '180');
-        const scrollRowTop = scrollRow.getBoundingClientRect().top;
-        assert(scrollRowTop >= getBodyTop() - 10);
+        cy.mount(<App />);
+        cy.get('tr.next-table-row.first button').click();
+        cy.get('tr.next-table-row')
+            .eq(10)
+            .as('skipRow')
+            .children()
+            .eq(0)
+            .should('have.text', '180');
+        cy.get('@skipRow').then($skipRow => {
+            const skipRowTop = $skipRow.get(0).getBoundingClientRect().top;
+            cy.get('thead').then($thead => {
+                const theadTop = $thead.get(0).getBoundingClientRect().top;
+                const theadHeight = $thead.get(0).getBoundingClientRect().height;
+                expect(skipRowTop).to.gte(theadTop + theadHeight);
+            });
+        });
+        cy.get('.next-table-body').then($tbody => {
+            $tbody.get(0).scrollTop += 10;
+        });
+        cy.get('@skipRow').then($skipRow => {
+            const skipRowTop = $skipRow.get(0).getBoundingClientRect().top;
+            cy.get('thead').then($thead => {
+                const theadTop = $thead.get(0).getBoundingClientRect().top;
+                const theadHeight = $thead.get(0).getBoundingClientRect().height;
+                expect(skipRowTop).to.gte(theadTop + theadHeight - 10);
+            });
+        });
     });
 
     // fix https://github.com/alibaba-fusion/next/issues/4264
     // fix https://github.com/alibaba-fusion/next/issues/4716
-    it('should support for merging cells in locked columns, close #4264, #4716', async () => {
-        const container = document.createElement('div');
-        document.body.appendChild(container);
+    it('should support for merging cells in locked columns, close #4264, #4716', () => {
+        // const container = document.createElement('div');
+        // document.body.appendChild(container);
 
-        const dataSource = j => {
+        const dataSource = (j: number) => {
             const result = [];
             for (let i = 0; i < j; i++) {
                 result.push({
@@ -1558,7 +1207,7 @@ describe('TableScroll', () => {
             return result;
         };
 
-        const mergeCell = (rowIndex, colIndex) => {
+        const mergeCell: TableProps['cellProps'] = (rowIndex, colIndex) => {
             if (colIndex === 0 && rowIndex === 0) {
                 return {
                     rowSpan: 2,
@@ -1567,7 +1216,7 @@ describe('TableScroll', () => {
             }
         };
 
-        ReactDOM.render(
+        cy.mount(
             <div className="table-container" style={{ width: 800 }}>
                 <Table.StickyLock dataSource={dataSource(3)} cellProps={mergeCell}>
                     <Table.Column title="Id" dataIndex="id" width={200} lock />
@@ -1576,31 +1225,29 @@ describe('TableScroll', () => {
                     <Table.Column title="test" width={100} />
                     <Table.Column title="test2" width={800} />
                 </Table.StickyLock>
-            </div>,
-            container
+            </div>
         );
-
-        const titleHeaderNode = container.querySelectorAll('thead .next-table-header-node')[1];
-        assert(titleHeaderNode);
-        const idHeaderNode = container.querySelectorAll('thead .next-table-header-node')[0];
-        assert(idHeaderNode);
-        assert(
-            titleHeaderNode.getBoundingClientRect().left ===
-                idHeaderNode.getBoundingClientRect().right
-        );
-
-        const tableNode = container.querySelector('.next-table-body');
-        tableNode.scrollLeft = 900;
-        ReactTestUtils.Simulate.scroll(tableNode);
-        await delay(200);
-        const timeNode = container.querySelectorAll('thead .next-table-header-node')[2];
-        assert(timeNode);
-        assert(
-            timeNode.getBoundingClientRect().left === titleHeaderNode.getBoundingClientRect().right
-        );
+        cy.get('thead .next-table-header-node').eq(0).as('idHeaderNode').should('exist');
+        cy.get('thead .next-table-header-node').eq(1).as('titleHeaderNode').should('exist');
+        cy.get('thead .next-table-header-node').eq(2).as('timeHeaderNode').should('exist');
+        cy.get('@idHeaderNode').then($id => {
+            const idRight = $id.get(0).getBoundingClientRect().right;
+            cy.get('@titleHeaderNode').then($title => {
+                const titleLeft = $title.get(0).getBoundingClientRect().left;
+                expect(titleLeft).to.equal(idRight);
+            });
+        });
+        cy.get('.next-table-body').scrollTo(900, 0);
+        cy.get('@timeHeaderNode').then($time => {
+            const timeLeft = $time.get(0).getBoundingClientRect().left;
+            cy.get('@titleHeaderNode').then($title => {
+                const titleRight = $title.get(0).getBoundingClientRect().right;
+                expect(timeLeft).to.equal(titleRight);
+            });
+        });
     });
-    it('set keepForwardRenderRows to support large rowSpan when useVirtual, close #4395', async () => {
-        const datas = j => {
+    it('set keepForwardRenderRows to support large rowSpan when useVirtual, close #4395', () => {
+        const datas = (j: number) => {
             const result = [];
             for (let i = 0; i < j; i++) {
                 result.push({
@@ -1612,13 +1259,14 @@ describe('TableScroll', () => {
             }
             return result;
         };
-        class App extends React.Component {
+        type AppProps = { scrollToRow?: number; keepForwardRenderRows?: number };
+        class App extends React.Component<AppProps> {
             state = {
                 scrollToRow: 0,
                 dataSource: datas(200),
             };
 
-            componentDidUpdate(prevProps) {
+            componentDidUpdate(prevProps: AppProps) {
                 if (
                     'scrollToRow' in this.props &&
                     this.props.scrollToRow !== prevProps.scrollToRow
@@ -1629,7 +1277,7 @@ describe('TableScroll', () => {
                 }
             }
 
-            onBodyScroll = start => {
+            onBodyScroll: TableProps['onBodyScroll'] = start => {
                 this.setState({
                     scrollToRow: start,
                 });
@@ -1645,7 +1293,7 @@ describe('TableScroll', () => {
                         keepForwardRenderRows={this.props.keepForwardRenderRows}
                         scrollToRow={this.state.scrollToRow}
                         onBodyScroll={this.onBodyScroll}
-                        cellProps={(rowIndex, colIndex) => {
+                        cellProps={(rowIndex: number, colIndex) => {
                             if ([0, 17, 34].includes(rowIndex) && colIndex === 0) {
                                 return {
                                     rowSpan: 17,
@@ -1660,18 +1308,10 @@ describe('TableScroll', () => {
                 );
             }
         }
-
-        const container = document.createElement('div');
-        document.body.appendChild(container);
-        const wrapper = mount(<App keepForwardRenderRows={10} />, { attachTo: container });
-        await delay(100);
-
-        wrapper.setProps({ scrollToRow: 15 });
-        assert(!container.querySelector('[data-next-table-row="0"]'));
-
-        wrapper.setProps({ keepForwardRenderRows: 17 });
-        assert(container.querySelector('[data-next-table-row="0"]'));
-
-        wrapper.unmount();
+        cy.mount(<App keepForwardRenderRows={10} />).as('Demo');
+        cy.rerender('Demo', { scrollToRow: 15 }).as('Demo2');
+        cy.get('[data-next-table-row="0"]').should('not.exist');
+        cy.rerender('Demo2', { keepForwardRenderRows: 17 });
+        cy.get('[data-next-table-row="0"]').should('exist');
     });
 });

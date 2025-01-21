@@ -140,11 +140,14 @@ export default class Row extends React.Component<RowProps> {
                     return null;
                 }
             }
-            if ((attrs.colSpan && attrs.colSpan > 1) || (attrs.rowSpan && attrs.rowSpan > 1)) {
+            if (
+                (attrs.colSpan && (attrs.colSpan as number) > 1) ||
+                (attrs.rowSpan && attrs.rowSpan > 1)
+            ) {
                 this._getNotRenderCellIndex(
                     colIndex!,
                     rowIndex!,
-                    attrs.colSpan || 1,
+                    (attrs.colSpan as number) || 1,
                     attrs.rowSpan || 1
                 );
             }
@@ -155,7 +158,7 @@ export default class Row extends React.Component<RowProps> {
                 last:
                     lockType !== 'left' &&
                     (colIndex === columns.length - 1 ||
-                        colIndex! + attrs.colSpan! === columns.length), // 考虑合并单元格的情况
+                        colIndex! + (attrs.colSpan as number) === columns.length), // 考虑合并单元格的情况
                 [child.className!]: child.className,
                 [cellClass!]: cellClass,
             });

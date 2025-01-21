@@ -17,7 +17,7 @@ import FilterComponent from './base/filter';
 import SortComponent from './base/sort';
 import Column from './column';
 import ColumnGroup from './column-group';
-import {
+import type {
     CellLike,
     RowLike,
     BaseTableContext,

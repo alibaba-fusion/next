@@ -111,7 +111,7 @@ export const setStickyStyle = (
         let nodesLen = 0;
         const arrLen = (Array.isArray(node && node.children) && node!.children!.length) || 0;
         if (arrLen > 0) {
-            nodesLen = node!.children!.reduce((ret, item, idx) => {
+            nodesLen = node!.children!.reduce((ret, item) => {
                 // @ts-expect-error 这里实现感觉有些问题，应该传入的是 item
                 return ret + getLeafNodes(item.children);
             }, 0);

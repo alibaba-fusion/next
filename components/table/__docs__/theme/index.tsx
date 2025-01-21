@@ -7,7 +7,7 @@ import { Demo, type DemoFunctionDefineForObject, DemoGroup, initDemo } from '../
 import ConfigProvider from '../../../config-provider';
 import zhCN from '../../../locale/zh-cn';
 import enUS from '../../../locale/en-us';
-import Table, { ColumnProps, type TableProps } from '../../index';
+import Table, { type ColumnProps, type TableProps } from '../../index';
 
 const i18nMap = {
     'en-us': {
@@ -111,7 +111,6 @@ class FunctionDemo extends React.Component<{ lang: 'zh-cn' | 'en-us' }> {
         const functions = convert(demoFunction);
         const { lang } = this.props;
         const i18n = i18nMap[lang];
-        const { size } = functions;
         const rowSelection: TableProps['rowSelection'] = {
             mode: functions.rowSelection as 'single' | 'multiple',
             selectedRowKeys: [4],
@@ -416,7 +415,6 @@ class TableFunctionDemo extends React.Component<{ lang: 'zh-cn' | 'en-us' }> {
         const functions = convert(demoFunction);
         const { lang } = this.props;
         const i18n = i18nMap[lang];
-        const { size } = functions;
         const rowSelection: TableProps['rowSelection'] =
             functions.rowSelection === 'false'
                 ? null

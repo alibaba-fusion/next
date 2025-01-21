@@ -10,9 +10,13 @@ import type { RadioProps } from '../radio';
 interface HTMLAttributesWeak
     extends Omit<React.HTMLAttributes<HTMLElement>, 'title' | 'children'> {}
 
-export type FilterItem = { value: React.Key; label: React.ReactNode; children?: FilterItem[] };
+export type FilterItem = { value?: React.Key; label: React.ReactNode; children?: FilterItem[] };
+
 /**
- * @api
+ * @api RecordItem
+ * @remarks RecordItem 也可能是单纯 string 的情况，但考虑到这样业务的适配成本比较高，因此这里不加入
+ * -
+ * Record may be string, but it's hard to adapt the business, so it's not added
  */
 export type RecordItem = Record<string, unknown> & { children?: RecordItem[] };
 
@@ -347,7 +351,7 @@ export interface ColumnProps extends HTMLAttributesWeak, CommonProps {
      * 是否支持锁列，可选值为`left`,`right`, `true`
      * @en Whether to support locking, the value can be `left`, `right`, `true`
      */
-    lock?: boolean | 'left' | 'right';
+    lock?: boolean | string;
 
     /**
      * 是否支持列宽调整，当该值设为 true，table 的布局方式会修改为 fixed.
@@ -367,7 +371,7 @@ export interface ColumnProps extends HTMLAttributesWeak, CommonProps {
      * header cell 横跨的格数，设置为 0 表示不出现此 th
      * @en The number of cells that the header cell spans, set to 0 to not appear this th
      */
-    colSpan?: number;
+    colSpan?: number | string;
 
     /**
      * 设置该列单元格的 word-break 样式，对于 id 类、中文类适合用 all，对于英文句子适合用 word
@@ -664,7 +668,10 @@ export interface RowSelection {
      * 获取 selection 的默认属性
      * @en Get the default properties of the selection
      */
-    getProps?: (record: RecordItem, index: number) => CheckboxProps | RadioProps;
+    getProps?: (
+        record: RecordItem,
+        index: number
+    ) => CheckboxProps | RadioProps | void | undefined | null;
     /**
      * 选择改变的时候触发的事件，**注意:** 其中 records 只会包含当前 dataSource 的数据，很可能会小于 selectedRowKeys 的长度。
      * @en The event triggered when the selection changes. **Note:** records will only contain the data in the dataSource, and it may be less than the length of selectedRowKeys.
@@ -891,13 +898,13 @@ export interface TableProps
      * Assume you want to control the menu item with key 'one' in the filter menu of the dataIndex column
      * `<Table filterParams={{id: {selectedKeys: ['one']}}}/>`
      */
-    filterParams?: { [propName: string]: { selectedKeys?: string[]; visible?: boolean } };
+    filterParams?: { [propName: string]: { selectedKeys?: string[]; visible?: boolean } } | null;
 
     /**
      * 当前排序的字段，使用此属性可以控制表格的字段的排序，格式为\{dataIndex: 'asc'\}
      * @en the current sorted field, using this property can control the sorting of the table's fields, the format is \{dataIndex: 'asc'\}
      */
-    sort?: { [key: string]: SortOrder };
+    sort?: { [key: string]: SortOrder } | null;
 
     /**
      * 自定义排序按钮，例如上下排布的：`{desc: <Icon style={{top: '6px', left: '4px'}} type={'arrow-down'} size="small" />, asc: <Icon style={{top: '-6px', left: '4px'}} type={'arrow-up'} size="small" />}`
@@ -928,7 +935,7 @@ export interface TableProps
      * 展开的行，传入后展开状态只受此属性控制
      * @en expanded row, after passing, the expanded state is only controlled by this property.
      */
-    openRowKeys?: Array<string | number | null>;
+    openRowKeys?: Array<string | number | null> | null;
     /**
      * 默认展开的行
      * @en the default expanded row
@@ -950,9 +957,11 @@ export interface TableProps
     getExpandedColProps?: (
         record: RecordItem,
         index: number
-    ) => React.DetailedHTMLProps<React.HTMLAttributes<HTMLSpanElement>, HTMLSpanElement> & {
-        disabled?: boolean;
-    };
+    ) =>
+        | (React.DetailedHTMLProps<React.HTMLAttributes<HTMLSpanElement>, HTMLSpanElement> & {
+              disabled?: boolean;
+          })
+        | void;
 
     /**
      * 在额外渲染行或者树展开或者收起的时候触发的事件

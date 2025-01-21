@@ -214,10 +214,10 @@ export default function selection(BaseComponent: typeof Base) {
                     attrs = getProps(record, index) || {};
                 }
                 // 反选和全选的时候不要丢弃禁用项的选中状态
-                if (checked && (!attrs.disabled || selectedRowKeys.indexOf(id) > -1)) {
+                if (checked && (!attrs!.disabled || selectedRowKeys.indexOf(id) > -1)) {
                     ret.push(id);
                     records.push(record);
-                } else if (attrs.disabled && selectedRowKeys.indexOf(id) > -1) {
+                } else if (attrs!.disabled && selectedRowKeys.indexOf(id) > -1) {
                     ret.push(id);
                     records.push(record);
                 } else {

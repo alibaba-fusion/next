@@ -291,7 +291,7 @@ export default function virtual(BaseComponent: typeof Base) {
                 components = { ...components };
                 const { start, end } = this.getVisibleRange(this.state.scrollToRow!);
                 let count = -1;
-                dataSource!.forEach((current, index, record) => {
+                dataSource!.forEach((current, index) => {
                     if (!current.__hidden) {
                         count += 1;
                         if (count >= Math.max(start - keepForwardRenderRows!, 0) && count < end) {

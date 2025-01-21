@@ -3,8 +3,6 @@ import ReactDOM from 'react-dom';
 import { Table, Button } from '@alifd/next';
 import type { ColumnProps, TableProps } from '@alifd/next/types/table';
 
-const noop = () => {};
-
 const dataSource = (j: number) => {
     const result = [];
     for (let i = 0; i < j; i++) {
