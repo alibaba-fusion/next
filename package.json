@@ -206,7 +206,7 @@
     "enzyme-adapter-react-16": "~1.10.0",
     "es5-shim": "^4.5.9",
     "es6-promise-polyfill": "^1.2.0",
-    "esbuild": "^0.18.20",
+    "esbuild": "^0.25.0",
     "eslint": "^8.55.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-cypress": "^2.15.1",
