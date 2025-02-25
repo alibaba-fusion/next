@@ -21,7 +21,7 @@ export interface DateInputProps
     locale?: Locale['Input'];
     value?: string | string[];
     inputType?: InputType;
-    format?: string | ((v: Dayjs) => Dayjs);
+    format?: string | ((v: Dayjs) => string);
     isRange?: boolean;
     hasClear?: boolean | null;
     onInput?: (v: string | number | null | (string | number | null)[], evetType?: string) => void;

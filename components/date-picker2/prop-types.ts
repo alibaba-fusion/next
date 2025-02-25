@@ -1,12 +1,13 @@
 import PT from 'prop-types';
+import type { ConfigType } from 'dayjs';
 import { DATE_PICKER_TYPE, DATE_INPUT_TYPE, DATE_PICKER_MODE } from './constant';
 import { datejs } from '../util';
 
-export const error = (propName, ComponentName) =>
+export const error = (propName: string, ComponentName: string) =>
     new Error(`Invalid prop ${propName} supplied to ${ComponentName}. Validation failed.`);
 
-function checkType(type) {
-    return (props, propName, componentName) => {
+function checkType(type: string | string[]) {
+    return (props: Record<string, unknown>, propName: string, componentName: string) => {
         let value = props[propName];
         if (value) {
             if (!Array.isArray(value)) {
@@ -17,7 +18,7 @@ function checkType(type) {
                 type = [type];
             }
 
-            if (!value.every(v => type.includes(typeof v))) {
+            if (!(value as unknown[]).every(v => type.includes(typeof v))) {
                 throw error(propName, componentName);
             }
         }
@@ -25,12 +26,13 @@ function checkType(type) {
 }
 
 const SharedPT = {
-    date(props, propName, componentName) {
-        if (propName in props && !datejs(props.propName).isValid()) {
+    date(props: Record<string, unknown>, propName: string, componentName: string) {
+        if (propName in props && !datejs(props.propName as ConfigType).isValid()) {
             throw error(propName, componentName);
         }
+        return null;
     },
-    value(props, propName, componentName) {
+    value(props: Record<string, unknown>, propName: string, componentName: string) {
         if (props[propName]) {
             let value = props[propName];
 
@@ -40,7 +42,7 @@ const SharedPT = {
                 value = [value];
             }
 
-            if (!value.every(v => !v || datejs(v).isValid())) {
+            if (!(value as unknown[]).every(v => !v || datejs(v as ConfigType).isValid())) {
                 throw error(propName, componentName);
             }
         }

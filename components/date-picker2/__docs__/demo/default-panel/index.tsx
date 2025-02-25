@@ -2,12 +2,12 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import { DatePicker2 } from '@alifd/next';
-import dayjs from 'dayjs';
+import dayjs, { type Dayjs } from 'dayjs';
 
 const { RangePicker } = DatePicker2;
 
-const onChange = (date, dateStr) => console.log(date, dateStr);
-const onPanelChange = (value, mode) => console.log(value.format('YYYY-MM-DD'), mode);
+const onChange = (date: Dayjs | Dayjs[], dateStr: string | string[]) => console.log(date, dateStr);
+const onPanelChange = (value: Dayjs, mode: string) => console.log(value.format('YYYY-MM-DD'), mode);
 
 function App() {
     return (

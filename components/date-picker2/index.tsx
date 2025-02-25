@@ -1,7 +1,16 @@
-import React from 'react';
+import React, { type ComponentRef, type LegacyRef } from 'react';
 import ConfigProvider from '../config-provider';
 import Picker from './picker';
 import { DATE_PICKER_MODE } from './constant';
+import { assignSubComponent } from '../util/component';
+import type {
+    DatePickerProps,
+    RangePickerProps,
+    ModeType,
+    PresetType,
+    DeprecatedProps,
+} from './types';
+import type { log } from '../util';
 
 const { DATE, WEEK, MONTH, QUARTER, YEAR } = DATE_PICKER_MODE;
 const MODE2FORMAT = {
@@ -13,7 +22,10 @@ const MODE2FORMAT = {
 };
 
 /* istanbul ignore next */
-const transform = (props, deprecated) => {
+const transform = (
+    props: Record<string, unknown> & DeprecatedProps,
+    deprecated: typeof log.deprecated
+) => {
     const { footerRender, onVisibleMonthChange, defaultVisibleMonth, ranges, ...newProps } = props;
     const mode = props.mode || DATE;
 
@@ -29,6 +41,7 @@ const transform = (props, deprecated) => {
 
     if (defaultVisibleMonth) {
         deprecated('defaultVisibleMonth', 'defaultPanelValue', 'DatePicker');
+        // fix onVisibleMonthChange 应该修改为 defaultPanelValue
         newProps.defaultPanelValue = onVisibleMonthChange;
     }
 
@@ -63,27 +76,31 @@ const ConfigPicker = ConfigProvider.config(Picker, {
     componentName: 'DatePicker2',
     transform,
 });
-const generatePicker = mode =>
-    React.forwardRef((props, ref) => <ConfigPicker ref={ref} {...props} mode={mode} />);
+const generatePicker = (mode?: ModeType) =>
+    React.forwardRef<InstanceType<typeof ConfigPicker>, DatePickerProps>((props, ref) => (
+        <ConfigPicker ref={ref} {...props} mode={mode} />
+    ));
 
 const DatePicker2 = generatePicker();
 DatePicker2.displayName = 'DatePicker2';
 
-DatePicker2.MonthPicker = generatePicker(MONTH);
-DatePicker2.MonthPicker.displayName = 'MonthPicker2';
+const DatePicker2WithSub = assignSubComponent(DatePicker2, {
+    MonthPicker: generatePicker('month'),
+    YearPicker: generatePicker('year'),
+    WeekPicker: generatePicker('week'),
+    QuarterPicker: generatePicker('quarter'),
+    RangePicker: React.forwardRef(
+        (props: DatePickerProps, ref: LegacyRef<ComponentRef<typeof ConfigPicker>>) => (
+            <ConfigPicker ref={ref} {...props} type="range" />
+        )
+    ),
+});
 
-DatePicker2.YearPicker = generatePicker(YEAR);
-DatePicker2.YearPicker.displayName = 'YearPicker2';
+DatePicker2WithSub.MonthPicker.displayName = 'MonthPicker2';
+DatePicker2WithSub.YearPicker.displayName = 'YearPicker2';
+DatePicker2WithSub.WeekPicker.displayName = 'WeekPicker2';
+DatePicker2WithSub.QuarterPicker.displayName = 'QuarterPicker2';
+DatePicker2WithSub.RangePicker.displayName = 'RangePicker2';
 
-DatePicker2.WeekPicker = generatePicker(WEEK);
-DatePicker2.WeekPicker.displayName = 'WeekPicker2';
-
-DatePicker2.QuarterPicker = generatePicker(QUARTER);
-DatePicker2.QuarterPicker.displayName = 'QuarterPicker2';
-
-DatePicker2.RangePicker = React.forwardRef((props, ref) => (
-    <ConfigPicker ref={ref} {...props} type="range" />
-));
-DatePicker2.RangePicker.displayName = 'RangePicker2';
-
-export default DatePicker2;
+export default DatePicker2WithSub;
+export type { DatePickerProps, RangePickerProps, ModeType, PresetType };

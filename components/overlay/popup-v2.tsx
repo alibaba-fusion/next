@@ -5,7 +5,7 @@ import Overlay from '@alifd/overlay';
 import Animate from '../animate';
 
 import { log } from '../util';
-import type { AnimationObjectType, PopupProps } from './types';
+import type { AnimationObjectType, PopupProps, onPositionResultType } from './types';
 
 const Popup = (props: PopupProps) => {
     if (!useState || !useRef || !useEffect) {
@@ -112,7 +112,7 @@ const Popup = (props: PopupProps) => {
         </Animate.OverlayAnimate>
     );
 
-    const handlePosition = (result: { config: { placement: string; points: string } }) => {
+    const handlePosition = (result: onPositionResultType) => {
         // 兼容 1.x, 2.x 可去除这段逻辑
         Object.assign(result, { align: result.config.points });
 

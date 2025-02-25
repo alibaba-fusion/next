@@ -2,36 +2,46 @@ import React from 'react';
 import { polyfill } from 'react-lifecycles-compat';
 import classnames from 'classnames';
 import PT from 'prop-types';
-
+import type { Dayjs, OpUnitType, ManipulateType } from 'dayjs';
 import SharedPT from '../prop-types';
 import { func, datejs, obj } from '../../util';
 import { setTime, switchInputType, mode2unit } from '../util';
 
 import { DATE_INPUT_TYPE } from '../constant';
 import { DATE_PANEL_MODE, CALENDAR_CELL_STATE } from '../../calendar2/constant';
-import Calendar from '../../calendar2';
+import Calendar, { type CalendarProps } from '../../calendar2';
 import TimePanel from './time-panel';
+import type { RangePanelProps, RangePanelState, ModeType } from '../types';
 
 const { DATE, WEEK, MONTH, QUARTER, YEAR } = DATE_PANEL_MODE;
 const { UN_SELECTED, SELECTED, SELECTED_BEGIN, SELECTED_END } = CALENDAR_CELL_STATE;
 const { BEGIN, END } = DATE_INPUT_TYPE;
 
-const operate = (mode, value, operator) => {
+const operate = (mode: string, value: Dayjs, operator: string) => {
     const newVal = value.clone();
 
     switch (mode) {
         case DATE:
         case WEEK:
-            return newVal[operator](1, 'month');
+            return (newVal[operator as keyof Dayjs] as (duration: number, unit: string) => Dayjs)(
+                1,
+                'month'
+            );
         case QUARTER:
         case MONTH:
-            return newVal[operator](1, 'year');
+            return (newVal[operator as keyof Dayjs] as (duration: number, unit: string) => Dayjs)(
+                1,
+                'year'
+            );
         case YEAR:
-            return newVal[operator](10, 'year');
+            return (newVal[operator as keyof Dayjs] as (duration: number, unit: string) => Dayjs)(
+                10,
+                'year'
+            );
     }
 };
 
-const isSamePanel = (a, b, mode) => {
+const isSamePanel = (a: Dayjs, b: Dayjs, mode: string) => {
     switch (mode) {
         case DATE:
         case WEEK:
@@ -49,7 +59,20 @@ const isSamePanel = (a, b, mode) => {
 };
 
 // 计算 面板日期
-const getPanelValue = ({ mode, value, inputType, showTime }, defaultValue) => {
+const getPanelValue = (
+    {
+        mode,
+        value,
+        inputType,
+        showTime,
+    }: {
+        mode: string;
+        value: Dayjs[];
+        inputType: number;
+        showTime: boolean;
+    },
+    defaultValue: Dayjs
+) => {
     const [begin, end] = value;
     const otherType = inputType === BEGIN ? END : BEGIN;
     let _inputType = inputType;
@@ -67,13 +90,14 @@ const getPanelValue = ({ mode, value, inputType, showTime }, defaultValue) => {
         end &&
         ((begin && !isSamePanel(begin, end, mode)) || !begin)
     ) {
-        panelValue = operate(mode, panelValue, 'subtract');
+        panelValue = operate(mode, panelValue, 'subtract')!;
     }
 
     return panelValue && panelValue.isValid() ? panelValue : datejs();
 };
 
-class RangePanel extends React.Component {
+class RangePanel extends React.Component<RangePanelProps, RangePanelState> {
+    static displayName = 'RangePanel';
     static propTypes = {
         rtl: PT.bool,
         prefix: PT.string,
@@ -97,28 +121,33 @@ class RangePanel extends React.Component {
         justBeginInput: true,
     };
 
-    constructor(props) {
+    currentRaf: number | null = null;
+    hasModeChanged: boolean = false;
+
+    constructor(props: RangePanelProps) {
         super(props);
 
         const { mode, defaultPanelValue, timePanelProps = {} } = props;
 
         // 默认时间
-        let defaultTime = timePanelProps.defaultValue || [];
+        let defaultTime = (timePanelProps.defaultValue || []) as Dayjs[];
         if (!Array.isArray(defaultTime)) {
             defaultTime = [defaultTime, defaultTime];
         }
-        defaultTime = defaultTime.map(t => datejs(t, timePanelProps.format || 'HH:mm:ss'));
+        defaultTime = defaultTime.map((t: string | Dayjs) =>
+            datejs(t, (timePanelProps.format as string) || 'HH:mm:ss')
+        );
 
         this.state = {
             mode,
-            panelValue: getPanelValue(props, defaultPanelValue),
+            panelValue: getPanelValue(props, defaultPanelValue!),
             inputType: props.inputType,
             curHoverValue: null,
             defaultTime,
         };
     }
 
-    static getDerivedStateFromProps(props, state) {
+    static getDerivedStateFromProps(props: RangePanelProps, state: RangePanelState) {
         if (props.inputType !== state.inputType) {
             return {
                 inputType: props.inputType,
@@ -143,7 +172,7 @@ class RangePanel extends React.Component {
         return [begin, end];
     }
 
-    disabledDate = v => {
+    disabledDate = (v: Dayjs) => {
         const {
             inputType,
             disabledDate,
@@ -154,13 +183,13 @@ class RangePanel extends React.Component {
         const unit = mode2unit(mode);
 
         return (
-            disabledDate(v, mode) ||
+            disabledDate!(v, mode) ||
             (inputType === END && begin && begin.isAfter(v, unit)) ||
             (inputType === BEGIN && end && end.isBefore(v, unit))
         );
     };
 
-    onTimeSelect = v => {
+    onTimeSelect = (v: Dayjs) => {
         const { value, inputType } = this.props;
         const [begin, end] = value;
 
@@ -174,7 +203,7 @@ class RangePanel extends React.Component {
         this.handleSelect(curDateVal, true);
     };
 
-    handleSelect = (v, fromTimeChange) => {
+    handleSelect = (v: Dayjs, fromTimeChange: boolean) => {
         const { value, inputType, resetTime, onCalendarChange } = this.props;
         const otherType = switchInputType(inputType);
         const newValue = [...value];
@@ -192,13 +221,13 @@ class RangePanel extends React.Component {
             timeVal = value[inputType] || defaultTime || value[otherType] || datejs();
         }
 
-        newValue[inputType === BEGIN ? 0 : 1] = setTime(v, timeVal);
-        onCalendarChange(newValue);
+        newValue[inputType === BEGIN ? 0 : 1] = setTime(v, timeVal!);
+        onCalendarChange!(newValue);
 
         func.invoke(this.props, 'onSelect', [newValue]);
     };
 
-    handlePanelChange = (v, mode, idx) => {
+    handlePanelChange = (v: Dayjs, mode: ModeType, idx?: number) => {
         this.setState({
             mode,
             panelValue: v,
@@ -208,7 +237,7 @@ class RangePanel extends React.Component {
         func.invoke(this.props, 'onPanelChange', [v, mode]);
     };
 
-    handleMouseEnter = value => {
+    handleMouseEnter = (value: Dayjs) => {
         this.currentRaf && window.cancelAnimationFrame(this.currentRaf);
         this.currentRaf = window.requestAnimationFrame(() => {
             this.setState({
@@ -225,7 +254,7 @@ class RangePanel extends React.Component {
     };
 
     // 日期cell状态
-    handleCellState(v, value) {
+    handleCellState(v: Dayjs, value: Dayjs[]) {
         const { mode } = this.props;
         const [begin, end] = value;
 
@@ -240,11 +269,11 @@ class RangePanel extends React.Component {
                 : UN_SELECTED;
     }
 
-    getUnitByMode(mode) {
-        return mode === DATE ? 'day' : mode;
+    getUnitByMode(mode: ModeType) {
+        return mode === DATE ? 'day' : (mode as OpUnitType);
     }
 
-    handleEdgeState = (value, mode) => {
+    handleEdgeState = (value: Dayjs, mode: ModeType) => {
         const unit = this.getUnitByMode(mode);
 
         switch (mode) {
@@ -265,7 +294,7 @@ class RangePanel extends React.Component {
         }
     };
 
-    getCellClassName = value => {
+    getCellClassName = (value: Dayjs) => {
         const { prefix, inputType, mode } = this.props;
         const { curHoverValue } = this.state;
         const [begin, end] = this.props.value;
@@ -323,13 +352,13 @@ class RangePanel extends React.Component {
     };
 
     // 头部面板日期切换点击事件
-    handleCanlendarClick = (_, { unit, num }) => {
+    handleCanlendarClick = (_: Dayjs, { unit, num }: { unit: ManipulateType; num: number }) => {
         this.setState({
             panelValue: this.state.panelValue.clone().add(num, unit),
         });
     };
 
-    renderRangeTime = sharedProps => {
+    renderRangeTime = (sharedProps: CalendarProps) => {
         const {
             value,
             prefix,
@@ -356,6 +385,7 @@ class RangePanel extends React.Component {
                     panelValue={this.state.panelValue}
                     {...sharedProps}
                     value={value[inputType]}
+                    // @ts-expect-error Calendar的onPanelChange第三个参数是reason，不能将idx传递给reason
                     onPanelChange={this.handlePanelChange}
                 />
                 {showTime && !this.hasModeChanged ? (
@@ -372,17 +402,17 @@ class RangePanel extends React.Component {
         );
     };
 
-    renderRange(sharedProps) {
+    renderRange(sharedProps: CalendarProps) {
         const { handlePanelChange, handleCanlendarClick, hasModeChanged } = this;
         const { value, prefix } = this.props;
         const ranges = this.getRanges();
 
-        const calendarProps = idx => {
+        const calendarProps = (idx: number) => {
             return {
                 ...sharedProps,
                 value: value[idx],
                 panelValue: ranges[idx],
-                onPanelChange: (v, m) => handlePanelChange(v, m, idx),
+                onPanelChange: (v: Dayjs, m: ModeType) => handlePanelChange(v, m, idx),
             };
         };
 
@@ -407,7 +437,7 @@ class RangePanel extends React.Component {
 
         return (
             <div key="range-panel" className={className}>
-                {!this.hasModeChanged ? calendarNodes : calendarNodes[this.state.calendarIdx]}
+                {!this.hasModeChanged ? calendarNodes : calendarNodes[this.state.calendarIdx!]}
             </div>
         );
     }
@@ -420,7 +450,7 @@ class RangePanel extends React.Component {
         this.hasModeChanged = this.state.mode !== this.props.mode;
 
         let sharedProps = {
-            ...obj.pickProps(Calendar.propTypes, restProps),
+            ...obj.pickProps(Calendar.propTypes!, restProps),
             shape: 'panel',
             panelMode: mode,
             dateCellRender,
@@ -446,8 +476,8 @@ class RangePanel extends React.Component {
         }
 
         return this.props.showTime
-            ? this.renderRangeTime(sharedProps)
-            : this.renderRange(sharedProps);
+            ? this.renderRangeTime(sharedProps as object)
+            : this.renderRange(sharedProps as object);
     }
 }
 

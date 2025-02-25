@@ -1,13 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { DatePicker2 } from '@alifd/next';
-import dayjs from 'dayjs';
+import dayjs, { type Dayjs } from 'dayjs';
 
 const { RangePicker, MonthPicker, YearPicker } = DatePicker2;
 const currentDate = dayjs();
 
 // Disable all dates before today
-const disabledDate = function (date, mode) {
+const disabledDate = function (date: Dayjs, mode: string) {
     switch (mode) {
         case 'date':
             return date.valueOf() <= currentDate.valueOf();
