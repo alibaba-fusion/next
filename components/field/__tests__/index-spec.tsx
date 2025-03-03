@@ -476,6 +476,35 @@ describe('field', () => {
             assert.deepEqual(field.init('list').value, [{ text: '2' }]);
             assert.equal(field.init('list[0].text').value, '2');
         });
+        it('Ensure data accuracy when using setError before init', () => {
+            const field = new Field(
+                {},
+                {
+                    values: {
+                        embed: {
+                            a: [],
+                            b: [],
+                        },
+                    },
+                    parseName: true,
+                }
+            );
+            assert.deepEqual(field.getValues(), {
+                embed: {
+                    a: [],
+                    b: [],
+                },
+            });
+            field.setValue('embed.b', [1, 2, 3]);
+            field.setError('embed.b', undefined);
+            field.init('embed.b');
+            assert.deepEqual(field.getValues(), {
+                embed: {
+                    a: [],
+                    b: [1, 2, 3],
+                },
+            });
+        });
     });
 
     describe('behaviour', () => {
