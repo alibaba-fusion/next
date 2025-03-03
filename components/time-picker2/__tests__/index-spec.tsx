@@ -1,6 +1,8 @@
 import React from 'react';
 import dayjs, { type Dayjs } from 'dayjs';
 import TimePicker2, { type TimePickerProps } from '../index';
+import ConfigProvider from '../../config-provider';
+import enUS from '../../locale/en-us';
 import '../../time-picker/style';
 
 const defaultValue = dayjs('11:12:13', 'HH:mm:ss', true);
@@ -282,6 +284,16 @@ describe('TimePicker2', () => {
 
             cy.get(timeInput).type('{ctrl+downarrow}', { force: true });
             cy.get(timeInput).should('have.value', '00:00:00');
+        });
+
+        it('should can set locale by ConfigProvider', () => {
+            cy.mount(
+                <ConfigProvider locale={enUS}>
+                    <TimePicker2 />
+                </ConfigProvider>
+            );
+            const timeInput = '.next-time-picker2-input input';
+            cy.get(timeInput).should('have.attr', 'placeholder', enUS.TimePicker.placeholder);
         });
     });
 
