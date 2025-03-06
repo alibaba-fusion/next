@@ -76,23 +76,86 @@ export interface CellProps
         | 'filterProps'
         | 'colSpan'
     > {
+    /**
+     * @skip
+     */
     pure?: boolean;
+    /**
+     * @skip
+     */
     prefix: TableProps['prefix'];
+    /**
+     * 自定义类名
+     * @en custom class name
+     */
     className?: string;
+    /**
+     * 赋给这个 cell 的值
+     * @en value of this cell
+     */
     value?: unknown;
+    /**
+     * 当前行的值
+     * @en value of current row
+     */
     record?: RecordItem;
+    /**
+     * @skip
+     */
     context?: unknown;
+    /**
+     * 当前列的索引
+     * @en index of current column
+     */
     colIndex?: number;
+    /**
+     * 当前行的索引
+     * @en index of current row
+     */
     rowIndex?: number;
+    /**
+     * @skip
+     */
     __colIndex?: number | string;
+    /**
+     * 自定义内联样式
+     * @en custom inline style
+     */
     style?: React.CSSProperties;
+    /**
+     * @skip
+     */
     component?: React.ElementType;
+    /**
+     * @skip
+     */
     children?: React.ReactNode;
+    /**
+     * @skip
+     */
     innerStyle?: React.CSSProperties;
+    /**
+     * @skip
+     */
     __normalized?: boolean;
+    /**
+     * 参考 Table 中的说明
+     * @en refer to Table's description
+     */
     expandedIndexSimulate?: TableProps['expandedIndexSimulate'];
+    /**
+     * @skip
+     */
     getCellDomRef?: React.LegacyRef<HTMLDivElement>;
+    /**
+     * 参考 Table 中的说明
+     * @en refer to Table's description
+     */
     primaryKey?: TableProps['primaryKey'];
+    /**
+     * 跨越的行数
+     * @en number of rows to span
+     */
     rowSpan?: number;
 }
 
@@ -175,15 +238,51 @@ export interface RowProps
             | 'colGroup'
         >,
         Omit<HTMLAttributesWeak, 'onClick' | 'onMouseEnter' | 'onMouseLeave'> {
+    /**
+     * 自定义类名
+     * @en custom class name
+     */
     className?: string;
+    /**
+     * 当前行的索引
+     * @en index of current row
+     */
     rowIndex: number;
+    /**
+     * @skip
+     */
     __rowIndex: number;
+    /**
+     * 当前行被点击时的回调
+     * @en callback when the current row is clicked
+     */
     onClick: (record: RecordItem, rowIndex: number, e: React.MouseEvent) => void;
+    /**
+     * 鼠标进入当前行时的回调
+     * @en callback when the mouse enters the current row
+     */
     onMouseEnter: (record: RecordItem, rowIndex: number, e: React.MouseEvent) => void;
+    /**
+     * 鼠标离开当前行时的回调
+     * @en callback when the mouse leaves the current row
+     */
     onMouseLeave: (record: RecordItem, rowIndex: number, e: React.MouseEvent) => void;
+    /**
+     * @skip
+     */
     Cell: CellLike;
+    /**
+     * @skip
+     */
     children: React.ReactNode;
+    /**
+     * 当前行的值
+     * @en value of current row
+     */
     record: RecordItem;
+    /**
+     * @skip
+     */
     wrapper: (wrapper: React.ReactElement) => React.ReactNode;
 }
 
