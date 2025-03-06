@@ -3,23 +3,24 @@
     min-width: 100%;
     box-sizing: border-box;
     text-align: center;
-    border-top: 1px solid $color-line1-1;
-    padding: 4px 12px;
+    border-top: $date-picker2-footer-border-top-width $date-picker2-footer-border-top-style $date-picker2-footer-border-top-color;
+    padding: $date-picker2-footer-padding-tb $date-picker2-footer-padding-lr;
     display: flex;
-    min-height: 40px;
+    min-height: $date-picker2-footer-min-height;
     align-items: center;
     flex-wrap: wrap;
     position: relative;
-
-    &-preset>.#{$css-prefix}btn {
-        margin-right: $s-2;
+  
+    &-preset > .#{$css-prefix}btn {
+      margin-right: $date-picker2-footer-preset-btn-margin-right;
     }
-
+  
     &-actions {
-        margin-left: auto;
+      margin-left: auto;
     }
-
+  
     &-preset-only {
-        width: 100%;
+      width: 100%;
     }
-}
+  }
+  
