@@ -192,6 +192,17 @@
         transform: translate(0, 50%) rotate(135deg);
     }
 }
+#{$date-picker2-prefix}-tr-br {
+    #{$range-picker2-prefix}-arrow {
+        top: 12.5px;
+    }
+}
+#{$date-picker2-prefix}-br-tr {
+    #{$range-picker2-prefix}-arrow {
+        bottom: 13px;
+        transform: translate(0, 50%) rotate(135deg);
+    }
+}
 
 .#{$css-prefix}date-time-picker-wrapper {
     border-left: 1px solid $color-line1-1;
