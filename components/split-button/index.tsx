@@ -85,8 +85,8 @@ class SplitButton extends React.Component<SplitButtonProps> {
         visible: this.props.defaultVisible,
     };
 
-    private wrapper: HTMLDivElement | null = null;
-    private menu: HTMLUListElement | null = null;
+    wrapper: HTMLDivElement | null = null;
+    menu: HTMLUListElement | null = null;
 
     componentDidMount() {
         // 由于定位目标是 wrapper，如果弹层默认展开，wrapper 还未渲染，didMount 后强制再渲染一次，弹层重新定位
