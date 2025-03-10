@@ -17,7 +17,7 @@ interface Child {
     };
 }
 
-interface BreadcrumbState {
+export interface BreadcrumbState {
     maxNode: number;
     prevMaxNode?: BreadcrumbProps['maxNode'];
 }
