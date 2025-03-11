@@ -5,11 +5,11 @@ import { DatePicker2 } from '@alifd/next';
 import dayjs from 'dayjs';
 
 const { RangePicker } = DatePicker2;
-const RangePreset = {
+const RangePreset: object = {
     今天: [dayjs(), dayjs()],
     本月: [dayjs().startOf('month'), dayjs().endOf('month')],
 };
-const datePreset = {
+const datePreset: object = {
     此刻: () => dayjs(),
 };
 

@@ -238,7 +238,7 @@ export function pickOthers<T extends string, P extends Record<string, unknown>>(
  * object.pickProps(['className', 'onChange'], this.props);
  */
 export function pickProps<T extends string, P extends Record<string, unknown>>(
-    holdProps: T[] | Record<T, unknown>,
+    holdProps: T[] | Partial<Record<T, unknown>>,
     props: P
 ): Writable<Pick<P, T>> {
     const others: Partial<P> = {};

@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-
+import { type Dayjs } from 'dayjs';
 import { DatePicker2 } from '@alifd/next';
 
 const { MonthPicker, YearPicker, WeekPicker, QuarterPicker } = DatePicker2;
 
-const onChange = (date, dateStr) => console.log(date, dateStr);
+const onChange = (date: Dayjs, dateStr: string) => console.log(date, dateStr);
 
 function App() {
     return (
