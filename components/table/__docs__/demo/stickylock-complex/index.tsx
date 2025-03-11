@@ -1,8 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Table, Button } from '@alifd/next';
+import { Table } from '@alifd/next';
+import type { ColumnProps, RecordItem, TableProps } from '@alifd/next/types/table';
 
-const dataSource = j => {
+const dataSource = (j: number) => {
     const result = [];
     for (let i = 0; i < j; i++) {
         result.push({
@@ -15,46 +16,40 @@ const dataSource = j => {
     }
     return result;
 };
-const render = (value, index, record) => {
+const render: ColumnProps['cell'] = (value, index, record) => {
     return <a>Remove({record.id})</a>;
 };
 
 class App extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            rowSelection: {
-                onChange: this.onChange.bind(this),
-                onSelect: function (selected, record, records) {
-                    console.log('onSelect', selected, record, records);
-                },
-                onSelectAll: function (selected, records) {
-                    console.log('onSelectAll', selected, records);
-                },
-                selectedRowKeys: [100306660940, 100306660941],
-                getProps: record => {
-                    return {
-                        disabled: record.id === 100306660941,
-                    };
-                },
+    state: {
+        rowSelection: NonNullable<TableProps['rowSelection']>;
+        openRowKeys: string[];
+        scrollToRow: number;
+    } = {
+        rowSelection: {
+            onChange: this.onChange.bind(this),
+            onSelect: function (selected, record, records) {
+                console.log('onSelect', selected, record, records);
             },
-            openRowKeys: [],
-        };
-        this.onRowMouseEnter = (_, i) => {
-            //   this.setState({
-            //     openRowKeys: [i]
-            //   })
-        };
-    }
-    state = {
+            onSelectAll: function (selected, records) {
+                console.log('onSelectAll', selected, records);
+            },
+            selectedRowKeys: [100306660940, 100306660941],
+            getProps: record => {
+                return {
+                    disabled: record.id === 100306660941,
+                };
+            },
+        },
+        openRowKeys: [],
         scrollToRow: 20,
     };
-    onBodyScroll = start => {
+    onBodyScroll: TableProps['onBodyScroll'] = start => {
         this.setState({
             scrollToRow: start,
         });
     };
-    onChange(ids, records) {
+    onChange(ids: (string | number)[], records: RecordItem[]) {
         const { rowSelection } = this.state;
         rowSelection.selectedRowKeys = ids;
         console.log('onChange', ids, records);
@@ -66,7 +61,6 @@ class App extends React.Component {
                 dataSource={dataSource(200)}
                 maxBodyHeight={400}
                 useVirtual
-                // scrollToRow={this.state.scrollToRow}
                 onBodyScroll={this.onBodyScroll}
                 expandedRowRender={() => (
                     <div>
@@ -76,7 +70,6 @@ class App extends React.Component {
                 hasExpandedRowCtrl={false}
                 expandedRowIndent={[0, 0]}
                 rowSelection={this.state.rowSelection}
-                onRowMouseEnter={this.onRowMouseEnter}
                 openRowKeys={this.state.openRowKeys}
                 primaryKey="index"
             >

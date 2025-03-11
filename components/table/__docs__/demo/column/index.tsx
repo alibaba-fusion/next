@@ -30,13 +30,13 @@ const dataSource = () => {
     ];
 
 class App extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            dataSource: dataSource(),
-            cols: cols,
-        };
-    }
+    state = {
+        dataSource: dataSource(),
+        cols: cols,
+    };
+
+    changedCols: { title: string; dataIndex: string }[];
+
     openDialog = () => {
         Dialog.alert({
             content: this.renderControlContent(),
@@ -63,7 +63,7 @@ class App extends React.Component {
         );
     }
 
-    onChange = value => {
+    onChange = (value: string[]) => {
         this.changedCols = cols.filter(col => value.indexOf(col.dataIndex) > -1);
     };
 

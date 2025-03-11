@@ -5,7 +5,7 @@ declare module 'es6-promise-polyfill' {
     export = { Promise };
 }
 declare module 'conventional-changelog' {
-    import { Readable } from 'stream';
+    import type { Readable } from 'stream';
 
     function conventionalChangelog(...args: any[]): Readable;
     export = conventionalChangelog;
@@ -19,6 +19,7 @@ declare module 'markdown-it-anchor';
 declare module 'remark';
 declare module '@alifd/adaptor-helper';
 declare module 'solarlunar';
+declare module 'shallow-element-equals';
 
 declare module 'lodash.clonedeep' {
     export { cloneDeep as default } from 'lodash';
@@ -27,7 +28,7 @@ declare module 'lodash.clonedeep' {
 declare const mountNode: HTMLDivElement;
 
 declare module 'react-lifecycles-compat' {
-    import { ComponentType } from 'react';
+    import type { ComponentType } from 'react';
 
     export function polyfill<C extends ComponentType>(Component: C): C;
 }

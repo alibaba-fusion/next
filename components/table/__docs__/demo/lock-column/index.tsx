@@ -1,8 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Table, Button } from '@alifd/next';
+import type { ColumnProps, TableProps } from '@alifd/next/types/table';
 
-const onRowClick = function (record, index, e) {
+const onRowClick: TableProps['onRowClick'] = function (record, index, e) {
         console.log(record, index, e);
     },
     dataSource = () => {
@@ -16,7 +17,7 @@ const onRowClick = function (record, index, e) {
         }
         return result;
     },
-    render = (value, index, record) => {
+    render: ColumnProps['cell'] = (value, index, record) => {
         return <a>Remove({record.id})</a>;
     };
 

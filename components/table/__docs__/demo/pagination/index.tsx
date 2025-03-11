@@ -1,8 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Table, Pagination } from '@alifd/next';
+import type { ColumnProps } from '@alifd/next/types/table';
+import type { PaginationProps } from '@alifd/next/types/pagination';
 
-const dataSource = j => {
+const dataSource = (j: number) => {
         const result = [];
         for (let i = 0; i < 5; i++) {
             result.push({
@@ -13,19 +15,19 @@ const dataSource = j => {
         }
         return result;
     },
-    render = (value, index, record) => {
+    render: ColumnProps['cell'] = (value, index, record) => {
         return <a href="javascript:;">Remove({record.id})</a>;
     };
 
 class App extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            dataSource: dataSource(5),
-        };
-    }
+    state: {
+        dataSource: ReturnType<typeof dataSource>;
+        loading?: boolean;
+    } = {
+        dataSource: dataSource(5),
+    };
 
-    onChange = currentPage => {
+    onChange: PaginationProps['onChange'] = currentPage => {
         this.setState({
             loading: true,
         });

@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Table, Button } from '@alifd/next';
+import type { ColumnProps, TableProps } from '@alifd/next/types/table';
 
 const dataSource = () => {
         const result = [];
@@ -14,7 +15,7 @@ const dataSource = () => {
         }
         return result;
     },
-    expandedRowRender = (record, rowIndex) => {
+    expandedRowRender: TableProps['expandedRowRender'] = (record, rowIndex) => {
         if (rowIndex === 0) {
             return record.title;
         }
@@ -30,18 +31,15 @@ const dataSource = () => {
             </Table.StickyLock>
         );
     },
-    render = (value, index, record) => {
+    render: ColumnProps['cell'] = (value, index, record) => {
         return <a>Remove({record.id})</a>;
     };
 
 class App extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            dataSource: dataSource(),
-            loading: false,
-        };
-    }
+    state = {
+        dataSource: dataSource(),
+        loading: false,
+    };
 
     toggleLoading = () => {
         this.setState({
@@ -63,7 +61,7 @@ class App extends React.Component {
                     // expandedRowIndent 仅在IE下才会生效，非IE模式下为[0,0]且不可修改
                     expandedRowIndent={[2, 0]}
                     expandedRowRender={expandedRowRender}
-                    rowExpandable={record => record.expandable}
+                    rowExpandable={record => record.expandable as boolean}
                     onRowClick={() => console.log('rowClick')}
                 >
                     <Table.Column title="Id" dataIndex="id" lock width={100} />
