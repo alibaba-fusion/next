@@ -1,5 +1,6 @@
 import { cloneElement, type ReactElement } from 'react';
 import { mount, type MountReturn } from 'cypress/react';
+import { addMatchImageSnapshotCommand } from 'cypress-image-snapshot/command';
 import './commands';
 
 function rerender<Props extends object>(tag: string, nextProps: Props) {
@@ -14,7 +15,7 @@ function triggerInputChange(subject: JQuery<HTMLElement>, value: string) {
         window.HTMLInputElement.prototype,
         'value'
     )?.set;
-    nativeInputValueSetter?.call(element, value)
+    nativeInputValueSetter?.call(element, value);
     element.dispatchEvent(new Event('input', { bubbles: true }));
 }
 
@@ -29,6 +30,7 @@ declare global {
     }
 }
 
+addMatchImageSnapshotCommand();
 Cypress.Commands.add('mount', mount);
 Cypress.Commands.add('rerender', rerender);
-Cypress.Commands.add('triggerInputChange', { prevSubject: 'element' }, triggerInputChange)
+Cypress.Commands.add('triggerInputChange', { prevSubject: 'element' }, triggerInputChange);

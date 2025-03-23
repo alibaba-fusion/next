@@ -79,24 +79,22 @@ export interface ArrowProps
 }
 
 export interface InnerSliderProps
-    extends Omit<CommonProps, 'locale'>,
-        Omit<ArrowProps, 'onChange' | 'children'>,
-        DotsProps,
-        Omit<TrackProps, 'focusOnSelect' | 'children'>,
-        Omit<HTMLAttributesWeak, 'onChange' | 'children'> {
-    arrows?: SliderProps['arrows'];
-    dots?: SliderProps['dots'];
-    defaultActiveIndex?: SliderProps['defaultActiveIndex'];
-    centerPadding?: SliderProps['centerPadding'];
-    focusOnSelect?: SliderProps['focusOnSelect'];
+    extends Omit<
+        SliderProps,
+        'slideDirection' | 'style' | 'className' | 'vertical' | 'verticalSwiping'
+    > {
+    /**
+     * 是否启用垂直轮播
+     * @en Whether to use vertical carousel
+     */
+    vertical?: boolean;
+    /**
+     * 是否启用垂直滑动
+     * @en Whether to use vertical sliding
+     */
     verticalSwiping?: boolean;
-    adaptiveHeight?: SliderProps['adaptiveHeight'];
-    onChange?: SliderProps['onChange'];
-    onBeforeChange?: (index: number, currentIndex?: number) => void;
-    children?: ReactNode;
-    prevArrow?: SliderProps['prevArrow'];
-    nextArrow?: SliderProps['nextArrow'];
 }
+
 export interface InnerSliderState {
     lazyLoadedList?: number[];
     slideCount?: number | null;
@@ -115,10 +113,11 @@ export interface InnerSliderState {
     slideHeightList?: number[];
     swipeLeft?: number | null;
     touchObject?: {
-        startX: number;
-        startY: number;
-        curX: number;
-        curY: number;
+        startX?: number;
+        startY?: number;
+        curX?: number;
+        curY?: number;
+        swipeLength?: number;
     };
     initialized?: boolean;
     edgeDragged?: boolean;
@@ -132,8 +131,7 @@ export interface InnerSliderState {
  */
 export interface SliderProps
     extends Omit<HTMLAttributesWeak, 'onChange' | 'draggable' | 'children'>,
-        Omit<CommonProps, 'locale'>,
-        InnerSliderProps {
+        Omit<CommonProps, 'locale'> {
     /**
      * 自定义传入的样式
      * @en Custom className
@@ -374,4 +372,84 @@ export interface SliderProps
      * @skip
      */
     beforeChange?: (index: number) => void;
+    /**
+     * 是否启用无障碍支持，使用左右键可以切换轮播图
+     * @en Whether to enable accessibility support, using the left and right keys to switch the carousel image
+     * @defaultValue false
+     */
+    accessibility?: boolean;
+    /**
+     * 子元素
+     * @en Children
+     */
+    children?: ReactNode;
+    /**
+     * 导航锚点样式类名
+     * @en Dots class name
+     */
+    dotsClass?: string;
+    /**
+     * Slider 在默认情况下会认为所有的子元素是等宽的。通过设置 `variableWidth` 为 `true`，您可以在 Slider 中放置不同宽度的图片。
+     * @en By default, Slider considers all child elements to be equal. By setting `variableWidth` to `true`, you can place images of different widths in the Slider.
+     */
+    variableWidth?: boolean;
+    /**
+     * 是否启用垂直轮播
+     * @en Whether to use vertical carousel
+     * @deprecated use slideDirection=ver instead
+     * @skip
+     */
+    vertical?: boolean;
+    /**
+     * 是否启用垂直滑动
+     * @en Whether to use vertical sliding
+     * @deprecated use slideDirection=ver instead
+     * @skip
+     */
+    verticalSwiping?: boolean;
+    /**
+     * 轮播切换前的回调函数
+     * @en Callback function before slides switching
+     */
+    onBeforeChange?: (index: number, currentIndex?: number) => void;
+    /**
+     * 是否启用滑动
+     * @en Whether to use swipe
+     * @defaultValue true
+     */
+    swipe?: boolean;
+    /**
+     * 在滑动到头时触发的回调函数
+     * @en Callback function triggered when sliding to the edge
+     */
+    edgeEvent?: (swipeDirection: 'left' | 'right') => void;
+    /**
+     * 边缘摩擦系数，数值越大，滑动越慢
+     * @en Edge friction coefficient, the larger the number, the slower the sliding
+     * @defaultValue 0.35
+     */
+    edgeFriction?: number;
+    /**
+     * 滑动事件回调函数
+     * @en Callback function for swipe events
+     */
+    swipeEvent?: (swipeDirection: 'left' | 'right' | 'vertical' | 'down' | 'up') => void;
+    /**
+     * @skip
+     */
+    touchThreshold?: number;
+    /**
+     * @skip
+     */
+    swipeToSlide?: boolean;
+    /**
+     * 在鼠标悬浮时自动停止轮播
+     * @en Whether to stop the carousel automatically when the mouse hovers
+     * @defaultValue false
+     */
+    pauseOnHover?: boolean;
+    /**
+     * @skip
+     */
+    useCSS?: boolean;
 }

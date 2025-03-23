@@ -28,7 +28,7 @@
 | 参数                   | 说明                                                                                                                                                                                                    | 类型                                                                                                                             | 默认值                                | 是否必填 | 支持版本 |
 | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------- | -------- | -------- |
 | size                   | 选择器尺寸                                                                                                                                                                                              | 'small' \| 'medium' \| 'large'                                                                                                   | 'medium'                              |          | -        |
-| children               | 子元素，详细使用方法参考 demo                                                                                                                                                                           | ReactElementWithTypeMark \| ReactElementWithTypeMark[]                                                                           | -                                     |          | -        |
+| children               | 子元素，详细使用方法参考 demo                                                                                                                                                                           | React.ReactNode                                                                                                                  | -                                     |          | -        |
 | name                   | name                                                                                                                                                                                                    | string                                                                                                                           | -                                     |          | -        |
 | value                  | 当前值，用于受控模式                                                                                                                                                                                    | DataSourceItem \| DataSourceItem[]                                                                                               | -                                     |          | -        |
 | defaultValue           | 初始的默认值                                                                                                                                                                                            | DataSourceItem \| DataSourceItem[]                                                                                               | -                                     |          | -        |
@@ -45,13 +45,13 @@
 | popupContainer         | 弹层挂载的容器节点                                                                                                                                                                                      | string \| HTMLElement \| ((target: HTMLElement) => HTMLElement)                                                                  | -                                     |          | -        |
 | popupClassName         | 弹层的 className                                                                                                                                                                                        | string                                                                                                                           | -                                     |          | -        |
 | popupStyle             | 弹层的内联样式                                                                                                                                                                                          | React.CSSProperties                                                                                                              | -                                     |          | -        |
-| popupProps             | 添加到弹层上的属性                                                                                                                                                                                      | PopupProps                                                                                                                       | -                                     |          | -        |
+| popupProps             | 添加到弹层上的属性                                                                                                                                                                                      | React.ComponentPropsWithRef\<typeof Popup>                                                                                       | -                                     |          | -        |
 | followTrigger          | 是否跟随 trigger 滚动                                                                                                                                                                                   | boolean                                                                                                                          | -                                     |          | -        |
 | popupContent           | 自定义弹层的内容                                                                                                                                                                                        | React.ReactNode                                                                                                                  | -                                     |          | -        |
 | menuProps              | 弹层菜单属性                                                                                                                                                                                            | MenuProps                                                                                                                        | -                                     |          | 1.18     |
 | filterLocal            | 是否使用本地过滤，在数据源为远程的时候需要关闭此项                                                                                                                                                      | boolean                                                                                                                          | true                                  |          | -        |
 | filter                 | 本地过滤方法，返回一个 Boolean 值确定是否保留<br/><br/>**签名**:<br/>**参数**:<br/>_key_: 搜索关键字<br/>_item_: 渲染节点的 item                                                                        | (key: string \| number, item: ObjectItem) => boolean                                                                             | -                                     |          | -        |
-| onToggleHighlightItem  | 键盘上下键切换菜单高亮选项的回调                                                                                                                                                                        | (highlightKey?: unknown, type?: HighlightChangeType) => void                                                                     | -                                     |          | -        |
+| onToggleHighlightItem  | 键盘上下键切换菜单高亮选项的回调                                                                                                                                                                        | (<br/> highlightKey?: string \| boolean \| NormalizedObjectItem \| null,<br/> type?: HighlightChangeType<br/> ) => void          | -                                     |          | -        |
 | useVirtual             | 是否开启虚拟滚动模式                                                                                                                                                                                    | boolean                                                                                                                          | -                                     |          | -        |
 | dataSource             | 传入的数据源，可以动态渲染子项                                                                                                                                                                          | Array\<DataSourceItem>                                                                                                           | -                                     |          | -        |
 | itemRender             | 渲染 MenuItem 内容的方法<br/><br/>**签名**:<br/>**参数**:<br/>_item_: 渲染节点的 item<br/>_searchValue_: 搜索关键字（如果开启搜索）                                                                     | (item: ObjectItem, searchValue: string \| undefined) => React.ReactNode                                                          | -                                     |          | -        |
@@ -61,6 +61,7 @@
 | hasBorder              | 是否有边框                                                                                                                                                                                              | boolean                                                                                                                          | -                                     |          | -        |
 | hasArrow               | 是否有下拉箭头                                                                                                                                                                                          | boolean                                                                                                                          | true                                  |          | -        |
 | showSearch             | 展开后是否能搜索（tag 模式下固定为 true）                                                                                                                                                               | boolean                                                                                                                          | false                                 |          | -        |
+| autoClearSearchValue   | 是否在选中项后清空搜索框，只在 mode 为 multiple 或 tags 时有效                                                                                                                                          | boolean                                                                                                                          | true                                  |          | -        |
 | onSearch               | 当搜索框值变化时回调                                                                                                                                                                                    | (value: string, e: React.ChangeEvent\<HTMLInputElement>) => void                                                                 | -                                     |          | -        |
 | onSearchClear          | 当搜索框值被清空时候的回调                                                                                                                                                                              | (actionType?: string) => void                                                                                                    | -                                     |          | -        |
 | hasSelectAll           | 多选模式下是否有全选功能                                                                                                                                                                                | boolean \| string                                                                                                                | -                                     |          | -        |
@@ -90,42 +91,42 @@
 
 ### Select.AutoComplete
 
-| 参数                   | 说明                                               | 类型                                                            | 默认值   | 是否必填 |
-| ---------------------- | -------------------------------------------------- | --------------------------------------------------------------- | -------- | -------- |
-| size                   | 选择器尺寸                                         | 'small' \| 'medium' \| 'large'                                  | 'medium' |          |
-| value                  | 当前值，用于受控模式                               | string \| number \| null                                        | -        |          |
-| defaultValue           | 初始化的默认值                                     | string \| number                                                | -        |          |
-| placeholder            | 没有值的时候的占位符                               | string                                                          | -        |          |
-| autoWidth              | 下拉菜单的宽度是否与选择器保持统一                 | boolean                                                         | true     |          |
-| label                  | 自定义内联 label                                   | React.ReactNode                                                 | -        |          |
-| hasClear               | 是否有清除按钮（单选模式有效）                     | boolean                                                         | -        |          |
-| state                  | 校验状态                                           | 'error' \| 'loading' \| 'success' \| 'warning'                  | -        |          |
-| readOnly               | 是否只读，只读模式下可以展开弹层但不能选           | boolean                                                         | -        |          |
-| disabled               | 是否禁用选择器                                     | boolean                                                         | -        |          |
-| visible                | 当前弹层是否显示                                   | boolean                                                         | -        |          |
-| defaultVisible         | 弹层初始化是否显示                                 | boolean                                                         | -        |          |
-| onVisibleChange        | 弹层显示或隐藏时触发的回调                         | (visible: boolean, type?: VisibleChangeType) => void            | -        |          |
-| popupContainer         | 弹层挂载的容器节点                                 | string \| HTMLElement \| ((target: HTMLElement) => HTMLElement) | -        |          |
-| popupClassName         | 弹层的 className                                   | string                                                          | -        |          |
-| popupStyle             | 弹层的内联样式                                     | React.CSSProperties                                             | -        |          |
-| popupProps             | 添加到弹层上的属性                                 | PopupProps                                                      | -        |          |
-| popupContent           | 自定义弹层的内容                                   | React.ReactNode                                                 | -        |          |
-| followTrigger          | 是否跟随 trigger 滚动                              | boolean                                                         | -        |          |
-| filterLocal            | 是否使用本地过滤，在数据源为远程的时候需要关闭此项 | boolean                                                         | true     |          |
-| filter                 | 本地过滤方法，返回一个 Boolean 值确定是否保留      | (key: string \| number, item: ObjectItem) => boolean            | -        |          |
-| onToggleHighlightItem  | 键盘上下键切换菜单高亮选项的回调                   | (highlightKey: unknown, ...args: unknown[]) => void             | -        |          |
-| useVirtual             | 是否开启虚拟滚动模式                               | boolean                                                         | -        |          |
-| dataSource             | 传入的数据源，可以动态渲染子项                     | Array\<DataSourceItem>                                          | -        |          |
-| itemRender             | 渲染 MenuItem 内容的方法                           | (item: ObjectItem) => React.ReactNode                           | -        |          |
-| onChange               | AutoComplete 发生改变时触发的回调                  | (value: string, actionType: string, item?: ObjectItem) => void  | -        |          |
-| onKeyDown              | -                                                  | (e: React.KeyboardEvent\<HTMLElement>) => void                  | -        |          |
-| fillProps              | 填充到选择框里的值的 key                           | string                                                          | 'value'  |          |
-| autoHighlightFirstItem | 自动高亮第一个选项                                 | boolean                                                         | true     |          |
-| highlightKey           | 高亮 key                                           | string                                                          | -        |          |
-| defaultHighlightKey    | 默认高亮 key                                       | string                                                          | -        |          |
-| onFocus                | AutoComplete 获得焦点时的回调                      | InputProps['onFocus']                                           | -        |          |
-| children               | 子元素，详细使用方法参考 demo                      | ReactElementWithTypeMark \| ReactElementWithTypeMark[]          | -        |          |
-| highlightHolder        | 是否将当前高亮的选项作为 placeholder               | boolean                                                         | -        |          |
+| 参数                   | 说明                                               | 类型                                                                                                                    | 默认值   | 是否必填 |
+| ---------------------- | -------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- | -------- | -------- |
+| size                   | 选择器尺寸                                         | 'small' \| 'medium' \| 'large'                                                                                          | 'medium' |          |
+| value                  | 当前值，用于受控模式                               | string \| number \| null                                                                                                | -        |          |
+| defaultValue           | 初始化的默认值                                     | string \| number                                                                                                        | -        |          |
+| placeholder            | 没有值的时候的占位符                               | string                                                                                                                  | -        |          |
+| autoWidth              | 下拉菜单的宽度是否与选择器保持统一                 | boolean                                                                                                                 | true     |          |
+| label                  | 自定义内联 label                                   | React.ReactNode                                                                                                         | -        |          |
+| hasClear               | 是否有清除按钮（单选模式有效）                     | boolean                                                                                                                 | -        |          |
+| state                  | 校验状态                                           | 'error' \| 'loading' \| 'success' \| 'warning'                                                                          | -        |          |
+| readOnly               | 是否只读，只读模式下可以展开弹层但不能选           | boolean                                                                                                                 | -        |          |
+| disabled               | 是否禁用选择器                                     | boolean                                                                                                                 | -        |          |
+| visible                | 当前弹层是否显示                                   | boolean                                                                                                                 | -        |          |
+| defaultVisible         | 弹层初始化是否显示                                 | boolean                                                                                                                 | -        |          |
+| onVisibleChange        | 弹层显示或隐藏时触发的回调                         | (visible: boolean, type?: VisibleChangeType) => void                                                                    | -        |          |
+| popupContainer         | 弹层挂载的容器节点                                 | string \| HTMLElement \| ((target: HTMLElement) => HTMLElement)                                                         | -        |          |
+| popupClassName         | 弹层的 className                                   | string                                                                                                                  | -        |          |
+| popupStyle             | 弹层的内联样式                                     | React.CSSProperties                                                                                                     | -        |          |
+| popupProps             | 添加到弹层上的属性                                 | React.ComponentPropsWithRef\<typeof Popup>                                                                              | -        |          |
+| popupContent           | 自定义弹层的内容                                   | React.ReactNode                                                                                                         | -        |          |
+| followTrigger          | 是否跟随 trigger 滚动                              | boolean                                                                                                                 | -        |          |
+| filterLocal            | 是否使用本地过滤，在数据源为远程的时候需要关闭此项 | boolean                                                                                                                 | true     |          |
+| filter                 | 本地过滤方法，返回一个 Boolean 值确定是否保留      | (key: string \| number, item: ObjectItem) => boolean                                                                    | -        |          |
+| onToggleHighlightItem  | 键盘上下键切换菜单高亮选项的回调                   | (<br/> highlightKey?: string \| boolean \| NormalizedObjectItem \| null,<br/> type?: HighlightChangeType<br/> ) => void | -        |          |
+| useVirtual             | 是否开启虚拟滚动模式                               | boolean                                                                                                                 | -        |          |
+| dataSource             | 传入的数据源，可以动态渲染子项                     | Array\<DataSourceItem>                                                                                                  | -        |          |
+| itemRender             | 渲染 MenuItem 内容的方法                           | (item: ObjectItem) => React.ReactNode                                                                                   | -        |          |
+| onChange               | AutoComplete 发生改变时触发的回调                  | (value: string, actionType: string, item?: ObjectItem) => void                                                          | -        |          |
+| onKeyDown              | -                                                  | (e: React.KeyboardEvent\<HTMLElement>) => void                                                                          | -        |          |
+| fillProps              | 填充到选择框里的值的 key                           | string                                                                                                                  | 'value'  |          |
+| autoHighlightFirstItem | 自动高亮第一个选项                                 | boolean                                                                                                                 | true     |          |
+| highlightKey           | 高亮 key                                           | string                                                                                                                  | -        |          |
+| defaultHighlightKey    | 默认高亮 key                                       | string                                                                                                                  | -        |          |
+| onFocus                | AutoComplete 获得焦点时的回调                      | InputProps['onFocus']                                                                                                   | -        |          |
+| children               | 子元素，详细使用方法参考 demo                      | React.ReactNode                                                                                                         | -        |          |
+| highlightHolder        | 是否将当前高亮的选项作为 placeholder               | boolean                                                                                                                 | -        |          |
 
 ### Select.OptionGroup
 
@@ -135,22 +136,24 @@
 
 ### Select.Option
 
-| 参数     | 说明     | 类型                                             | 默认值 | 是否必填 |
-| -------- | -------- | ------------------------------------------------ | ------ | -------- |
-| value    | 选项值   | string \| number \| boolean \| null \| undefined | -      | 是       |
-| disabled | 是否禁用 | boolean                                          | -      |          |
+| 参数     | 说明                          | 类型                                             | 默认值 | 是否必填 |
+| -------- | ----------------------------- | ------------------------------------------------ | ------ | -------- |
+| value    | 选项值                        | string \| number \| boolean \| null \| undefined | -      |          |
+| key      | 选项值，优先级低于 value      | React.Key                                        | -      |          |
+| disabled | 是否禁用                      | boolean                                          | -      |          |
+| label    | 选项标签，优先级高于 children | React.ReactNode                                  | -      |          |
+| children | 选项标签                      | React.ReactNode                                  | -      |          |
 
 ### ObjectItem
 
-| 参数        | 说明 | 类型                                             | 默认值 | 是否必填 |
-| ----------- | ---- | ------------------------------------------------ | ------ | -------- |
-| value       | -    | string \| number \| boolean \| null \| undefined | -      |          |
-| label       | -    | string \| number \| boolean                      | -      |          |
-| color       | -    | string                                           | -      |          |
-| disabled    | -    | boolean                                          | -      |          |
-| children    | -    | DataSourceItem[]                                 | -      |          |
-| title       | -    | string                                           | -      |          |
-| \_\_isAddon | -    | boolean                                          | -      |          |
+| 参数     | 说明                     | 类型                                             | 默认值 | 是否必填 |
+| -------- | ------------------------ | ------------------------------------------------ | ------ | -------- |
+| value    | 选项值                   | string \| number \| boolean \| null \| undefined | -      |          |
+| label    | 选项标签                 | React.ReactNode                                  | -      |          |
+| color    | 选项背景色，可选值同 Tag | TagProps['color']                                | -      |          |
+| disabled | 选项是否禁用             | boolean                                          | -      |          |
+| children | 子选项                   | DataSourceItem[]                                 | -      |          |
+| title    | 选项标题                 | string \| null                                   | -      |          |
 
 ### DataSourceItem
 

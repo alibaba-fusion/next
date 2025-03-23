@@ -1,6 +1,7 @@
 import { Component, Children, type ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import { polyfill } from 'react-lifecycles-compat';
+import moment from 'moment';
 import getContextProps from './get-context-props';
 import {
     config,
@@ -25,16 +26,7 @@ import type {
 
 const childContextCache = new Cache();
 
-const setMomentLocale = async (locale?: { momentLocale?: string }) => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    let moment: any;
-    try {
-        moment = await import('moment');
-        if (moment && moment.default && moment.default.isMoment) moment = moment.default;
-    } catch (e) {
-        // ignore
-    }
-
+const setMomentLocale = (locale?: { momentLocale?: string }) => {
     if (moment && moment.locale && locale) {
         moment.locale(locale.momentLocale);
     }

@@ -74,7 +74,12 @@ class App extends React.Component {
                         collapse={this.state.navcollapse}
                         onCollapseChange={this.onCollapseChange}
                     >
-                        <Nav embeddable aria-label="global navigation">
+                        <Nav
+                            embeddable
+                            aria-label="global navigation"
+                            iconOnlyWidth="100%"
+                            hozInLine
+                        >
                             <Nav.Item icon="account">Nav Item 1</Nav.Item>
                             <Nav.Item icon="calendar">Nav Item 2</Nav.Item>
                             <Nav.Item icon="atm">Nav Item 3</Nav.Item>

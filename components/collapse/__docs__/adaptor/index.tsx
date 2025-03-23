@@ -1,6 +1,7 @@
 import React from 'react';
 import { Collapse } from '@alifd/next';
 import { Types, parseData, NodeType } from '@alifd/adaptor-helper';
+import type { INode } from '@alifd/adaptor-helper/types/parse-data';
 
 interface AdaptorProps {
     state: string;
@@ -34,7 +35,7 @@ export default {
         },
     }),
     adaptor: ({ state, width, data, style = {}, ...others }: AdaptorProps) => {
-        const list = parseData(data).filter(node => NodeType.node === node.type);
+        const list = (parseData(data) as INode[]).filter(node => NodeType.node === node.type);
         const expandedKeys = [] as string[];
         const children = list.map(({ state, value, children }, index) => {
             if (state === 'active') {

@@ -1,8 +1,11 @@
 import React, { type ReactElement } from 'react';
+import { CompareSnapshot } from '../../util/__tests__/common/snapshot';
 import Collapse from '../index';
 import '../style';
 
 const Panel = Collapse.Panel;
+
+const collapseCompareSnapshot = new CompareSnapshot({ componentName: 'collapse' });
 
 describe('Collapse', () => {
     describe('render', () => {
@@ -59,6 +62,16 @@ describe('Collapse', () => {
             );
             cy.get('.next-collapse').should('have.length', 1);
             cy.get('.next-collapse-panel').should('have.length', 2);
+        });
+
+        it('should render with proper border-radius and overflow hidden', () => {
+            cy.mount(
+                <Collapse style={{ borderRadius: '50px' }}>
+                    <Panel title="Pannel Title">Pannel Content</Panel>
+                    <Panel title="Pannel Title">Pannel Content</Panel>
+                </Collapse>
+            );
+            collapseCompareSnapshot.compare(cy.get('.next-collapse'));
         });
     });
 
