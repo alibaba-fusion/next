@@ -140,8 +140,35 @@ export interface GroupFooterProps extends React.HTMLAttributes<HTMLElement>, Com
 }
 
 export class GroupFooter extends React.Component<GroupFooterProps, any> {}
+type IsAny<T> = 0 extends 1 & T ? true : false;
+type GetNestKeysOfType<T, Prefix extends string = ''> = IsAny<T> extends true
+  ? `${Prefix}${string}`
+  : T extends object | undefined
+  ? {
+      [K in keyof T]-?: [
+        `${Prefix}${Extract<K, string | number>}`,
+        T[K] extends (infer Ke)[] | undefined
+          ? [
+              `${Prefix}${Extract<K, string | number>}.${number}`,
+              IsAny<Ke> extends true
+                ? GetNestKeysOfType<Ke, `${Prefix}${Extract<K, string | number>}.${number}.`>
+                : Ke extends object
+                ? GetNestKeysOfType<Ke, `${Prefix}${Extract<K, string | number>}.${number}.`>
+                : `${Prefix}${Extract<K, string | number>}.${number}.${Extract<
+                    Ke,
+                    string | number
+                  >}`,
+            ][number]
+          : T[K] extends object | undefined
+          ? GetNestKeysOfType<T[K], `${Prefix}${Extract<K, string | number>}.`>
+          : never,
+      ];
+    }[keyof T][number]
+  : never;
 
-export interface BaseTableProps extends React.HTMLAttributes<HTMLElement>, CommonProps {
+export interface BaseTableProps<DataSource>
+    extends React.HTMLAttributes<HTMLElement>,
+        CommonProps {
     /**
      * 样式类名的品牌前缀
      */
@@ -161,7 +188,11 @@ export interface BaseTableProps extends React.HTMLAttributes<HTMLElement>, Commo
      * 自定义内联样式
      */
     style?: React.CSSProperties;
-    columns?: Array<any>;
+    columns?: Array<
+        {
+            dataIndex?: DataSource extends Array<infer P> ? GetNestKeysOfType<P> : string;
+        } & CommonProps
+    >;
     /**
      * 表格元素的 table-layout 属性，设为 fixed 表示内容不会影响列的布局
      */
@@ -173,7 +204,7 @@ export interface BaseTableProps extends React.HTMLAttributes<HTMLElement>, Commo
     /**
      * 表格展示的数据源
      */
-    dataSource?: Array<any>;
+    dataSource?: DataSource;
 
     /**
      * 表格是否具有边框
@@ -220,7 +251,7 @@ export interface BaseTableProps extends React.HTMLAttributes<HTMLElement>, Commo
      */
     primaryKey?: string;
 }
-export interface TableProps extends React.HTMLAttributes<HTMLElement>, BaseTableProps {
+export interface TableProps<DataSource> extends React.HTMLAttributes<HTMLElement>, BaseTableProps<DataSource> {
     /**
      * 点击表格每一行触发的事件
      */
@@ -417,7 +448,7 @@ export interface TableProps extends React.HTMLAttributes<HTMLElement>, BaseTable
     keepForwardRenderRows?: number;
 }
 
-export default class Table extends React.Component<TableProps, any> {
+export default class Table<DataSource extends Array<any>> extends React.Component<TableProps<DataSource>, any> {
     static Column: typeof Column;
     static ColumnGroup: typeof ColumnGroup;
     static GroupHeader: typeof GroupHeader;
