@@ -929,6 +929,28 @@ describe('TreeSelect', () => {
         cy.contains('.next-select-values', '服装/男装');
     });
 
+    it('should expandedAll when search by searchValue is empty and treeDefaultExpandAll is true', () => {
+        const searchedValue = '外套';
+        const handleSearch = cy.spy();
+
+        cy.mount(
+            <TreeSelect
+                defaultVisible
+                treeDefaultExpandAll
+                dataSource={dataSource}
+                showSearch
+                onSearch={debounce(handleSearch, 20)} // Debounce for simulate Cypress action type below
+            />
+        );
+        cy.get('.next-select-trigger-search input').type(searchedValue);
+        cy.get('.next-tree-node').then($el => {
+            const list = $el.filter('[style!="display: none;"]');
+            cy.wrap(list).should('have.length', 3);
+        });
+        cy.get('.next-select-trigger-search input').clear();
+        cy.get('.next-tree-node').should('have.length', 6);
+    });
+
     describe('should support useDetailValue', () => {
         it('Support dataSource mode', () => {
             const handleChange = cy.spy();

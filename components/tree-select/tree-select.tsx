@@ -774,6 +774,12 @@ class TreeSelect extends Component<TreeSelectProps, TreeSelectState> {
                 notFound = true;
             }
         } else {
+            // 如过 filterLocal 并且 showSearch 但是没有 searchedValue 的时候，也需要设置 expandedKeys
+            if (filterLocal && showSearch) {
+                treeProps.expandedKeys = expandedKeys;
+                treeProps.autoExpandParent = autoExpandParent;
+                treeProps.onExpand = this.handleExpand;
+            }
             // eslint-disable-next-line
             if (dataSource) {
                 if (dataSource.length) {
