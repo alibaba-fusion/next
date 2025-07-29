@@ -279,6 +279,12 @@ export interface ItemProps extends HTMLAttributes<HTMLElement>, CommonProps {
     colSpan?: number;
 
     /**
+     * 在响应式布局模式下，表单项占多少行
+     * @en in response layout mode, how many rows does the form item occupy
+     */
+    rowSpan?: number;
+
+    /**
      * 在响应式布局下，且 label 在左边时，label 的宽度是多少
      * @en in response layout mode, and the label is on the left, how wide is the label
      * @defaultValue 100

@@ -62,6 +62,7 @@ export default class Item extends Component<ItemProps> {
         device: PropTypes.oneOf(['phone', 'tablet', 'desktop']),
         responsive: PropTypes.bool,
         colSpan: PropTypes.number,
+        rowSpan: PropTypes.number,
         labelWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
         isPreview: PropTypes.bool,
         renderPreview: PropTypes.func,
