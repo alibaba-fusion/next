@@ -167,7 +167,7 @@ const getGridChildProps = (
     device: ResponsiveGridProps['device'],
     gap?: ResponsiveGridProps['gap']
 ) => {
-    const { row = 'initial', col = 'initial', rowSpan = 1, colSpan = 1 } = props;
+    const { row = 'auto', col = 'auto', rowSpan = 1, colSpan = 1 } = props;
 
     let totalSpan = 12;
     let newColSpan =
