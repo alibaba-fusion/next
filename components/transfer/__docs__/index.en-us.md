@@ -57,7 +57,7 @@ export type TransferDataItem = {
     title?: string;
     disabled?: boolean;
     children?: TransferDataItem[];
-    [key: string]: unknown;
+    [key: string]: any;
 };
 ```
 

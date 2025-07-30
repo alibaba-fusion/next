@@ -51,7 +51,7 @@ export type DataItem = {
     disabled?: boolean;
     key?: KeyType;
     onClick?: (key: KeyType) => void;
-    [propName: string]: unknown;
+    [propName: string]: any;
 };
 ```
 

@@ -924,7 +924,7 @@ class TreeSelect extends Component<TreeSelectProps, TreeSelectState> {
 
         let data: ObjectItem[] | ObjectItem = this.getData(valueForSelect, true);
         if (!multiple && !treeCheckable) {
-            data = data[0];
+            data = Array.isArray(data) ? data[0] : data;
         }
 
         if (isPreview) {

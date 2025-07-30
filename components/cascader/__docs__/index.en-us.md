@@ -52,7 +52,7 @@ export type CascaderDataItem = {
     checkboxDisabled?: boolean;
     children?: Array<CascaderDataItem>;
     title?: string;
-    [propName: string]: unknown;
+    [propName: string]: any;
 };
 ```
 

@@ -58,7 +58,7 @@ export interface ObjectItem {
      * @skip
      */
     __isAddon?: boolean;
-    [propName: string]: unknown;
+    [propName: string]: any;
 }
 
 export interface NormalizedObjectItem extends ObjectItem {

@@ -68,7 +68,7 @@ export type CheckboxData = {
     value: ValueItem;
     label?: React.ReactNode;
     disabled?: boolean;
-    [propName: string]: unknown;
+    [propName: string]: any;
 };
 ```
 

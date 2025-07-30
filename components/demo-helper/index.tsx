@@ -8,7 +8,7 @@ interface DemoItem {
     hidden?: boolean;
     exists?: boolean;
     title?: string;
-    [key: string]: unknown;
+    [key: string]: any;
 }
 
 type ShowType = 'none' | 'hidden';

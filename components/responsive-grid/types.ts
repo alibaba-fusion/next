@@ -2,7 +2,7 @@ import type { HTMLAttributes } from 'react';
 import type * as CSS from 'csstype';
 import type { CommonProps } from '../util';
 
-export type ObjectType = { [key: string]: unknown };
+export type ObjectType = { [key: string]: any };
 export type Spacing =
     | number
     | [topAndRightAndBottomAndLeft: number]
