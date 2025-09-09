@@ -292,7 +292,7 @@
     "tslint": "^5.18.0",
     "typescript": "^5.3.2",
     "urllib": "^2.36.1",
-    "vite": "^4.5.1",
+    "vite": "^7.1.5",
     "webpack": "^3.0.0",
     "webpack-dev-server": "^2.x",
     "whatwg-fetch": "^2.0.3",
