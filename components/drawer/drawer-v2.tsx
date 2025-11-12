@@ -145,7 +145,7 @@ const Drawer = (props: DrawerV2Props) => {
                 const scrollWidth = dom.scrollbar().width;
                 if (scrollWidth) {
                     style.paddingRight = `${
-                        dom.getStyle(document.body, 'paddingRight').toString() +
+                        (dom.getStyle(document.body, 'paddingRight') as number) +
                         dom.scrollbar().width
                     }px`;
                 }
