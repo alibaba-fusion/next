@@ -1,13 +1,16 @@
 import React from 'react';
 import { polyfill } from 'react-lifecycles-compat';
 import PT from 'prop-types';
+import type { Dayjs } from 'dayjs';
 import TimePickerPanel from '../../time-picker2/panel';
 import SharedPT from '../prop-types';
 import { func } from '../../util';
+import type { TimePanelProps } from '../types';
 
 const DECADE_TIME_FORMAT = 'HH:mm:ss';
 
-class TimePanel extends React.PureComponent {
+class TimePanel extends React.PureComponent<TimePanelProps> {
+    static displayName = 'TimePanel';
     static propTypes = {
         rtl: PT.bool,
         prefix: PT.string,
@@ -17,7 +20,7 @@ class TimePanel extends React.PureComponent {
         onSelect: PT.func,
     };
 
-    formater = v => {
+    formater = (v: Dayjs) => {
         const { timePanelProps = {} } = this.props;
         const { showHour, showMinute, showSecond } = this.getShow();
 
@@ -34,7 +37,7 @@ class TimePanel extends React.PureComponent {
             fmt = fmtArr.join(':');
         }
 
-        return typeof fmt === 'function' ? fmt(v) : v.format(fmt);
+        return typeof fmt === 'function' ? fmt(v) : v.format(fmt as string);
     };
 
     getShow = () => {
@@ -59,7 +62,7 @@ class TimePanel extends React.PureComponent {
         };
     };
 
-    onSelect = v => {
+    onSelect = (v: Dayjs | Dayjs[]) => {
         func.invoke(this.props, 'onSelect', [v]);
     };
 
@@ -68,9 +71,14 @@ class TimePanel extends React.PureComponent {
         const { showHour, showMinute, showSecond } = this.getShow();
 
         return (
-            <div dir={rtl ? 'rtl' : undefined} className={`${prefix}date-time-picker-wrapper ${prefix}calendar2-panel`}>
+            <div
+                dir={rtl ? 'rtl' : undefined}
+                className={`${prefix}date-time-picker-wrapper ${prefix}calendar2-panel`}
+            >
                 <div className={`${prefix}calendar2-header`}>
-                    <div className={`${prefix}calendar2-header-text-field`}>{value ? this.formater(value) : null}</div>
+                    <div className={`${prefix}calendar2-header-text-field`}>
+                        {value ? this.formater(value) : null}
+                    </div>
                 </div>
                 <TimePickerPanel
                     prefix={prefix}

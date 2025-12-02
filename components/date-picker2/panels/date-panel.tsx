@@ -2,6 +2,7 @@ import React from 'react';
 import { polyfill } from 'react-lifecycles-compat';
 import classnames from 'classnames';
 import PT from 'prop-types';
+import { type Dayjs } from 'dayjs';
 
 import SharedPT from '../prop-types';
 import { func, obj, datejs } from '../../util';
@@ -9,8 +10,10 @@ import { setTime } from '../util';
 
 import Calendar from '../../calendar2';
 import TimePanel from './time-panel';
+import type { DatePanelProps, DatePanelState } from '../types';
 
-class DatePanel extends React.Component {
+class DatePanel extends React.Component<DatePanelProps, DatePanelState> {
+    static displayName = 'DatePanel';
     static propTypes = {
         rtl: PT.bool,
         prefix: PT.string,
@@ -30,7 +33,7 @@ class DatePanel extends React.Component {
         resetTime: false,
     };
 
-    constructor(props) {
+    constructor(props: DatePanelProps) {
         super(props);
 
         // 默认时间
@@ -40,21 +43,23 @@ class DatePanel extends React.Component {
         if (defaultTime) {
             // fix: https://github.com/alibaba-fusion/next/issues/3203
             defaultTime = datejs(
-                defaultTime,
-                typeof defaultTime === 'string' ? timePanelProps.format || 'HH:mm:ss' : undefined
+                defaultTime as Dayjs | string,
+                typeof defaultTime === 'string'
+                    ? (timePanelProps.format as string) || 'HH:mm:ss'
+                    : undefined
             );
         }
 
         this.state = {
-            defaultTime,
+            defaultTime: defaultTime as Dayjs,
         };
     }
 
-    onTimeSelect = v => {
+    onTimeSelect = (v: Dayjs) => {
         this.handleSelect(v, true);
     };
 
-    handleSelect = (v, fromTimeChange) => {
+    handleSelect = (v: Dayjs, fromTimeChange: boolean | string) => {
         const { defaultTime } = this.state;
 
         let timeVal = null;
@@ -63,12 +68,12 @@ class DatePanel extends React.Component {
             timeVal = this.props.value || defaultTime || datejs();
         }
 
-        v = setTime(v, timeVal);
+        v = setTime(v, timeVal!);
 
         func.invoke(this.props, 'onSelect', [v]);
     };
 
-    handlePanelChange = (v, mode) => {
+    handlePanelChange = (v: Dayjs, mode: string) => {
         func.invoke(this.props, 'onPanelChange', [v, mode]);
     };
 
@@ -93,16 +98,19 @@ class DatePanel extends React.Component {
         // 禁用时间
         let _disabledTime;
         if (showTime && mode === panelMode && disabledTime) {
-            _disabledTime = typeof disabledTime === 'function' ? disabledTime(value) : disabledTime;
+            _disabledTime =
+                typeof disabledTime === 'function' ? disabledTime(value!) : disabledTime;
             if (typeof _disabledTime !== 'object') {
                 _disabledTime = null;
             }
         }
 
+        const calendarProps = obj.pickProps(Calendar.propTypes!, restProps);
+
         return (
             <div className={className}>
                 <Calendar
-                    {...obj.pickProps(Calendar.propTypes, restProps)}
+                    {...(calendarProps as object)}
                     shape="panel"
                     value={value}
                     panelMode={mode}

@@ -132,7 +132,7 @@ export function invoke<Result = unknown>(
 
 export function renderNode<Result = unknown>(
     render: AnyFunction<Result> | Result | undefined,
-    defaultRender: AnyFunction<Result> | Result | undefined,
+    defaultRender?: AnyFunction<Result> | Result | undefined,
     renderProps: unknown = []
 ): Result | undefined {
     const r = render !== undefined ? render : defaultRender;
@@ -199,6 +199,17 @@ export function checkRangeDate(
 }
 
 /**
+ * 将字符型转为dayjs类型，dayjs(x)解析无效时使用dayjs(x,format)再次解析。兼容YYYY-[Q]Q 季度类字符串
+ */
+export function checkValueWithDayjs(val: ConfigType, format: OptionType): Dayjs | null {
+    let date = checkDate(val);
+    if (!date) {
+        date = checkDate(val, format);
+    }
+    return date;
+}
+
+/**
  * 字符型日期转为dayjs类型
  */
 export function getValueWithDayjs(
@@ -213,17 +224,6 @@ export function getValueWithDayjs(
         });
     } else {
         date = checkValueWithDayjs(val, format);
-    }
-    return date;
-}
-
-/**
- * 将字符型转为dayjs类型，dayjs(x)解析无效时使用dayjs(x,format)再次解析。兼容YYYY-[Q]Q 季度类字符串
- */
-export function checkValueWithDayjs(val: ConfigType, format: OptionType): Dayjs | null {
-    let date = checkDate(val);
-    if (!date) {
-        date = checkDate(val, format);
     }
     return date;
 }

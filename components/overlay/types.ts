@@ -7,6 +7,15 @@ import type { CommonProps } from '../util';
 export type AnimationObjectType = Record<'in' | 'out', string>;
 
 /**
+ * @api onPositionResultType
+ */
+export type onPositionResultType = {
+    config: { placement: string; points: string };
+    align: string[];
+    style?: CSSCounterStyleRule;
+};
+
+/**
  * @api PropTarget
  */
 export type Target<T = unknown> =
@@ -190,10 +199,7 @@ export interface PopupV1Props extends React.HTMLAttributes<HTMLElement>, CommonP
      * @en Callback function that triggers the event when the overlay positions
      * @skip
      */
-    onPosition?: (
-        result: { config: { placement: string; points: string }; style?: CSSCounterStyleRule },
-        node?: object
-    ) => void;
+    onPosition?: (result: onPositionResultType, node?: object) => void;
 
     /**
      * 是否在每次弹层重新渲染后强制更新定位信息，一般用于弹层内容区域大小发生变化时，仍需保持原来的定位方式
@@ -525,10 +531,7 @@ export interface PopupV2Props extends React.HTMLAttributes<HTMLElement>, CommonP
      * @en Callback function that triggers the event when the overlay positions
      * @skip
      */
-    onPosition?: (
-        result: { config: { placement: string; points: string }; style?: CSSCounterStyleRule },
-        node?: object
-    ) => void;
+    onPosition?: (result: onPositionResultType, node?: object) => void;
 
     /**
      * 是否在每次弹层重新渲染后强制更新定位信息，一般用于弹层内容区域大小发生变化时，仍需保持原来的定位方式

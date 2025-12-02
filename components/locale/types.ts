@@ -45,12 +45,13 @@ export interface BaseLocale extends LocaleConfig {
             veryShortWeekdays?: string[];
         };
     };
-    DatePicker: {
+    DatePicker: Partial<{
         placeholder: string;
         datetimePlaceholder: string;
         monthPlaceholder: string;
         weekPlaceholder: string;
         yearPlaceholder: string;
+        quarterPlaceholder: string;
         now: string;
         selectTime: string;
         selectDate: string;
@@ -62,7 +63,7 @@ export interface BaseLocale extends LocaleConfig {
         minute: string;
         second: string;
         monthBeforeYear?: boolean;
-    };
+    }>;
     Dialog: Partial<{
         close: string;
         ok: string;

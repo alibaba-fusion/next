@@ -13,116 +13,84 @@ DatePicker are used to select a single date for an input.
 
 ## API
 
-### DatePicker
+### DatePicker2
 
-| Param | Descripiton  | Type  | Default Value |
-| ----- |---------------- | -------------- | ------------ |
-| label               | Inset label of input  | ReactNode      | -            |
-| size                | Size of input<br><br>**option**:<br>'small', 'medium', 'large'                                                                                                            | Enum           | 'medium'     |
-| state               | State of input<br><br>**option**:<br>'success', 'error'                                                                                                                    | Enum           | -            |
-| placeholder         | Placeholder of input        | String         | -            |
-| defaultVisibleMonth | Default visible month <br><br>**signature**:<br>Function() => MomentObject<br>**return**:<br>{MomentObject} moment instance with specified month<br>                                                    | Function       | -            |
-| value               | Value of date-picker | custom         | -            |
-| defaultValue        | Default value of date-picker  | custom         | -            |
-| format              | Format of date value (it will also effect user input) | String         | 'YYYY-MM-DD' |
-| showTime            | Enable time-picker, pass object like `{ defaultValue, format, ... }`       | Object/Boolean | false        |
-| resetTime           | If reset time for every re-select | Boolean        | false        |
-| disabledDate        | Function to disable date <br><br>**signature**:<br>Function(dateValue: MomentObject) => Boolean<br>**parameter**:<br>_dateValue_: {MomentObject} null<br>_view_: {Enum} current view type: 'year', 'month', 'date'<br>**return**:<br>{Boolean} if disable current date<br>                     | Function       | () => false  |
-| footerRender        | Template render for custom footer<br><br>**signature**:<br>Function() => Node<br>**return**:<br>{Node} Custom footer<br>   | Function       | () => null   |
-| onChange            | Callback when date changes <br><br>**signature**:<br>Function() => MomentObject<br>**return**:<br>{MomentObject} dateValue<br> | Function       | func.noop    |
-| onOk                | Callback when click the ok button<br><br>**signature**:<br>Function() => MomentObject<br>**return**:<br>{MomentObject} dateValue<br>                                                                  | Function       | func.noop    |
-| disabled            | Disable the picker    | Boolean        | -            |
-| hasClear            | Has clear icon   | Boolean        | true         |
-| visible             | Visible state of popup  | Boolean        | -            |
-| defaultVisible      | Default visible state of popup   | Boolean        | -            |
-| onVisibleChange     | Callback when visible state changes<br><br>**signature**:<br>Function(visible: Boolean, reason: String) => void<br>**parameter**:<br>_visible_: {Boolean} if popup visible<br>_reason_: {String} reason to change visible | Function       | func.noop    |
-| popupTriggerType    | Trigger type of popup<br><br>**option**:<br>'click', 'hover'                                                                                                                     | Enum           | 'click'      |
-| popupAlign          | Align of popup, see Overlay doc for detail  | String         | 'tl tl'      |
-| popupContainer      | Container of popup <br><br>**signature**:<br>Function(target: Element) => Element<br>**parameter**:<br>_target_: {Element} target element<br>**return**:<br>{Element} container of popup<br>                        | Function       | -            |
-| popupStyle          | Custom style of popup | Object         | -            |
-| popupClassName      | Custom className of popup  | String         | -            |
-| popupProps          | Props of popup    | Object         | -            |
-| followTrigger        | follow Trigger or not                                                                                                                                                      | Boolean         | -                                         |
-| dateInputAriaLabel | Date input aria-label attr                                                                                                                                                                                           | String    | -           |
+| Param              | Description                                                                                                                              | Type                                                                                                 | Default Value | Required |
+| ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ------------- | -------- |
+| type               | Date picker type                                                                                                                         | 'date' \| 'range'                                                                                    | 'date'        |          |
+| mode               | Date panel mode                                                                                                                          | ModeType                                                                                             | 'date'        |          |
+| value              | Time value (Dayjs object or time string, controlled state use)                                                                           | string \| Dayjs \| null \| (Dayjs \| null \| string)[]                                               | -             |          |
+| defaultValue       | Time init value (Dayjs object or time string, uncontrolled state use)                                                                    | string \| Dayjs \| (Dayjs \| null \| string)[]                                                       | -             |          |
+| defaultPanelValue  | Default panel value                                                                                                                      | Dayjs                                                                                                | -             |          |
+| disabledDate       | Disable date function<br/><br/>**signature**:<br/>**params**:<br/>_value_: value<br/>_mode_: mode                                        | (value: Dayjs, mode: ModeType) => boolean                                                            | -             |          |
+| extraFooterRender  | Bottom extra rendering                                                                                                                   | React.ReactNode \| (() => React.ReactNode)                                                           | -             |          |
+| preset             | Preset values                                                                                                                            | PresetType \| PresetType[]                                                                           | -             |          |
+| showTime           | Whether to show time                                                                                                                     | boolean                                                                                              | -             |          |
+| showOk             | Whether to show the confirmation button                                                                                                  | boolean                                                                                              | -             |          |
+| resetTime          | Whether to reset the time                                                                                                                | boolean                                                                                              | -             |          |
+| timePanelProps     | Time panel properties                                                                                                                    | Partial\<TimePanelProps>                                                                             | -             |          |
+| disabledTime       | Disable time                                                                                                                             | object                                                                                               | -             |          |
+| onOk               | Callback when the confirm button is clicked<br/><br/>**signature**:<br/>**params**:<br/>_value_: value<br/>_strVal_: strVal              | ((value: Dayjs, strVal: string) => void) \| ((value: Array\<Dayjs>, strVal: Array\<string>) => void) | -             |          |
+| onChange           | Callback when the value changes<br/><br/>**signature**:<br/>**params**:<br/>_value_: value<br/>_strVal_: strVal                          | (value: Dayjs, strVal: string) => void                                                               | -             |          |
+| onVisibleChange    | Callback when the panel visible changes<br/><br/>**signature**:<br/>**params**:<br/>_visible_: visible                                   | (visible: boolean) => void                                                                           | -             |          |
+| onPanelChange      | Callback when the panel mode changes<br/><br/>**signature**:<br/>**params**:<br/>_panelValue_: panelValue<br/>_mode_: mode               | (<br/> panelValue: Dayjs,<br/> mode: ModeType<br/> ) => void                                         | -             |          |
+| format             | Date format                                                                                                                              | string \| ((value: Dayjs) => string)                                                                 | 'YYYY-MM      |          |
+| outputFormat       | Output format: control the output value format of onChange and onOk events                                                               | string \| ((value: Dayjs) => string)                                                                 | -             |          |
+| disabled           | Whether to disable                                                                                                                       | boolean \| boolean[]                                                                                 | -             |          |
+| state              | Date selection state                                                                                                                     | 'success' \| 'loading' \| 'error'                                                                    | -             |          |
+| size               | Input size                                                                                                                               | 'small' \| 'medium' \| 'large'                                                                       | -             |          |
+| hasBorder          | Whether to show the border                                                                                                               | boolean                                                                                              | -             |          |
+| inputProps         | Input properties                                                                                                                         | InputProps                                                                                           | -             |          |
+| inputReadOnly      | Whether the input is read                                                                                                                | boolean                                                                                              | -             |          |
+| hasClear           | Whether to display the clear button                                                                                                      | boolean                                                                                              | -             |          |
+| label              | Label                                                                                                                                    | React.ReactNode                                                                                      | -             |          |
+| separator          | Separator                                                                                                                                | React.ReactNode                                                                                      | -             |          |
+| placeholder        | Input placeholder                                                                                                                        | string \| string[]                                                                                   | -             |          |
+| visible            | Whether the panel is displayed                                                                                                           | boolean                                                                                              | -             |          |
+| defaultVisible     | Whether the default panel is displayed                                                                                                   | boolean                                                                                              | false         |          |
+| trigger            | Trigger element                                                                                                                          | React.ReactNode \| (() => React.ReactNode)                                                           | -             |          |
+| popupTriggerType   | Popup trigger type                                                                                                                       | 'click' \| 'hover'                                                                                   | 'click'       |          |
+| popupAlign         | Popup alignment                                                                                                                          | string                                                                                               | -             |          |
+| popupContainer     | Popup container                                                                                                                          | string \| HTMLElement \| ((target: HTMLElement) => HTMLElement)                                      | -             |          |
+| popupStyle         | Popup style                                                                                                                              | React.CSSProperties                                                                                  | -             |          |
+| popupClassName     | Popup className                                                                                                                          | string                                                                                               | -             |          |
+| popupProps         | Popup properties                                                                                                                         | PopupProps                                                                                           | -             |          |
+| followTrigger      | Whether Pop                                                                                                                              | boolean                                                                                              | -             |          |
+| popupComponent     | Popup component                                                                                                                          | React.Component                                                                                      | -             |          |
+| dateCellRender     | Custom rendering of date cell<br/><br/>**signature**:<br/>**params**:<br/>_value_: value                                                 | (value: Dayjs) => React.ReactNode                                                                    | -             |          |
+| monthCellRender    | Custom rendering of month cell<br/><br/>**signature**:<br/>**params**:<br/>_value_: value                                                | (value: Dayjs) => React.ReactNode                                                                    | -             |          |
+| dateInputAriaLabel | Date input aria                                                                                                                          | string                                                                                               | -             |          |
+| isPreview          | Whether it is preview                                                                                                                    | boolean                                                                                              | -             |          |
+| renderPreview      | Content rendered in preview mode<br/><br/>**signature**:<br/>**params**:<br/>_value_: value                                              | (value: Dayjs \| Dayjs[]) => React.ReactNode                                                         | -             |          |
+| onCalendarChange   | Callback when the date panel value changes<br/><br/>**signature**:<br/>**params**:<br/>_values_: values<br/>_formatString_: formatString | (values: Dayjs[] \| null, formatString: string[]) => void                                            | -             |          |
 
-### DatePicker.RangePicker
+### DatePicker2.RangePicker
 
-| Param | Description  | Type  | Default Value  |
-| ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- | ------------ |
-| size                | Size of input <br><br>**option**:<br>'small', 'medium', 'large'                                                                                                            | Enum           | 'medium'     |
-| type (v1.19.0+)                | Select date range type<br><br>**option**:<br>'date', 'month', 'year'                                                                                                                                                                                       | Enum                 | 'date'                                                                                       |          |           |
-| defaultVisibleMonth | Default visible month <br><br>**signature**:<br>Function() => MomentObject<br>**return**:<br>{MomentObject} moment instance with specified month<br>                                                 | Function       | -            |
-| value               | Range value `[moment, moment]` | Array          | -            |
-| defaultValue        | Default range value `[moment, moment]`    | Array          | - |
-| format              | Date format    | String | Function        | 'YYYY-MM-DD' |
-| outputFormat              | Date output format    | String | ((date: Dayjs, dateStr: String) => any)        |  |
-| placeholder              | input hints:`['start date', 'end date']`    | Array         | - |
-| showTime            | Enable time picker  | Object/Boolean | false        |
-| resetTime           | If reset time for every select     | Boolean        | false        |
-| disabledDate        | Function to disable dates <br><br>**signature**:<br>Function(dateValue: MomentObject) => Boolean<br>**parameter**:<br>_dateValue_: {MomentObject} null<br>_view_: {Enum} current view type: 'year', 'month', 'date'<br>**return**:<br>{Boolean} if disabled<br>                     | Function       | () => false  |
-| footerRender        | Template render for footer<br><br>**signature**:<br>Function() => Node<br>**return**:<br>{Node} custom footer<br>                                                                              | Function       | () => null   |
-| onChange            | Callback when date changes <br><br>**signature**:<br>Function() => MomentObject<br>**return**:<br>{MomentObject} range values<br>                                                                 | Function       | func.noop    |
-| onCalendarChange            | Callback function, can be executed when the start time or the end time of the range is changing. <br><br>**signature**:<br>Function(dates, dateStrings) => void                                                          | Function       | func.noop    |
-| onOk                | Callback when click ok button <br><br>**signature**:<br>Function() => MomentObject<br>**return**:<br>{MomentObject} range values<br>                                                                  | Function       | func.noop    |
-| label               | Inset label of input  | ReactNode      | -            |
-| state               | State of input<br><br>**option**:<br>'error', 'success'  | Enum           | -            |
-| disabled            | Disable the picker | Boolean        | -            |
-| hasClear            | Has clear icon  | Boolean        | true         |
-| visible             | Visible state of popup  | Boolean        | -            |
-| defaultVisible      | Default visible state of popup   | Boolean        | -            |
-| onVisibleChange     | Callback when visible state changes<br><br>**signature**:<br>Function(visible: Boolean, reason: String) => void<br>**parameter**:<br>_visible_: {Boolean} if popup visible<br>_reason_: {String} reason to change visible | Function       | func.noop    |
-| popupTriggerType    | Trigger type of popup <br><br>**option**:<br>'click', 'hover'   | Enum           | 'click'      |
-| popupAlign          | Align of popup   | String         | 'tl tl'      |
-| popupContainer      | Container of a popup<br><br>**signature**:<br>Function(target: Element) => Element<br>**option**:<br>_target_: {Element} target element<br>**return**:<br>{Element} coninter element of popup<br>                        | Function       | -            |
-| popupStyle          | Custom style of popup  | Object         | -            |
-| popupClassName      | Custom className of popup   | String         | -            |
-| popupProps          | Props of popup  | Object         | -            |
-| startDateInputAriaLabel | Start date input `aria-label` attribute                                                                                                                                                                                         | String               | -                                                                                            |          |           |
-| startTimeInputAriaLabel | Start time input `aria-label` attribute                                                                                                                                                                                         | String               | -                                                                                            |          |           |
-| endDateInputAriaLabel   | End date input `aria-label` attribute                                                                                                                                                                                         | String               | -                                                                                            |          |           |
-| endTimeInputAriaLabel   | End time input `aria-label` attribute                                                                                                                                                                                         | String               | -                                                                                            |          |           |
-
-### DatePicker.WeekPicker v1.19.0+
-
-| 参数                  | 说明                                                                                                                                                                                                                                                                   | 类型              | 默认值         |
-| ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------- | ----------- |
-| label               | Inset label of input  | ReactNode      | -            |
-| size                | Size of input<br><br>**option**:<br>'small', 'medium', 'large'                                                                                                            | Enum           | 'medium'     |
-| state               | State of input<br><br>**option**:<br>'success', 'error'                                                                                                                    | Enum           | -            |
-| placeholder         | Placeholder of input        | String         | -            |
-| defaultVisibleMonth | Default visible month <br><br>**signature**:<br>Function() => MomentObject<br>**return**:<br>{MomentObject} moment instance with specified month<br>                                                    | Function       | -            |
-| value               | Value of date-picker | moment         | -            |
-| defaultValue        | Default value of date-picker  | moment         | -            |
-| format              | Format of date value (it will also effect user input) | String         | 'YYYY-wo' |
-
-| disabledDate        | Function to disable date <br><br>**signature**:<br>Function(dateValue: MomentObject) => Boolean<br>**parameter**:<br>_dateValue_: {MomentObject} null<br>_view_: {Enum} current view type: 'year', 'month', 'date'<br>**return**:<br>{Boolean} if disable current date<br>                     | Function       | () => false  |
-| footerRender        | Template render for custom footer<br><br>**signature**:<br>Function() => Node<br>**return**:<br>{Node} Custom footer<br>   | Function       | () => null   |
-| onChange            | Callback when date changes <br><br>**signature**:<br>Function() => MomentObject<br>**return**:<br>{MomentObject} dateValue<br> | Function       | func.noop    |
-| disabled            | Disable the picker | Boolean        | -            |
-| hasClear            | Has clear icon  | Boolean        | true         |
-| visible             | Visible state of popup  | Boolean        | -            |
-| defaultVisible      | Default visible state of popup   | Boolean        | -            |
-| onVisibleChange     | Callback when visible state changes<br><br>**signature**:<br>Function(visible: Boolean, reason: String) => void<br>**parameter**:<br>_visible_: {Boolean} if popup visible<br>_reason_: {String} reason to change visible | Function       | func.noop    |
-| popupTriggerType    | Trigger type of popup <br><br>**option**:<br>'click', 'hover'   | Enum           | 'click'      |
-| popupAlign          | Align of popup   | String         | 'tl tl'      |
-| popupContainer      | Container of a popup<br><br>**signature**:<br>Function(target: Element) => Element<br>**option**:<br>_target_: {Element} target element<br>**return**:<br>{Element} coninter element of popup<br>                        | Function       | -            |
-| popupStyle          | Custom style of popup  | Object         | -            |
-| popupClassName      | Custom className of popup   | String         | -            |
-| popupProps          | Props of popup  | Object         | -            |
-
+| Param              | Description                                                                                                                              | Type                                                                                          | Default Value | Required |
+| ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | ------------- | -------- |
+| value              | Time value (controlled state use)                                                                                                        | Array\<ConfigType>                                                                            | -             |          |
+| defaultValue       | Time default value                                                                                                                       | Array\<ConfigType>                                                                            | -             |          |
+| format             | Time format                                                                                                                              | string \| ((value: Dayjs) => string) \| (string \| ((value: Dayjs) => string))[]              | -             |          |
+| onOk               | Callback when the ok button is clicked                                                                                                   | (value: Array\<Dayjs>, strVal: Array\<string>) => void                                        | -             |          |
+| onChange           | Callback when the value changes                                                                                                          | (value: Array\<Dayjs>, strVal: Array\<string>) => void                                        | -             |          |
+| outputFormat       | Output format: control the output value format of onChange and onOk events                                                               | \| string<br/> \| ((value: Dayjs) => string)<br/> \| (string \| ((value: Dayjs) => string))[] | -             |          |
+| placeholder        | Input placeholder                                                                                                                        | string \| Array\<string>                                                                      | -             |          |
+| dateInputAriaLabel | Date input aria                                                                                                                          | Array\<string> \| string                                                                      | -             |          |
+| disabled           | Whether to disable                                                                                                                       | boolean \| boolean[]                                                                          | -             |          |
+| onCalendarChange   | Callback when the date panel value changes<br/><br/>**signature**:<br/>**params**:<br/>_values_: values<br/>_formatString_: formatString | (values: [Dayjs, Dayjs], formatString: [string, string]) => void                              | -             |          |
 
 ## ARIA and KeyBoard
 
 When the `Date Picker` is focused, press `enter` will open popup to input date or time.
 
-| 按键          | 说明                           |
-| :---------- | :------------------------------ |
-| number key    | Need to manual input  the date, the specified date format        |
-| Enter       | open the calendar or select date after input date  |
-| Esc         | close the calendar                  |
-| Up | Input previous day（Month Picker is previous month， Year Picker is previous year） |
-| Down | Input next day（Month Picker is next month， Year Picker is next year）
-| Page Up | Input previous month |
-| Page Down |  Input next month |
-| Alt + Page Up | Input previous year |
-| Alt + Page Down | Input next year |
+| 按键            | 说明                                                                                |
+| :-------------- | :---------------------------------------------------------------------------------- |
+| number key      | Need to manual input the date, the specified date format                            |
+| Enter           | open the calendar or select date after input date                                   |
+| Esc             | close the calendar                                                                  |
+| Up              | Input previous day（Month Picker is previous month， Year Picker is previous year） |
+| Down            | Input next day（Month Picker is next month， Year Picker is next year）             |
+| Page Up         | Input previous month                                                                |
+| Page Down       | Input next month                                                                    |
+| Alt + Page Up   | Input previous year                                                                 |
+| Alt + Page Down | Input next year                                                                     |
