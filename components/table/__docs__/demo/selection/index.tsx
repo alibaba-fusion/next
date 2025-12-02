@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Table, Icon, MenuButton } from '@alifd/next';
+import { Table, MenuButton } from '@alifd/next';
+import type { ColumnProps } from '@alifd/next/types/table';
 
 const { Item } = MenuButton;
 
@@ -15,13 +16,13 @@ const dataSource = () => {
     }
     return result;
 };
-const render = (value, index, record) => {
+const render: ColumnProps['cell'] = (value, index, record) => {
     return <a href="javascript:;">Remove({record.id})</a>;
 };
-const onChange = (...args) => {
+const onChange = (...args: unknown[]) => {
     console.log(args);
 };
-const selectItem = id => {
+const selectItem = (id: string) => {
     console.log(id);
 };
 
@@ -31,8 +32,6 @@ ReactDOM.render(
         rowSelection={{
             onChange: onChange,
             getProps: (record, index) => {
-                console.log(record, index);
-
                 return index === 2
                     ? {
                           disabled: true,

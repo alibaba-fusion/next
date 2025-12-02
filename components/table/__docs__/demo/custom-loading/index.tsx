@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Table, Loading, Icon } from '@alifd/next';
+import type { ColumnProps, TableProps } from '@alifd/next/types/table';
 
 const dataSource = () => {
     const result = [];
@@ -14,7 +15,7 @@ const dataSource = () => {
     return result;
 };
 
-const render = (value, index, record) => {
+const render: ColumnProps['cell'] = (value, index, record) => {
     return <a href="javascript:;">Remove({record.id})</a>;
 };
 
@@ -24,7 +25,9 @@ const indicator = (
     </div>
 );
 
-const CustomLoading = props => <Loading indicator={indicator} {...props} />;
+const CustomLoading: TableProps['loadingComponent'] = props => (
+    <Loading indicator={indicator} {...props} />
+);
 
 ReactDOM.render(
     <Table dataSource={dataSource()} loading loadingComponent={CustomLoading}>

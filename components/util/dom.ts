@@ -21,10 +21,10 @@ export function hasClass(node?: Element | null, className?: string): boolean {
     }
 
     if (node.classList) {
-        // @ts-expect-error fixme: className can be undefined, conflict with containes
+        // @ts-expect-error fixme: className can be undefined, conflict with contains
         return node.classList.contains(className);
     } else {
-        // @ts-expect-error fixme: className can be undefined, conflict with containes
+        // @ts-expect-error fixme: className can be undefined, conflict with contains
         return node.className.indexOf(className) > -1;
     }
 }
@@ -169,7 +169,7 @@ export type CustomCSSStyle = {
     [key in CustomCSSStyleKey]: unknown;
 };
 
-type LikeCustomCSSStyle<T extends Record<string, unknown>> = LikeCustomCSSStyleKey<
+type LikeCustomCSSStyle<T extends object> = LikeCustomCSSStyleKey<
     Exclude<keyof T, number | symbol>
 > extends never
     ? never
@@ -217,7 +217,7 @@ export function getStyle(
     );
 }
 
-export function setStyle<K extends Record<string, unknown>>(
+export function setStyle<K extends object>(
     node: HTMLElement | undefined | null,
     name: K & LikeCustomCSSStyle<K>
 ): false | void;

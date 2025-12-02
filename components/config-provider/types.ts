@@ -35,7 +35,15 @@ export interface FallbackUIProps {
 export type FallbackUI = JSXElementConstructor<FallbackUIProps>;
 
 export interface ErrorBoundaryConfig {
+    /**
+     * 捕获错误后的行为，比如埋点上传
+     * @en the behavior after catching the error, for example, upload error log
+     */
     afterCatch?: AfterCatch;
+    /**
+     * 捕获错误后的展示
+     * @en the display after catching the error
+     */
     fallbackUI?: FallbackUI;
 }
 
@@ -68,34 +76,37 @@ export interface ContextState {
 export interface ComponentCommonProps {
     /**
      * 样式类名的品牌前缀
+     * @en Prefix of component className
      */
     prefix?: string;
     /**
      * 组件的国际化文案对象
+     * @en Locale object for components
      */
     locale?: ComponentLocaleObject;
     /**
      * 是否开启 Pure Render 模式，会提高性能，但是也会带来副作用
+     * @en Enable the Pure Render mode, it will improve performance, but it will also have side effects
      */
     pure?: boolean;
     /**
      * 设备类型，针对不同的设备类型组件做出对应的响应式变化
+     * @en device type, different device types components will make corresponding responsive changes
      */
     device?: DeviceType;
     /**
      * 是否开启 rtl 模式
+     * @en Enable right to left mode
      */
     rtl?: boolean;
     /**
      * 是否开启错误捕捉 errorBoundary
-     * 如需自定义参数，请传入对象 对象接受参数列表如下：
-     *
-     * fallbackUI `Function(error?: {}, errorInfo?: {}) => Element` 捕获错误后的展示
-     * afterCatch `Function(error?: {}, errorInfo?: {})` 捕获错误后的行为，比如埋点上传
+     * @en Turn errorBoundary on or not
      */
     errorBoundary?: ErrorBoundaryType;
     /**
      * 是否在开发模式下显示组件属性被废弃的 warning 提示
+     * @en Whether to display the warning prompt for deprecated properties in development mode
      */
     warning?: boolean;
 }

@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Table, Button } from '@alifd/next';
+import type { TableProps, ColumnProps, GroupHeaderProps } from '@alifd/next/types/table';
 
 const dataSource = [
         {
@@ -169,7 +170,7 @@ const dataSource = [
             ],
         },
     ],
-    productRender = function (product) {
+    productRender: ColumnProps['cell'] = function (product: { title: string; avatar: string }[]) {
         return (
             <div className="media">
                 <img src={product[0].avatar} className="media-side" />
@@ -177,29 +178,36 @@ const dataSource = [
             </div>
         );
     },
-    priceRender = function (price) {
+    priceRender: ColumnProps['cell'] = function (price) {
         return <b>{price}</b>;
     },
-    statusRender = function (status) {
+    statusRender: ColumnProps['cell'] = function (status) {
         if (status) {
             return 'Already Priced';
         } else {
             return 'No Priced';
         }
     },
-    operRender = function () {
+    operRender: ColumnProps['cell'] = function () {
         return <a href="javascript:;">View</a>;
     },
-    groupHeaderRender = function (record) {
+    groupHeaderRender: GroupHeaderProps['cell'] = function (record: {
+        product: { title: string }[];
+    }) {
         return <div>{record.product[0].title}</div>;
     },
-    rowSelection = {
+    rowSelection: TableProps['rowSelection'] = {
         onChange: function (selectedKeys) {
             console.log(selectedKeys);
         },
     };
 
-const cellProps = (rowIndex, colIndex, dataIndex, record) => {
+const cellProps: TableProps['cellProps'] = (
+    rowIndex,
+    colIndex,
+    dataIndex,
+    record: { index: number; parent: number }
+) => {
     if (colIndex === 3 && record.index === 0) {
         return {
             rowSpan: dataSource[record.parent].children.length,
