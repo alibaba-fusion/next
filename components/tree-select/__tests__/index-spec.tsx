@@ -951,6 +951,25 @@ describe('TreeSelect', () => {
         cy.get('.next-tree-node').should('have.length', 6);
     });
 
+    it('should expandedAll when select by searchValue is empty and treeDefaultExpandAll is true and showSearch is true', () => {
+        const handleSearch = cy.spy();
+        cy.mount(
+            <TreeSelect
+                defaultVisible
+                treeDefaultExpandAll
+                treeCheckable
+                dataSource={dataSource}
+                showSearch
+                onSearch={debounce(handleSearch, 20)} // Debounce for simulate Cypress action type below
+            />
+        );
+        cy.get('.next-tree-node[value="4"]').click();
+        cy.get('.next-tree-node').then($el => {
+            const list = $el.filter('[style!="display: none;"]');
+            cy.wrap(list).should('have.length', 6);
+        });
+    });
+
     describe('should support useDetailValue', () => {
         it('Support dataSource mode', () => {
             const handleChange = cy.spy();
