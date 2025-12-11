@@ -776,7 +776,10 @@ class TreeSelect extends Component<TreeSelectProps, TreeSelectState> {
         } else {
             // 如过 filterLocal 并且 showSearch 但是没有 searchedValue 的时候，也需要设置 expandedKeys
             if (filterLocal && showSearch) {
-                treeProps.expandedKeys = expandedKeys;
+                // 当 expandedKeys 有值的时候再设置，否则报纸原状，否则会导致选择后展开的节点丢失
+                if (Array.isArray(expandedKeys) && expandedKeys.length) {
+                    treeProps.expandedKeys = expandedKeys;
+                }
                 treeProps.autoExpandParent = autoExpandParent;
                 treeProps.onExpand = this.handleExpand;
             }
