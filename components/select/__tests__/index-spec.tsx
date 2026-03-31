@@ -835,6 +835,90 @@ describe('Select', () => {
     });
 });
 
+describe('Select Group Key Collision', () => {
+    it('should render both group and item when group index collides with item value', () => {
+        const dataSource = [
+            {
+                label: 'Group A',
+                children: [
+                    { label: 'Child 1', value: 'c1' },
+                    { label: 'Child 2', value: 'c2' },
+                ],
+            },
+            { label: 'Item 0', value: 0 },
+            { label: 'Item 1', value: 1 },
+        ];
+        cy.mount(<Select dataSource={dataSource} visible />);
+        cy.get('.next-menu-group-label').should('have.length', 1);
+        cy.get('.next-select-menu-item').should('have.length', 4);
+    });
+
+    it('should render correctly when item value is a numeric string matching group index', () => {
+        const dataSource = [
+            {
+                label: 'Group',
+                children: [{ label: 'Child A', value: 'ca' }],
+            },
+            { label: 'Item "0"', value: '0' },
+        ];
+        cy.mount(<Select dataSource={dataSource} visible />);
+        cy.get('.next-menu-group-label').should('have.length', 1);
+        cy.get('.next-select-menu-item').should('have.length', 2);
+    });
+
+    it('should support selection when group index collides with item value', () => {
+        const dataSource = [
+            {
+                label: 'Group',
+                children: [
+                    { label: 'Child 1', value: 'c1' },
+                    { label: 'Child 2', value: 'c2' },
+                ],
+            },
+            { label: 'Item 0', value: 0 },
+        ];
+        const onChange = cy.spy().as('onChange');
+        cy.mount(<Select dataSource={dataSource} visible onChange={onChange} />);
+        cy.get('.next-select-menu-item').last().click();
+        cy.get('@onChange').should('be.calledWith', 0);
+        cy.get('.next-select em').should('have.text', 'Item 0');
+    });
+
+    it('should support multiple selection with group key collision', () => {
+        const dataSource = [
+            {
+                label: 'Group',
+                children: [{ label: 'Child 1', value: 'c1' }],
+            },
+            { label: 'Item 0', value: 0 },
+            { label: 'Item 1', value: 1 },
+        ];
+        const onChange = cy.spy().as('onChange');
+        cy.mount(<Select dataSource={dataSource} visible mode="multiple" onChange={onChange} />);
+        cy.get('.next-select-menu-item').eq(0).click();
+        cy.get('@onChange').should('be.calledWith', ['c1']);
+        cy.get('.next-select-menu-item').eq(1).click();
+        cy.get<SinonSpy>('@onChange').then($spy => {
+            const [v] = $spy.args[1] as Parameters<NonNullable<SelectProps['onChange']>>;
+            cy.wrap(v).should('deep.equal', ['c1', 0]);
+        });
+    });
+
+    it('should render correctly when no key collision exists', () => {
+        const dataSource = [
+            {
+                label: 'Group',
+                children: [{ label: 'Child 1', value: 'c1' }],
+            },
+            { label: 'Item A', value: 'a' },
+            { label: 'Item B', value: 'b' },
+        ];
+        cy.mount(<Select dataSource={dataSource} visible />);
+        cy.get('.next-menu-group-label').should('have.length', 1);
+        cy.get('.next-select-menu-item').should('have.length', 3);
+    });
+});
+
 describe('Select Controlled', () => {
     beforeEach(() => {
         cy.mount(
