@@ -1,8 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Table } from '@alifd/next';
+import type { ColumnProps, TableProps } from '@alifd/next/types/table';
 
-const onChange = function (...args) {
+const onChange = function (...args: unknown[]) {
         console.log(...args);
     },
     dataSource = () => {
@@ -18,12 +19,12 @@ const onChange = function (...args) {
         }
         return result;
     },
-    render = (value, index, record) => {
+    render: ColumnProps['cell'] = (value, index, record) => {
         return <a href={`#${index}`}>Remove({record.id})</a>;
     },
     rowSelection = {
         onChange: onChange,
-        getProps: record => {
+        getProps: (record: { id: number }) => {
             return {
                 disabled: record.id === 100306660942,
             };
@@ -37,7 +38,10 @@ class App extends React.Component {
             [`title.name`]: 300,
         },
     };
-    onResizeChange = (dataIndex, value) => {
+    onResizeChange: TableProps['onResizeChange'] = (
+        dataIndex: keyof typeof this.state.widths,
+        value
+    ) => {
         const { widths } = this.state;
         widths[dataIndex] = widths[dataIndex] + value;
         this.setState({

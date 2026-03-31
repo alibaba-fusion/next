@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Table, Input } from '@alifd/next';
+import type { InputProps } from '@alifd/next/types/input';
+import type { ColumnProps } from '@alifd/next/types/table';
 
 const result = [
     {
@@ -19,9 +21,17 @@ const result = [
         title: { name: 'The adventures of Robinson Crusoe' },
     },
 ];
-
-class EditablePane extends React.Component {
-    constructor(props) {
+type EditablePaneProps = {
+    defaultTitle: string;
+};
+class EditablePane extends React.Component<
+    EditablePaneProps,
+    {
+        cellTitle: string;
+        editable: boolean;
+    }
+> {
+    constructor(props: EditablePaneProps) {
         super(props);
         this.state = {
             cellTitle: props.defaultTitle,
@@ -29,7 +39,7 @@ class EditablePane extends React.Component {
         };
     }
 
-    componentWillReceiveProps(nextProps) {
+    componentWillReceiveProps(nextProps: EditablePaneProps) {
         if (nextProps.defaultTitle !== this.state.cellTitle) {
             this.setState({
                 cellTitle: nextProps.defaultTitle,
@@ -37,7 +47,7 @@ class EditablePane extends React.Component {
         }
     }
 
-    onKeyDown = e => {
+    onKeyDown: InputProps['onKeyDown'] = e => {
         const { keyCode } = e;
         // Stop bubble up the events of keyUp, keyDown, keyLeft, and keyRight
         if (keyCode > 36 && keyCode < 41) {
@@ -45,7 +55,7 @@ class EditablePane extends React.Component {
         }
     };
 
-    onBlur = e => {
+    onBlur: InputProps['onBlur'] = e => {
         this.setState({
             editable: false,
             cellTitle: e.target.value,
@@ -75,15 +85,11 @@ class EditablePane extends React.Component {
 }
 
 class Demo extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            dataSource: result,
-            id: '',
-        };
-    }
-    renderCell = (value, index, record) => {
+    state = {
+        dataSource: result,
+        id: '',
+    };
+    renderCell: ColumnProps['cell'] = (value: string) => {
         return <EditablePane defaultTitle={value} />;
     };
 
