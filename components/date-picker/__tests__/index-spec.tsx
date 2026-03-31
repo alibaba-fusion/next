@@ -266,28 +266,40 @@ describe('DatePicker', () => {
         });
 
         it('should keyboard date input', () => {
-            cy.mount(<DatePicker defaultVisible />);
+            const fixedDate = moment('2026-02-15');
+            const expectedDate = fixedDate.clone().add(1, 'day');
+            cy.mount(<DatePicker defaultVisible defaultValue={fixedDate} />);
             cy.get('.next-date-picker-panel-input input').eq(0).as('input');
+            cy.get('@input').type('{downArrow}'); // 因为第一次默认不会触发变动
             cy.get('@input').type('{downArrow}');
-            cy.get('@input').should('have.value', moment().format('YYYY-MM-DD'));
+            cy.get('@input').should('have.value', expectedDate.clone().format('YYYY-MM-DD'));
             cy.get('@input').type('{leftArrow}');
-            cy.get('@input').should('have.value', moment().format('YYYY-MM-DD'));
+            cy.get('@input').should('have.value', expectedDate.clone().format('YYYY-MM-DD'));
             cy.get('@input').type('{alt}{downArrow}');
             cy.get('@input').type('{shift}{downArrow}');
             cy.get('@input').type('{ctrl}{downArrow}');
-            cy.get('@input').should('have.value', moment().format('YYYY-MM-DD'));
+            cy.get('@input').should('have.value', expectedDate.clone().format('YYYY-MM-DD'));
             cy.get('@input').type('{downArrow}');
-            cy.get('@input').should('have.value', moment().add(1, 'day').format('YYYY-MM-DD'));
+            cy.get('@input').should(
+                'have.value',
+                expectedDate.clone().add(1, 'day').format('YYYY-MM-DD')
+            );
             cy.get('@input').type('{upArrow}');
-            cy.get('@input').should('have.value', moment().format('YYYY-MM-DD'));
+            cy.get('@input').should('have.value', expectedDate.clone().format('YYYY-MM-DD'));
             cy.get('@input').type('{pageDown}');
-            cy.get('@input').should('have.value', moment().add(1, 'month').format('YYYY-MM-DD'));
+            cy.get('@input').should(
+                'have.value',
+                expectedDate.clone().add(1, 'month').format('YYYY-MM-DD')
+            );
             cy.get('@input').type('{pageUp}');
-            cy.get('@input').should('have.value', moment().format('YYYY-MM-DD'));
+            cy.get('@input').should('have.value', expectedDate.clone().format('YYYY-MM-DD'));
             cy.get('@input').type('{alt}{pageDown}');
-            cy.get('@input').should('have.value', moment().add(1, 'year').format('YYYY-MM-DD'));
+            cy.get('@input').should(
+                'have.value',
+                expectedDate.clone().add(1, 'year').format('YYYY-MM-DD')
+            );
             cy.get('@input').type('{alt}{pageUp}');
-            cy.get('@input').should('have.value', moment().format('YYYY-MM-DD'));
+            cy.get('@input').should('have.value', expectedDate.clone().format('YYYY-MM-DD'));
         });
 
         it('should keyboard date time input', () => {
@@ -1508,28 +1520,46 @@ describe('RangePicker', () => {
         });
 
         it('should keyboard date input', () => {
-            cy.mount(<RangePicker defaultVisible popupProps={{ animation: false }} />);
+            const fixedDate = moment('2026-02-15');
+            const expectedDate = fixedDate.clone().add(1, 'day');
+            cy.mount(
+                <RangePicker
+                    defaultVisible
+                    defaultValue={[fixedDate, fixedDate]}
+                    popupProps={{ animation: false }}
+                />
+            );
             cy.get('.next-range-picker-panel-input-start-date input').eq(0).as('input');
             cy.get('@input').type('{downArrow}');
-            cy.get('@input').should('have.value', moment().format('YYYY-MM-DD'));
+            cy.get('@input').type('{downArrow}');
+            cy.get('@input').should('have.value', expectedDate.clone().format('YYYY-MM-DD'));
             cy.get('@input').type('{leftArrow}');
-            cy.get('@input').should('have.value', moment().format('YYYY-MM-DD'));
+            cy.get('@input').should('have.value', expectedDate.clone().format('YYYY-MM-DD'));
             cy.get('@input').type('{alt}{downArrow}');
             cy.get('@input').type('{shift}{downArrow}');
             cy.get('@input').type('{ctrl}{downArrow}');
-            cy.get('@input').should('have.value', moment().format('YYYY-MM-DD'));
+            cy.get('@input').should('have.value', expectedDate.clone().format('YYYY-MM-DD'));
             cy.get('@input').type('{downArrow}');
-            cy.get('@input').should('have.value', moment().add(1, 'day').format('YYYY-MM-DD'));
+            cy.get('@input').should(
+                'have.value',
+                expectedDate.clone().add(1, 'day').format('YYYY-MM-DD')
+            );
             cy.get('@input').type('{upArrow}');
-            cy.get('@input').should('have.value', moment().format('YYYY-MM-DD'));
+            cy.get('@input').should('have.value', expectedDate.clone().format('YYYY-MM-DD'));
             cy.get('@input').type('{pageDown}');
-            cy.get('@input').should('have.value', moment().add(1, 'month').format('YYYY-MM-DD'));
+            cy.get('@input').should(
+                'have.value',
+                expectedDate.clone().add(1, 'month').format('YYYY-MM-DD')
+            );
             cy.get('@input').type('{pageUp}');
-            cy.get('@input').should('have.value', moment().format('YYYY-MM-DD'));
+            cy.get('@input').should('have.value', expectedDate.clone().format('YYYY-MM-DD'));
             cy.get('@input').type('{alt}{pageDown}');
-            cy.get('@input').should('have.value', moment().add(1, 'year').format('YYYY-MM-DD'));
+            cy.get('@input').should(
+                'have.value',
+                expectedDate.clone().add(1, 'year').format('YYYY-MM-DD')
+            );
             cy.get('@input').type('{alt}{pageUp}');
-            cy.get('@input').should('have.value', moment().format('YYYY-MM-DD'));
+            cy.get('@input').should('have.value', expectedDate.clone().format('YYYY-MM-DD'));
         });
 
         it('should keyboard date time input', () => {
