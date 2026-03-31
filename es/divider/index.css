@@ -1,0 +1,130 @@
+.next-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+  top: 0;
+  margin: -1px;
+}
+
+/* put your code here */
+.next-divider {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-size: 14px;
+  line-height: 1.5;
+  list-style: none;
+  font-variant: tabular-nums;
+  font-feature-settings: "tnum";
+  background: #DCDEE3;
+  background: var(--divider-hoz-color, #DCDEE3);
+  border-collapse: separate;
+}
+.next-divider *,
+.next-divider *:before,
+.next-divider *:after {
+  box-sizing: border-box;
+}
+.next-divider-dashed {
+  background: none;
+  border-color: #DCDEE3;
+  border-color: var(--divider-hoz-color, #DCDEE3);
+  border-style: dashed;
+  border-width: 1px 0 0;
+  border-width: var(--divider-hoz-size, 1px) 0 0;
+}
+.next-divider-hoz {
+  display: block;
+  clear: both;
+  width: 100%;
+  min-width: 100%;
+  height: 1px;
+  height: var(--divider-hoz-size, 1px);
+  margin: 16px 0;
+  margin: var(--divider-hoz-marginTop, 16px) 0;
+}
+.next-divider-ver {
+  position: relative;
+  top: -0.06em;
+  display: inline-block;
+  width: 1px;
+  width: var(--divider-ver-size, 1px);
+  background: #DCDEE3;
+  background: var(--divider-ver-color, #DCDEE3);
+  height: 0.9em;
+  margin: 0 8px;
+  margin: 0 var(--divider-ver-marginLeft, 8px);
+  vertical-align: middle;
+}
+.next-divider-hoz.next-divider-with-text-center, .next-divider-hoz.next-divider-with-text-left, .next-divider-hoz.next-divider-with-text-right {
+  display: table;
+  margin: 16px 0;
+  margin: var(--divider-hoz-text-marginTop, 16px) 0;
+  color: #333333;
+  color: var(--divider-hoz-text-color, #333333);
+  font-weight: normal;
+  font-weight: var(--divider-hoz-text-weight, normal);
+  font-size: 16px;
+  font-size: var(--divider-hoz-text-size, 16px);
+  white-space: nowrap;
+  text-align: center;
+  background: transparent;
+}
+.next-divider-hoz.next-divider-with-text-center::before, .next-divider-hoz.next-divider-with-text-center::after, .next-divider-hoz.next-divider-with-text-left::before, .next-divider-hoz.next-divider-with-text-left::after, .next-divider-hoz.next-divider-with-text-right::before, .next-divider-hoz.next-divider-with-text-right::after {
+  top: 50%;
+  display: table-cell;
+  width: 50%;
+  border-top: 1px solid #DCDEE3;
+  border-top: var(--divider-hoz-size, 1px) solid var(--divider-hoz-color, #DCDEE3);
+  transform: translateY(50%);
+  content: "";
+}
+.next-divider-hoz.next-divider-with-text-center.next-divider-dashed, .next-divider-hoz.next-divider-with-text-left.next-divider-dashed, .next-divider-hoz.next-divider-with-text-right.next-divider-dashed {
+  border-top: 0;
+}
+.next-divider-hoz.next-divider-with-text-center.next-divider-dashed::before, .next-divider-hoz.next-divider-with-text-center.next-divider-dashed::after, .next-divider-hoz.next-divider-with-text-left.next-divider-dashed::before, .next-divider-hoz.next-divider-with-text-left.next-divider-dashed::after, .next-divider-hoz.next-divider-with-text-right.next-divider-dashed::before, .next-divider-hoz.next-divider-with-text-right.next-divider-dashed::after {
+  border-style: dashed none none;
+}
+.next-divider-hoz.next-divider-with-text-left .next-divider-inner-text, .next-divider-hoz.next-divider-with-text-right .next-divider-inner-text {
+  display: inline-block;
+  padding: 0 16px;
+  padding: 0 var(--divider-hoz-text-left-paddingLeft, 16px);
+}
+.next-divider-hoz.next-divider-with-text-left::before {
+  top: 50%;
+  width: 5%;
+}
+.next-divider-hoz.next-divider-with-text-left::after {
+  top: 50%;
+  width: 95%;
+}
+.next-divider-hoz.next-divider-with-text-right::before {
+  top: 50%;
+  width: 95%;
+}
+.next-divider-hoz.next-divider-with-text-right::after {
+  top: 50%;
+  width: 5%;
+}
+.next-divider-inner-text {
+  display: inline-block;
+  padding: 0 16px;
+  padding: 0 var(--divider-hoz-text-center-paddingLeft, 16px);
+}
+.next-divider-dashed {
+  background: none;
+  border-color: #DCDEE3;
+  border-color: var(--divider-hoz-color, #DCDEE3);
+  border-style: dashed;
+  border-width: 1px 0 0;
+  border-width: var(--divider-hoz-size, 1px) 0 0;
+}
+.next-divider-dashed.next-divider-ver {
+  border-width: 0 0 0 1px;
+  border-width: 0 0 0 var(--divider-ver-size, 1px);
+}

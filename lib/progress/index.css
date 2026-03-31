@@ -1,0 +1,311 @@
+.next-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+  top: 0;
+  margin: -1px;
+}
+
+.next-progress-circle[dir=rtl] .next-progress-circle-container {
+  transform: scaleX(-1);
+}
+
+.next-progress-line[dir=rtl] .next-progress-line-overlay {
+  left: auto;
+  right: 0;
+}
+
+.next-progress-line {
+  box-sizing: border-box;
+}
+.next-progress-line *,
+.next-progress-line *:before,
+.next-progress-line *:after {
+  box-sizing: border-box;
+}
+.next-progress-line {
+  width: 100%;
+  display: inline-block;
+  position: relative;
+}
+.next-progress-line-container {
+  display: inline-block;
+  width: 100%;
+  vertical-align: middle;
+}
+.next-progress-line-underlay {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  background: #EBECF0;
+  background: var(--progress-line-underlay-color, #EBECF0);
+}
+.next-progress-line-overlay {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transition: all 300ms ease;
+  transition: all var(--motion-duration-standard, 300ms) var(--motion-ease, ease);
+}
+.next-progress-line-overlay-normal {
+  background: #5584FF;
+  background: var(--progress-line-normal-color, #5584FF);
+}
+.next-progress-line-overlay-success {
+  background: #46BC15;
+  background: var(--progress-line-success-color, #46BC15);
+}
+.next-progress-line-overlay-error {
+  background: #FF3000;
+  background: var(--progress-line-error-color, #FF3000);
+}
+.next-progress-line-overlay-started {
+  background: #FF3000;
+  background: var(--progress-line-started-color, #FF3000);
+}
+.next-progress-line-overlay-middle {
+  background: #FF9300;
+  background: var(--progress-line-middle-color, #FF9300);
+}
+.next-progress-line-overlay-finishing {
+  background: #46BC15;
+  background: var(--progress-line-finishing-color, #46BC15);
+}
+.next-progress-line.next-small .next-progress-line-underlay {
+  border-radius: 20px;
+  border-radius: var(--progress-line-radius-s, 20px);
+  height: 4px;
+  height: var(--progress-line-height-size-s, 4px);
+}
+.next-progress-line.next-small .next-progress-line-overlay {
+  height: 4px;
+  height: var(--progress-line-height-size-s, 4px);
+  border-radius: 20px;
+  border-radius: var(--progress-line-radius-s, 20px);
+  top: 50%;
+  margin-top: -2px;
+  margin-top: calc(0px - var(--progress-line-height-size-s, 4px)/2);
+}
+.next-progress-line.next-small .next-progress-line-text {
+  font-size: 12px;
+  font-size: var(--progress-line-font-s, 12px);
+  line-height: 4px;
+  line-height: var(--progress-line-height-size-s, 4px);
+}
+.next-progress-line.next-medium .next-progress-line-underlay {
+  border-radius: 20px;
+  border-radius: var(--progress-line-radius-m, 20px);
+  height: 8px;
+  height: var(--progress-line-height-size-m, 8px);
+}
+.next-progress-line.next-medium .next-progress-line-overlay {
+  height: 8px;
+  height: var(--progress-line-height-size-m, 8px);
+  border-radius: 20px;
+  border-radius: var(--progress-line-radius-m, 20px);
+  top: 50%;
+  margin-top: -4px;
+  margin-top: calc(0px - var(--progress-line-height-size-m, 8px)/2);
+}
+.next-progress-line.next-medium .next-progress-line-text {
+  font-size: 12px;
+  font-size: var(--progress-line-font-m, 12px);
+  line-height: 8px;
+  line-height: var(--progress-line-height-size-m, 8px);
+}
+.next-progress-line.next-large .next-progress-line-underlay {
+  border-radius: 20px;
+  border-radius: var(--progress-line-radius-l, 20px);
+  height: 12px;
+  height: var(--progress-line-height-size-l, 12px);
+}
+.next-progress-line.next-large .next-progress-line-overlay {
+  height: 12px;
+  height: var(--progress-line-height-size-l, 12px);
+  border-radius: 20px;
+  border-radius: var(--progress-line-radius-l, 20px);
+  top: 50%;
+  margin-top: -6px;
+  margin-top: calc(0px - var(--progress-line-height-size-l, 12px)/2);
+}
+.next-progress-line.next-large .next-progress-line-text {
+  font-size: 12px;
+  font-size: var(--progress-line-font-l, 12px);
+  line-height: 12px;
+  line-height: var(--progress-line-height-size-l, 12px);
+}
+.next-progress-line-show-info .next-progress-line-container {
+  padding-right: 60px;
+  margin-right: -60px;
+}
+.next-progress-line-show-info .next-progress-line-text {
+  width: 50px;
+  text-align: left;
+  margin-left: 10px;
+  vertical-align: middle;
+  display: inline-block;
+  color: #333333;
+  color: var(--progress-line-font-color, #333333);
+}
+.next-progress-line-show-border .next-progress-line-underlay {
+  border: 1px solid #DCDEE3;
+  border: var(--progress-line-underlay-border-width, 1px) solid var(--progress-line-underlay-border-color, #DCDEE3);
+}
+.next-progress-line-show-border.next-small .next-progress-line-underlay {
+  border-radius: 20px;
+  border-radius: var(--progress-line-radius-s, 20px);
+  height: 6px;
+  height: calc(var(--progress-line-height-size-s, 4px) + var(--progress-line-underlay-border-width, 1px)*2);
+}
+.next-progress-line-show-border.next-small .next-progress-line-overlay {
+  height: 4px;
+  height: var(--progress-line-height-size-s, 4px);
+  border-radius: 20px;
+  border-radius: var(--progress-line-radius-s, 20px);
+  top: 50%;
+  margin-top: -2px;
+  margin-top: calc(0px - var(--progress-line-height-size-s, 4px)/2);
+}
+.next-progress-line-show-border.next-small .next-progress-line-text {
+  font-size: 12px;
+  font-size: var(--progress-line-font-s, 12px);
+  line-height: 6px;
+  line-height: calc(var(--progress-line-height-size-s, 4px) + var(--progress-line-underlay-border-width, 1px)*2);
+}
+.next-progress-line-show-border.next-medium .next-progress-line-underlay {
+  border-radius: 20px;
+  border-radius: var(--progress-line-radius-m, 20px);
+  height: 10px;
+  height: calc(var(--progress-line-height-size-m, 8px) + var(--progress-line-underlay-border-width, 1px)*2);
+}
+.next-progress-line-show-border.next-medium .next-progress-line-overlay {
+  height: 8px;
+  height: var(--progress-line-height-size-m, 8px);
+  border-radius: 20px;
+  border-radius: var(--progress-line-radius-m, 20px);
+  top: 50%;
+  margin-top: -4px;
+  margin-top: calc(0px - var(--progress-line-height-size-m, 8px)/2);
+}
+.next-progress-line-show-border.next-medium .next-progress-line-text {
+  font-size: 12px;
+  font-size: var(--progress-line-font-m, 12px);
+  line-height: 10px;
+  line-height: calc(var(--progress-line-height-size-m, 8px) + var(--progress-line-underlay-border-width, 1px)*2);
+}
+.next-progress-line-show-border.next-large .next-progress-line-underlay {
+  border-radius: 20px;
+  border-radius: var(--progress-line-radius-l, 20px);
+  height: 14px;
+  height: calc(var(--progress-line-height-size-l, 12px) + var(--progress-line-underlay-border-width, 1px)*2);
+}
+.next-progress-line-show-border.next-large .next-progress-line-overlay {
+  height: 12px;
+  height: var(--progress-line-height-size-l, 12px);
+  border-radius: 20px;
+  border-radius: var(--progress-line-radius-l, 20px);
+  top: 50%;
+  margin-top: -6px;
+  margin-top: calc(0px - var(--progress-line-height-size-l, 12px)/2);
+}
+.next-progress-line-show-border.next-large .next-progress-line-text {
+  font-size: 12px;
+  font-size: var(--progress-line-font-l, 12px);
+  line-height: 14px;
+  line-height: calc(var(--progress-line-height-size-l, 12px) + var(--progress-line-underlay-border-width, 1px)*2);
+}
+
+.next-progress-circle {
+  box-sizing: border-box;
+}
+.next-progress-circle *,
+.next-progress-circle *:before,
+.next-progress-circle *:after {
+  box-sizing: border-box;
+}
+.next-progress-circle {
+  position: relative;
+  display: inline-block;
+}
+.next-progress-circle-underlay {
+  stroke-width: 8px;
+  stroke-width: var(--progress-circle-underlay-width, 8px);
+  stroke: #EBECF0;
+  stroke: var(--progress-circle-underlay-color, #EBECF0);
+}
+.next-progress-circle-overlay {
+  transition: all 300ms ease;
+  transition: all var(--motion-duration-standard, 300ms) var(--motion-ease, ease);
+  stroke-linecap: round;
+  stroke-linecap: var(--progress-circle-corner, round);
+  stroke-width: 8px;
+  stroke-width: var(--progress-circle-overlay-width, 8px);
+}
+.next-progress-circle-overlay-normal {
+  stroke: #5584FF;
+  stroke: var(--progress-circle-normal-color, #5584FF);
+}
+.next-progress-circle-overlay-success {
+  stroke: #46BC15;
+  stroke: var(--progress-circle-success-color, #46BC15);
+}
+.next-progress-circle-overlay-error {
+  stroke: #FF3000;
+  stroke: var(--progress-circle-error-color, #FF3000);
+}
+.next-progress-circle-overlay-started {
+  stroke: #FF3000;
+  stroke: var(--progress-circle-started-color, #FF3000);
+}
+.next-progress-circle-overlay-middle {
+  stroke: #FF9300;
+  stroke: var(--progress-circle-middle-color, #FF9300);
+}
+.next-progress-circle-overlay-finishing {
+  stroke: #46BC15;
+  stroke: var(--progress-circle-finishing-color, #46BC15);
+}
+.next-progress-circle.next-small {
+  width: 100px;
+  width: var(--progress-circle-size-s, 100px);
+  height: 100px;
+  height: var(--progress-circle-size-s, 100px);
+  font-size: 20px;
+  font-size: var(--progress-circle-font-s, 20px);
+}
+.next-progress-circle.next-medium {
+  width: 116px;
+  width: var(--progress-circle-size-m, 116px);
+  height: 116px;
+  height: var(--progress-circle-size-m, 116px);
+  font-size: 24px;
+  font-size: var(--progress-circle-font-m, 24px);
+}
+.next-progress-circle.next-large {
+  width: 132px;
+  width: var(--progress-circle-size-l, 132px);
+  height: 132px;
+  height: var(--progress-circle-size-l, 132px);
+  font-size: 36px;
+  font-size: var(--progress-circle-font-l, 36px);
+}
+.next-progress-circle-text {
+  display: block;
+  position: absolute;
+  width: 100%;
+  top: 50%;
+  left: 0;
+  text-align: center;
+  line-height: 1;
+  -webkit-transform: translateY(-50%);
+  transform: translateY(-50%);
+  transition: transform 300ms ease;
+  transition: transform var(--motion-duration-standard, 300ms) var(--motion-ease, ease);
+  color: #333333;
+  color: var(--progress-circle-text-color, #333333);
+}

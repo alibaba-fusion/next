@@ -1,0 +1,661 @@
+.next-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+  top: 0;
+  margin: -1px;
+}
+
+.next-date-picker2-footer {
+  width: min-content;
+  min-width: 100%;
+  box-sizing: border-box;
+  text-align: center;
+  border-top: 1px solid #E6E7EB;
+  border-top: 1px solid var(--color-line1-1, #E6E7EB);
+  padding: 4px 12px;
+  display: flex;
+  min-height: 40px;
+  align-items: center;
+  flex-wrap: wrap;
+  position: relative;
+}
+.next-date-picker2-footer-preset > .next-btn {
+  margin-right: 8px;
+  margin-right: var(--s-2, 8px);
+}
+.next-date-picker2-footer-actions {
+  margin-left: auto;
+}
+.next-date-picker2-footer-preset-only {
+  width: 100%;
+}
+
+div[dir=rtl] .next-date-picker2-footer-preset > .next-btn {
+  margin-left: 8px;
+  margin-left: var(--s-2, 8px);
+  margin-right: 0;
+}
+div[dir=rtl] .next-date-picker2-footer-actions {
+  margin-left: 0;
+  margin-right: auto;
+}
+div[dir=rtl] .next-date-picker2-wrapper .next-calendar2-cell:last-child::before {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  right: 0;
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+  left: 8px;
+}
+div[dir=rtl] .next-date-picker2-wrapper .next-calendar2-cell:first-child::before {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  left: 0;
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+  right: 8px;
+}
+div[dir=rtl] .next-date-time-picker-wrapper {
+  border-right: 1px solid #E6E7EB;
+  border-right: 1px solid var(--color-line1-1, #E6E7EB);
+  border-left: none;
+}
+div[dir=rtl] .next-date-time-picker-wrapper .next-time-picker2-menu:not(:last-child) {
+  border-left: 1px solid #DCDEE3;
+  border-right: none;
+}
+div[dir=rtl] .next-range-picker2-panel:not(.next-range-picker2-panel-single) .next-calendar2-cell-current:not(.next-calendar2-cell-disabled).next-calendar2-cell-selected.next-calendar2-cell-range-begin::before {
+  right: 50%;
+  left: 0;
+}
+div[dir=rtl] .next-range-picker2-panel:not(.next-range-picker2-panel-single) .next-calendar2-cell-current:not(.next-calendar2-cell-disabled).next-calendar2-cell-selected.next-calendar2-cell-range-end::before {
+  left: 50%;
+  right: 0;
+}
+div[dir=rtl] .next-range-picker2-panel:not(.next-range-picker2-panel-single) .next-calendar2-cell-current:not(.next-calendar2-cell-disabled).next-calendar2-cell-hover.next-calendar2-cell-hover-begin::after, div[dir=rtl] .next-range-picker2-panel:not(.next-range-picker2-panel-single) .next-calendar2-cell-current:not(.next-calendar2-cell-disabled).next-calendar2-cell-hover:first-child::after {
+  right: 8px;
+}
+div[dir=rtl] .next-range-picker2-panel:not(.next-range-picker2-panel-single) .next-calendar2-cell-current:not(.next-calendar2-cell-disabled).next-calendar2-cell-hover.next-calendar2-cell-hover-begin:not(:last-child)::after, div[dir=rtl] .next-range-picker2-panel:not(.next-range-picker2-panel-single) .next-calendar2-cell-current:not(.next-calendar2-cell-disabled).next-calendar2-cell-hover:first-child:not(.next-calendar2-cell-hover-end)::after {
+  left: 0;
+}
+div[dir=rtl] .next-range-picker2-panel:not(.next-range-picker2-panel-single) .next-calendar2-cell-current:not(.next-calendar2-cell-disabled).next-calendar2-cell-hover.next-calendar2-cell-hover-end::after, div[dir=rtl] .next-range-picker2-panel:not(.next-range-picker2-panel-single) .next-calendar2-cell-current:not(.next-calendar2-cell-disabled).next-calendar2-cell-hover:last-child::after {
+  left: 8px;
+}
+div[dir=rtl] .next-range-picker2-panel:not(.next-range-picker2-panel-single) .next-calendar2-cell-current:not(.next-calendar2-cell-disabled).next-calendar2-cell-hover.next-calendar2-cell-hover-end:not(:first-child)::after, div[dir=rtl] .next-range-picker2-panel:not(.next-range-picker2-panel-single) .next-calendar2-cell-current:not(.next-calendar2-cell-disabled).next-calendar2-cell-hover:last-child:not(.next-calendar2-cell-hover-begin)::after {
+  right: 0;
+}
+div[dir=rtl] .next-range-picker2-panel:not(.next-range-picker2-panel-single) .next-calendar2-cell-current:not(.next-calendar2-cell-disabled).next-calendar2-cell-hover.next-calendar2-cell-selected.next-calendar2-cell-hover-begin::after {
+  left: 0;
+  right: 7px;
+}
+div[dir=rtl] .next-range-picker2-panel:not(.next-range-picker2-panel-single) .next-calendar2-cell-current:not(.next-calendar2-cell-disabled).next-calendar2-cell-hover.next-calendar2-cell-selected.next-calendar2-cell-hover-end::after {
+  right: 0;
+  left: 7px;
+}
+div[dir=rtl] .next-range-picker2-panel:not(.next-range-picker2-panel-single) .next-calendar2-cell-current:not(.next-calendar2-cell-disabled).next-calendar2-cell-hover:first-of-type::after {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-left: none;
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+  border-right: 1px dashed #3E71F7;
+  border-right: 1px dashed var(--color-brand1-9, #3E71F7);
+}
+div[dir=rtl] .next-range-picker2-panel:not(.next-range-picker2-panel-single) .next-calendar2-cell-current:not(.next-calendar2-cell-disabled).next-calendar2-cell-hover:last-of-type::after {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-right: none;
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+  border-left: 1px dashed #3E71F7;
+  border-left: 1px dashed var(--color-brand1-9, #3E71F7);
+}
+div[dir=rtl] .next-range-picker2-panel:not(.next-range-picker2-panel-single) .next-calendar2-cell-current:not(.next-calendar2-cell-disabled).next-calendar2-cell-edge-end::before, div[dir=rtl] .next-range-picker2-panel:not(.next-range-picker2-panel-single) .next-calendar2-cell-current:not(.next-calendar2-cell-disabled).next-calendar2-cell-edge-end::after {
+  right: 0;
+  left: 8px;
+}
+div[dir=rtl] .next-range-picker2-panel:not(.next-range-picker2-panel-single) .next-calendar2-cell-current:not(.next-calendar2-cell-disabled).next-calendar2-cell-edge-end.next-calendar2-cell-hover::after {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-right: none;
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+  border-left: 1px dashed #3E71F7;
+  border-left: 1px dashed var(--color-brand1-9, #3E71F7);
+}
+div[dir=rtl] .next-range-picker2-panel:not(.next-range-picker2-panel-single) .next-calendar2-cell-current:not(.next-calendar2-cell-disabled).next-calendar2-cell-hover-begin::after {
+  border-left: none;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-right: 1px dashed #3E71F7;
+  border-right: 1px dashed var(--color-brand1-9, #3E71F7);
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+div[dir=rtl] .next-range-picker2-panel:not(.next-range-picker2-panel-single) .next-calendar2-cell-current:not(.next-calendar2-cell-disabled).next-calendar2-cell-hover-end::after {
+  border-right: none;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-left: 1px dashed #3E71F7;
+  border-left: 1px dashed var(--color-brand1-9, #3E71F7);
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+}
+div[dir=rtl] .next-range-picker2-panel:not(.next-range-picker2-panel-single) .next-calendar2-cell-edge-end + .next-calendar2-cell-current:not(.next-calendar2-cell-disabled)::before, div[dir=rtl] .next-range-picker2-panel:not(.next-range-picker2-panel-single) .next-calendar2-cell-edge-end + .next-calendar2-cell-current:not(.next-calendar2-cell-disabled)::after {
+  right: 8px;
+  left: 0;
+}
+div[dir=rtl] .next-range-picker2-panel:not(.next-range-picker2-panel-single) .next-calendar2-cell-edge-end + .next-calendar2-cell-current:not(.next-calendar2-cell-disabled).next-calendar2-cell-hover::after {
+  right: 8px;
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+  border-right: 1px dashed #3E71F7;
+  border-right: 1px dashed var(--color-brand1-9, #3E71F7);
+}
+div[dir=rtl] .next-range-picker2-panel:not(.next-range-picker2-panel-single) .next-calendar2-cell-edge-end + .next-calendar2-cell-current:not(.next-calendar2-cell-disabled).next-calendar2-cell-hover:not(.next-calendar2-cell-hover-end):not(.next-calendar2-cell-hover-begin)::after {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-left: none;
+}
+div[dir=rtl] .next-calendar2-table-week .next-calendar2-week-current .next-calendar2-cell.next-calendar2-cell-selected:nth-child(2)::before {
+  right: 50%;
+  left: 0;
+}
+div[dir=rtl] .next-calendar2-table-week .next-calendar2-week-current .next-calendar2-cell.next-calendar2-cell-selected:last-child::before {
+  left: 50%;
+  right: 0;
+}
+
+.next-date-picker2 {
+  outline: none;
+  display: inline-table;
+  position: relative;
+  width: inherit;
+}
+.next-date-picker2-overlay {
+  vertical-align: top;
+  padding: 4px 0px;
+}
+.next-date-picker2-overlay-range {
+  padding: 12px 0px;
+}
+.next-date-picker2-wrapper {
+  box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.12);
+  background-color: #FFFFFF;
+  border: 1px solid #E6E7EB;
+  border: 1px solid var(--color-line1-1, #E6E7EB);
+  border-radius: 3px;
+  border-radius: var(--corner-1, 3px);
+}
+.next-date-picker2-wrapper .next-calendar2-panel {
+  border-radius: 3px;
+  border-radius: var(--corner-1, 3px);
+}
+.next-date-picker2-wrapper .next-calendar2-body {
+  width: 272px;
+}
+.next-date-picker2-wrapper .next-calendar2-cell::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 0px;
+  left: 0px;
+  z-index: 1;
+  height: 24px;
+  transform: translateY(-50%);
+}
+.next-date-picker2-wrapper .next-calendar2-cell:last-child::before {
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+  right: 8px;
+}
+.next-date-picker2-wrapper .next-calendar2-cell:first-child::before {
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+  left: 8px;
+}
+.next-date-picker2-input {
+  display: inline-flex;
+  align-items: center;
+  outline: none;
+  box-sizing: border-box;
+  border: 1px solid #C4C6CF;
+  border: var(--input-border-width, 1px) solid var(--input-border-color, #C4C6CF);
+  vertical-align: middle;
+  width: inherit;
+  background-color: #FFFFFF;
+  background-color: var(--input-bg-color, #FFFFFF);
+}
+.next-date-picker2-input .next-input {
+  border: none;
+  flex-basis: 100%;
+  height: 100%;
+  width: 100%;
+}
+.next-date-picker2-input .next-input input {
+  height: 100%;
+  width: auto;
+}
+.next-date-picker2-input.next-date-picker2-input-small {
+  height: 20px;
+  height: var(--form-element-small-height, 20px);
+  border-radius: 3px;
+  border-radius: var(--form-element-small-corner, 3px);
+}
+.next-date-picker2-input.next-date-picker2-input-small .next-input-label {
+  padding-left: 8px;
+  padding-left: var(--input-s-label-padding-left, 8px);
+  font-size: 12px;
+  font-size: var(--form-element-small-font-size, 12px);
+}
+.next-date-picker2-input.next-date-picker2-input-small .next-input-inner {
+  font-size: 12px;
+  font-size: var(--form-element-small-font-size, 12px);
+}
+.next-date-picker2-input.next-date-picker2-input-small .next-input-control {
+  padding-right: 4px;
+  padding-right: var(--input-s-icon-padding-right, 4px);
+}
+.next-date-picker2-input.next-date-picker2-input-small .next-input-inner-text {
+  padding-right: 4px;
+  padding-right: var(--input-s-icon-padding-right, 4px);
+}
+.next-date-picker2-input.next-date-picker2-input-small input {
+  height: 18px;
+  height: calc(var(--form-element-small-height, 20px) - var(--input-border-width, 1px)*2);
+  line-height: 18px \0 ;
+  line-height: calc(var(--form-element-small-height, 20px) - var(--input-border-width, 1px)*2) \0 ;
+  padding: 0 4px;
+  padding: 0 var(--input-s-padding, 4px);
+  font-size: 12px;
+  font-size: var(--form-element-small-font-size, 12px);
+}
+.next-date-picker2-input.next-date-picker2-input-small input::placeholder {
+  font-size: 12px;
+  font-size: var(--form-element-small-font-size, 12px);
+}
+.next-date-picker2-input.next-date-picker2-input-small .next-input-text-field {
+  padding: 0 4px;
+  padding: 0 var(--input-s-padding, 4px);
+  font-size: 12px;
+  font-size: var(--form-element-small-font-size, 12px);
+  height: 18px;
+  height: calc(var(--form-element-small-height, 20px) - var(--input-border-width, 1px)*2);
+  line-height: 18px;
+  line-height: calc(var(--form-element-small-height, 20px) - var(--input-border-width, 1px)*2);
+}
+.next-date-picker2-input.next-date-picker2-input-small .next-icon:before, .next-date-picker2-input.next-date-picker2-input-small .next-icon .next-icon-remote {
+  width: 12px;
+  width: var(--form-element-small-icon-size, 12px);
+  font-size: 12px;
+  font-size: var(--form-element-small-icon-size, 12px);
+  line-height: inherit;
+}
+.next-date-picker2-input.next-date-picker2-input-small .next-input-control {
+  border-radius: 0 3px 3px 0;
+  border-radius: 0 var(--form-element-small-corner, 3px) var(--form-element-small-corner, 3px) 0;
+}
+.next-date-picker2-input.next-date-picker2-input-medium {
+  height: 28px;
+  height: var(--form-element-medium-height, 28px);
+  border-radius: 3px;
+  border-radius: var(--form-element-medium-corner, 3px);
+}
+.next-date-picker2-input.next-date-picker2-input-medium .next-input-label {
+  padding-left: 8px;
+  padding-left: var(--input-m-label-padding-left, 8px);
+  font-size: 12px;
+  font-size: var(--form-element-medium-font-size, 12px);
+}
+.next-date-picker2-input.next-date-picker2-input-medium .next-input-inner {
+  font-size: 12px;
+  font-size: var(--form-element-medium-font-size, 12px);
+}
+.next-date-picker2-input.next-date-picker2-input-medium .next-input-control {
+  padding-right: 8px;
+  padding-right: var(--input-m-icon-padding-right, 8px);
+}
+.next-date-picker2-input.next-date-picker2-input-medium .next-input-inner-text {
+  padding-right: 8px;
+  padding-right: var(--input-m-icon-padding-right, 8px);
+}
+.next-date-picker2-input.next-date-picker2-input-medium input {
+  height: 26px;
+  height: calc(var(--form-element-medium-height, 28px) - var(--input-border-width, 1px)*2);
+  line-height: 26px \0 ;
+  line-height: calc(var(--form-element-medium-height, 28px) - var(--input-border-width, 1px)*2) \0 ;
+  padding: 0 8px;
+  padding: 0 var(--input-m-padding, 8px);
+  font-size: 12px;
+  font-size: var(--form-element-medium-font-size, 12px);
+}
+.next-date-picker2-input.next-date-picker2-input-medium input::placeholder {
+  font-size: 12px;
+  font-size: var(--form-element-medium-font-size, 12px);
+}
+.next-date-picker2-input.next-date-picker2-input-medium .next-input-text-field {
+  padding: 0 8px;
+  padding: 0 var(--input-m-padding, 8px);
+  font-size: 12px;
+  font-size: var(--form-element-medium-font-size, 12px);
+  height: 26px;
+  height: calc(var(--form-element-medium-height, 28px) - var(--input-border-width, 1px)*2);
+  line-height: 26px;
+  line-height: calc(var(--form-element-medium-height, 28px) - var(--input-border-width, 1px)*2);
+}
+.next-date-picker2-input.next-date-picker2-input-medium .next-icon:before, .next-date-picker2-input.next-date-picker2-input-medium .next-icon .next-icon-remote {
+  width: 12px;
+  width: var(--form-element-medium-icon-size, 12px);
+  font-size: 12px;
+  font-size: var(--form-element-medium-icon-size, 12px);
+  line-height: inherit;
+}
+.next-date-picker2-input.next-date-picker2-input-medium .next-input-control {
+  border-radius: 0 3px 3px 0;
+  border-radius: 0 var(--form-element-medium-corner, 3px) var(--form-element-medium-corner, 3px) 0;
+}
+.next-date-picker2-input.next-date-picker2-input-large {
+  height: 40px;
+  height: var(--form-element-large-height, 40px);
+  border-radius: 3px;
+  border-radius: var(--form-element-large-corner, 3px);
+}
+.next-date-picker2-input.next-date-picker2-input-large .next-input-label {
+  padding-left: 12px;
+  padding-left: var(--input-l-label-padding-left, 12px);
+  font-size: 16px;
+  font-size: var(--form-element-large-font-size, 16px);
+}
+.next-date-picker2-input.next-date-picker2-input-large .next-input-inner {
+  font-size: 16px;
+  font-size: var(--form-element-large-font-size, 16px);
+}
+.next-date-picker2-input.next-date-picker2-input-large .next-input-control {
+  padding-right: 8px;
+  padding-right: var(--input-l-icon-padding-right, 8px);
+}
+.next-date-picker2-input.next-date-picker2-input-large .next-input-inner-text {
+  padding-right: 8px;
+  padding-right: var(--input-l-icon-padding-right, 8px);
+}
+.next-date-picker2-input.next-date-picker2-input-large input {
+  height: 38px;
+  height: calc(var(--form-element-large-height, 40px) - var(--input-border-width, 1px)*2);
+  line-height: 38px \0 ;
+  line-height: calc(var(--form-element-large-height, 40px) - var(--input-border-width, 1px)*2) \0 ;
+  padding: 0 12px;
+  padding: 0 var(--input-l-padding, 12px);
+  font-size: 16px;
+  font-size: var(--form-element-large-font-size, 16px);
+}
+.next-date-picker2-input.next-date-picker2-input-large input::placeholder {
+  font-size: 16px;
+  font-size: var(--form-element-large-font-size, 16px);
+}
+.next-date-picker2-input.next-date-picker2-input-large .next-input-text-field {
+  padding: 0 12px;
+  padding: 0 var(--input-l-padding, 12px);
+  font-size: 16px;
+  font-size: var(--form-element-large-font-size, 16px);
+  height: 38px;
+  height: calc(var(--form-element-large-height, 40px) - var(--input-border-width, 1px)*2);
+  line-height: 38px;
+  line-height: calc(var(--form-element-large-height, 40px) - var(--input-border-width, 1px)*2);
+}
+.next-date-picker2-input.next-date-picker2-input-large .next-icon:before, .next-date-picker2-input.next-date-picker2-input-large .next-icon .next-icon-remote {
+  width: 16px;
+  width: var(--form-element-large-icon-size, 16px);
+  font-size: 16px;
+  font-size: var(--form-element-large-icon-size, 16px);
+  line-height: inherit;
+}
+.next-date-picker2-input.next-date-picker2-input-large .next-input-control {
+  border-radius: 0 3px 3px 0;
+  border-radius: 0 var(--form-element-large-corner, 3px) var(--form-element-large-corner, 3px) 0;
+}
+.next-date-picker2-input:hover {
+  border-color: #A0A2AD;
+  border-color: var(--input-hover-border-color, #A0A2AD);
+  background-color: #FFFFFF;
+  background-color: var(--input-hover-bg-color, #FFFFFF);
+}
+.next-date-picker2-input.next-date-picker2-input-focus {
+  border-color: #5584FF;
+  border-color: var(--input-focus-border-color, #5584FF);
+  background-color: #FFFFFF;
+  background-color: var(--input-focus-bg-color, #FFFFFF);
+  box-shadow: 0 0 0 2px rgba(85, 132, 255, 0.2);
+  box-shadow: 0 0 0 var(--input-focus-shadow-spread, 2px) var(--color-calculate-input-focus-shadow, rgba(85, 132, 255, 0.2));
+}
+.next-date-picker2-input.next-date-picker2-input-noborder {
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
+.next-date-picker2-input.next-date-picker2-input-disabled {
+  color: #CCCCCC;
+  color: var(--input-disabled-color, #CCCCCC);
+  border-color: #E6E7EB;
+  border-color: var(--input-disabled-border-color, #E6E7EB);
+  background-color: #F7F8FA;
+  background-color: var(--input-disabled-bg-color, #F7F8FA);
+  cursor: not-allowed;
+}
+.next-date-picker2-input.next-date-picker2-input-disabled:hover {
+  border-color: #E6E7EB;
+  border-color: var(--input-disabled-border-color, #E6E7EB);
+  background-color: #F7F8FA;
+  background-color: var(--input-disabled-bg-color, #F7F8FA);
+}
+.next-date-picker2-input.next-date-picker2-input-error {
+  border-color: #FF3000;
+  border-color: var(--input-feedback-error-border-color, #FF3000);
+}
+.next-date-picker2-input-separator {
+  color: #C4C6CF;
+  color: var(--input-border-color, #C4C6CF);
+  font-size: 12px;
+  line-height: 12px;
+  display: inline-block;
+  min-width: 16px;
+  text-align: center;
+}
+
+.next-range-picker2-panel, .next-date-picker2-panel {
+  display: inline-flex;
+}
+.next-range-picker2-panel:not(.next-range-picker2-panel-single) .next-range-picker-right .next-calendar2-header-left-btn,
+.next-range-picker2-panel:not(.next-range-picker2-panel-single) .next-range-picker-left .next-calendar2-header-right-btn {
+  visibility: hidden;
+}
+
+.next-range-picker2-arrow {
+  display: block;
+  transform: translate(0, -50%) rotate(-45deg);
+  position: absolute;
+  z-index: 1;
+  width: 10px;
+  height: 10px;
+  margin-left: 16.5px;
+  border-color: #E6E7EB #E6E7EB transparent transparent;
+  border-color: var(--color-line1-1, #E6E7EB) var(--color-line1-1, #E6E7EB) transparent transparent;
+  border-style: solid;
+  border-width: 1px;
+  transition: left 0.3s ease-out;
+  background: #FFFFFF;
+}
+
+.next-date-picker2-tl-bl .next-range-picker2-arrow {
+  top: 12.5px;
+}
+
+.next-date-picker2-bl-tl .next-range-picker2-arrow {
+  bottom: 13px;
+  transform: translate(0, 50%) rotate(135deg);
+}
+
+.next-date-time-picker-wrapper {
+  border-left: 1px solid #E6E7EB;
+  border-left: 1px solid var(--color-line1-1, #E6E7EB);
+}
+.next-date-time-picker-wrapper .next-calendar2-body {
+  padding-right: 0px;
+  padding-left: 0px;
+}
+
+.next-range-picker2-panel:not(.next-range-picker2-panel-single) .next-calendar2-cell-disabled .next-calendar2-cell-inner {
+  color: #CCCCCC;
+  color: var(--color-text1-1, #CCCCCC);
+  background: #F7F8FA;
+  background: var(--color-fill1-1, #F7F8FA);
+}
+.next-range-picker2-panel:not(.next-range-picker2-panel-single) .next-calendar2-cell-current.next-calendar2-cell-selected::before {
+  color: #666666;
+  color: var(--color-text1-3, #666666);
+  background: #DEE8FF;
+  background: var(--color-brand1-1, #DEE8FF);
+}
+.next-range-picker2-panel:not(.next-range-picker2-panel-single) .next-calendar2-cell-current.next-calendar2-cell-selected .next-calendar2-cell-inner {
+  color: #666666;
+  color: var(--color-text1-3, #666666);
+  background: transparent;
+}
+.next-range-picker2-panel:not(.next-range-picker2-panel-single) .next-calendar2-cell-current.next-calendar2-cell-selected.next-calendar2-cell-range-begin .next-calendar2-cell-inner, .next-range-picker2-panel:not(.next-range-picker2-panel-single) .next-calendar2-cell-current.next-calendar2-cell-selected.next-calendar2-cell-range-end .next-calendar2-cell-inner {
+  z-index: 10;
+  color: #FFFFFF;
+  background: #5584FF;
+  background: var(--color-brand1-6, #5584FF);
+}
+.next-range-picker2-panel:not(.next-range-picker2-panel-single) .next-calendar2-cell-current.next-calendar2-cell-selected.next-calendar2-cell-range-begin::before {
+  left: 50%;
+}
+.next-range-picker2-panel:not(.next-range-picker2-panel-single) .next-calendar2-cell-current.next-calendar2-cell-selected.next-calendar2-cell-range-end::before {
+  right: 50%;
+}
+.next-range-picker2-panel:not(.next-range-picker2-panel-single) .next-calendar2-cell-current.next-calendar2-cell-selected.next-calendar2-cell-range-begin-single::before, .next-range-picker2-panel:not(.next-range-picker2-panel-single) .next-calendar2-cell-current.next-calendar2-cell-selected.next-calendar2-cell-range-end-single::before {
+  display: none;
+}
+.next-range-picker2-panel:not(.next-range-picker2-panel-single) .next-calendar2-cell-current.next-calendar2-cell-hover::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 0;
+  left: 0;
+  z-index: 2;
+  height: 24px;
+  transform: translateY(-50%);
+  border-color: #3E71F7 transparent;
+  border-color: var(--color-brand1-9, #3E71F7) transparent;
+  border-style: dashed;
+  border-width: 1px;
+}
+.next-range-picker2-panel:not(.next-range-picker2-panel-single) .next-calendar2-cell-current.next-calendar2-cell-hover.next-calendar2-cell-hover-begin::after, .next-range-picker2-panel:not(.next-range-picker2-panel-single) .next-calendar2-cell-current.next-calendar2-cell-hover:first-child::after {
+  left: 8px;
+}
+.next-range-picker2-panel:not(.next-range-picker2-panel-single) .next-calendar2-cell-current.next-calendar2-cell-hover.next-calendar2-cell-hover-end::after, .next-range-picker2-panel:not(.next-range-picker2-panel-single) .next-calendar2-cell-current.next-calendar2-cell-hover:last-child::after {
+  right: 8px;
+}
+.next-range-picker2-panel:not(.next-range-picker2-panel-single) .next-calendar2-cell-current.next-calendar2-cell-hover.next-calendar2-cell-selected.next-calendar2-cell-hover-begin::after {
+  left: 8px;
+}
+.next-range-picker2-panel:not(.next-range-picker2-panel-single) .next-calendar2-cell-current.next-calendar2-cell-hover.next-calendar2-cell-selected.next-calendar2-cell-hover-end::after {
+  right: 8px;
+}
+.next-range-picker2-panel:not(.next-range-picker2-panel-single) .next-calendar2-cell-current.next-calendar2-cell-hover:first-of-type::after {
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+  border-left: 1px dashed #3E71F7;
+  border-left: 1px dashed var(--color-brand1-9, #3E71F7);
+}
+.next-range-picker2-panel:not(.next-range-picker2-panel-single) .next-calendar2-cell-current.next-calendar2-cell-hover:last-of-type::after {
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+  border-right: 1px dashed #3E71F7;
+  border-right: 1px dashed var(--color-brand1-9, #3E71F7);
+}
+.next-range-picker2-panel:not(.next-range-picker2-panel-single) .next-calendar2-cell-current.next-calendar2-cell-edge-end::before {
+  right: 8px;
+}
+.next-range-picker2-panel:not(.next-range-picker2-panel-single) .next-calendar2-cell-current.next-calendar2-cell-edge-end::after {
+  right: 8px;
+}
+.next-range-picker2-panel:not(.next-range-picker2-panel-single) .next-calendar2-cell-current.next-calendar2-cell-edge-end.next-calendar2-cell-hover::after {
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+  border-right: 1px dashed #3E71F7;
+  border-right: 1px dashed var(--color-brand1-9, #3E71F7);
+}
+.next-range-picker2-panel:not(.next-range-picker2-panel-single) .next-calendar2-cell-current.next-calendar2-cell-hover-begin::after {
+  border-top: 1px dashed #3E71F7;
+  border-top: 1px dashed var(--color-brand1-9, #3E71F7);
+  border-left: 1px dashed #3E71F7;
+  border-left: 1px dashed var(--color-brand1-9, #3E71F7);
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+}
+.next-range-picker2-panel:not(.next-range-picker2-panel-single) .next-calendar2-cell-current.next-calendar2-cell-hover-end::after {
+  border-top: 1px dashed #3E71F7;
+  border-top: 1px dashed var(--color-brand1-9, #3E71F7);
+  border-right: 1px dashed #3E71F7;
+  border-right: 1px dashed var(--color-brand1-9, #3E71F7);
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+.next-range-picker2-panel:not(.next-range-picker2-panel-single) .next-calendar2-cell-edge-end + .next-calendar2-cell-current:not(.next-calendar2-cell-disabled)::before, .next-range-picker2-panel:not(.next-range-picker2-panel-single) .next-calendar2-cell-edge-end + .next-calendar2-cell-current:not(.next-calendar2-cell-disabled)::after {
+  left: 8px;
+}
+.next-range-picker2-panel:not(.next-range-picker2-panel-single) .next-calendar2-cell-edge-end + .next-calendar2-cell-current:not(.next-calendar2-cell-disabled).next-calendar2-cell-hover::after {
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+  border-left: 1px dashed #3E71F7;
+  border-left: 1px dashed var(--color-brand1-9, #3E71F7);
+}
+
+.next-calendar2-table-week .next-calendar2-cell-hover::after {
+  display: none;
+}
+.next-calendar2-table-week tr:hover .next-calendar2-cell:not(.next-calendar2-cell-disabled):not(.next-calendar2-cell-selected)::before {
+  background: #F2F3F7;
+  background: var(--color-fill1-2, #F2F3F7);
+}
+.next-calendar2-table-week .next-calendar2-week-current .next-calendar2-cell.next-calendar2-cell-selected::before,
+.next-calendar2-table-week .next-calendar2-week-current .next-calendar2-cell.next-calendar2-cell-selected .next-calendar2-cell-inner {
+  color: #666666;
+  color: var(--color-text1-3, #666666);
+  background-color: #DEE8FF;
+  background-color: var(--color-brand1-1, #DEE8FF);
+}
+.next-calendar2-table-week .next-calendar2-week-current .next-calendar2-cell.next-calendar2-cell-selected:last-child .next-calendar2-cell-inner, .next-calendar2-table-week .next-calendar2-week-current .next-calendar2-cell.next-calendar2-cell-selected:nth-child(2) .next-calendar2-cell-inner {
+  color: #FFFFFF;
+  background: #5584FF;
+  background: var(--color-brand1-6, #5584FF);
+}
+.next-calendar2-table-week .next-calendar2-week-current .next-calendar2-cell.next-calendar2-cell-selected:nth-child(2)::before {
+  left: 50%;
+}
+.next-calendar2-table-week .next-calendar2-week-current .next-calendar2-cell.next-calendar2-cell-selected:last-child::before {
+  right: 50%;
+}
+.next-calendar2-table-week tr:not(.next-calendar2-week-current) td.next-calendar2-cell.next-calendar2-cell-selected:not(.next-calendar2-cell-disabled)::before,
+.next-calendar2-table-week tr:not(.next-calendar2-week-current) td.next-calendar2-cell.next-calendar2-cell-selected:not(.next-calendar2-cell-disabled) .next-calendar2-cell-inner {
+  background-color: transparent;
+  color: #CCCCCC;
+  color: var(--color-text1-1, #CCCCCC);
+}
+
+.next-range-picker2-panel .next-calendar2-week-current .next-calendar2-cell-selected:not(.next-calendar2-cell-disabled):last-child .next-calendar2-cell-inner, .next-range-picker2-panel .next-calendar2-week-current .next-calendar2-cell-selected:not(.next-calendar2-cell-disabled):nth-child(2) .next-calendar2-cell-inner {
+  background-color: #DEE8FF;
+  background-color: var(--color-brand1-1, #DEE8FF);
+  color: #666666;
+  color: var(--color-text1-3, #666666);
+}
+.next-range-picker2-panel .next-calendar2-week-current .next-calendar2-cell-selected:not(.next-calendar2-cell-disabled).next-calendar2-cell-week-range-begin:last-child .next-calendar2-cell-inner, .next-range-picker2-panel .next-calendar2-week-current .next-calendar2-cell-selected:not(.next-calendar2-cell-disabled).next-calendar2-cell-week-range-begin:nth-child(2) .next-calendar2-cell-inner, .next-range-picker2-panel .next-calendar2-week-current .next-calendar2-cell-selected:not(.next-calendar2-cell-disabled).next-calendar2-cell-week-range-end:last-child .next-calendar2-cell-inner, .next-range-picker2-panel .next-calendar2-week-current .next-calendar2-cell-selected:not(.next-calendar2-cell-disabled).next-calendar2-cell-week-range-end:nth-child(2) .next-calendar2-cell-inner {
+  color: #FFFFFF;
+  background: #5584FF;
+  background: var(--color-brand1-6, #5584FF);
+}

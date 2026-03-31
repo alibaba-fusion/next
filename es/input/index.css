@@ -1,0 +1,869 @@
+.next-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+  top: 0;
+  margin: -1px;
+}
+
+.next-input {
+  box-sizing: border-box;
+  vertical-align: middle;
+  display: inline-table;
+  border-collapse: separate;
+  font-size: 0;
+  line-height: 1;
+  width: 200px;
+  border-spacing: 0;
+  transition: all 100ms linear;
+  transition: all var(--motion-duration-immediately, 100ms) var(--motion-linear, linear);
+  border: 1px solid #C4C6CF;
+  border: var(--input-border-width, 1px) solid var(--input-border-color, #C4C6CF);
+  background-color: #FFFFFF;
+  background-color: var(--input-bg-color, #FFFFFF);
+}
+.next-input *,
+.next-input *:before,
+.next-input *:after {
+  box-sizing: border-box;
+}
+.next-input input {
+  height: 100%;
+  /* remove autoFill yellow background */
+}
+.next-input input[type=reset], .next-input input[type=submit] {
+  -webkit-appearance: button;
+  cursor: pointer;
+}
+.next-input input::-moz-focus-inner {
+  border: 0;
+  padding: 0;
+}
+.next-input input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 1000px #FFFFFF inset;
+  -webkit-box-shadow: 0 0 0 1000px var(--input-bg-color, #FFFFFF) inset;
+  border-radius: 3px;
+  border-radius: var(--form-element-large-corner, 3px);
+}
+.next-input input[type=password]::-ms-reveal {
+  display: none;
+}
+.next-input textarea {
+  resize: none;
+}
+.next-input input,
+.next-input textarea {
+  width: 100%;
+  border: none;
+  outline: none;
+  padding: 0;
+  margin: 0;
+  font-weight: normal;
+  vertical-align: middle;
+  background-color: transparent;
+  color: #333333;
+  color: var(--input-text-color, #333333);
+}
+.next-input input::-ms-clear,
+.next-input textarea::-ms-clear {
+  display: none;
+}
+.next-input.next-small {
+  height: 20px;
+  height: var(--form-element-small-height, 20px);
+  border-radius: 3px;
+  border-radius: var(--form-element-small-corner, 3px);
+}
+.next-input.next-small .next-input-label {
+  padding-left: 8px;
+  padding-left: var(--input-s-label-padding-left, 8px);
+  font-size: 12px;
+  font-size: var(--form-element-small-font-size, 12px);
+}
+.next-input.next-small .next-input-inner {
+  font-size: 12px;
+  font-size: var(--form-element-small-font-size, 12px);
+}
+.next-input.next-small .next-input-control {
+  padding-right: 4px;
+  padding-right: var(--input-s-icon-padding-right, 4px);
+}
+.next-input.next-small .next-input-inner-text {
+  padding-right: 4px;
+  padding-right: var(--input-s-icon-padding-right, 4px);
+}
+.next-input.next-small input {
+  height: 18px;
+  height: calc(var(--form-element-small-height, 20px) - var(--input-border-width, 1px)*2);
+  line-height: 18px \0 ;
+  line-height: calc(var(--form-element-small-height, 20px) - var(--input-border-width, 1px)*2) \0 ;
+  padding: 0 4px;
+  padding: 0 var(--input-s-padding, 4px);
+  font-size: 12px;
+  font-size: var(--form-element-small-font-size, 12px);
+}
+.next-input.next-small input::placeholder {
+  font-size: 12px;
+  font-size: var(--form-element-small-font-size, 12px);
+}
+.next-input.next-small .next-input-text-field {
+  padding: 0 4px;
+  padding: 0 var(--input-s-padding, 4px);
+  font-size: 12px;
+  font-size: var(--form-element-small-font-size, 12px);
+  height: 18px;
+  height: calc(var(--form-element-small-height, 20px) - var(--input-border-width, 1px)*2);
+  line-height: 18px;
+  line-height: calc(var(--form-element-small-height, 20px) - var(--input-border-width, 1px)*2);
+}
+.next-input.next-small .next-icon:before, .next-input.next-small .next-icon .next-icon-remote {
+  width: 12px;
+  width: var(--form-element-small-icon-size, 12px);
+  font-size: 12px;
+  font-size: var(--form-element-small-icon-size, 12px);
+  line-height: inherit;
+}
+.next-input.next-small .next-input-control {
+  border-radius: 0 3px 3px 0;
+  border-radius: 0 var(--form-element-small-corner, 3px) var(--form-element-small-corner, 3px) 0;
+}
+.next-input.next-medium {
+  height: 28px;
+  height: var(--form-element-medium-height, 28px);
+  border-radius: 3px;
+  border-radius: var(--form-element-medium-corner, 3px);
+}
+.next-input.next-medium .next-input-label {
+  padding-left: 8px;
+  padding-left: var(--input-m-label-padding-left, 8px);
+  font-size: 12px;
+  font-size: var(--form-element-medium-font-size, 12px);
+}
+.next-input.next-medium .next-input-inner {
+  font-size: 12px;
+  font-size: var(--form-element-medium-font-size, 12px);
+}
+.next-input.next-medium .next-input-control {
+  padding-right: 8px;
+  padding-right: var(--input-m-icon-padding-right, 8px);
+}
+.next-input.next-medium .next-input-inner-text {
+  padding-right: 8px;
+  padding-right: var(--input-m-icon-padding-right, 8px);
+}
+.next-input.next-medium input {
+  height: 26px;
+  height: calc(var(--form-element-medium-height, 28px) - var(--input-border-width, 1px)*2);
+  line-height: 26px \0 ;
+  line-height: calc(var(--form-element-medium-height, 28px) - var(--input-border-width, 1px)*2) \0 ;
+  padding: 0 8px;
+  padding: 0 var(--input-m-padding, 8px);
+  font-size: 12px;
+  font-size: var(--form-element-medium-font-size, 12px);
+}
+.next-input.next-medium input::placeholder {
+  font-size: 12px;
+  font-size: var(--form-element-medium-font-size, 12px);
+}
+.next-input.next-medium .next-input-text-field {
+  padding: 0 8px;
+  padding: 0 var(--input-m-padding, 8px);
+  font-size: 12px;
+  font-size: var(--form-element-medium-font-size, 12px);
+  height: 26px;
+  height: calc(var(--form-element-medium-height, 28px) - var(--input-border-width, 1px)*2);
+  line-height: 26px;
+  line-height: calc(var(--form-element-medium-height, 28px) - var(--input-border-width, 1px)*2);
+}
+.next-input.next-medium .next-icon:before, .next-input.next-medium .next-icon .next-icon-remote {
+  width: 12px;
+  width: var(--form-element-medium-icon-size, 12px);
+  font-size: 12px;
+  font-size: var(--form-element-medium-icon-size, 12px);
+  line-height: inherit;
+}
+.next-input.next-medium .next-input-control {
+  border-radius: 0 3px 3px 0;
+  border-radius: 0 var(--form-element-medium-corner, 3px) var(--form-element-medium-corner, 3px) 0;
+}
+.next-input.next-large {
+  height: 40px;
+  height: var(--form-element-large-height, 40px);
+  border-radius: 3px;
+  border-radius: var(--form-element-large-corner, 3px);
+}
+.next-input.next-large .next-input-label {
+  padding-left: 12px;
+  padding-left: var(--input-l-label-padding-left, 12px);
+  font-size: 16px;
+  font-size: var(--form-element-large-font-size, 16px);
+}
+.next-input.next-large .next-input-inner {
+  font-size: 16px;
+  font-size: var(--form-element-large-font-size, 16px);
+}
+.next-input.next-large .next-input-control {
+  padding-right: 8px;
+  padding-right: var(--input-l-icon-padding-right, 8px);
+}
+.next-input.next-large .next-input-inner-text {
+  padding-right: 8px;
+  padding-right: var(--input-l-icon-padding-right, 8px);
+}
+.next-input.next-large input {
+  height: 38px;
+  height: calc(var(--form-element-large-height, 40px) - var(--input-border-width, 1px)*2);
+  line-height: 38px \0 ;
+  line-height: calc(var(--form-element-large-height, 40px) - var(--input-border-width, 1px)*2) \0 ;
+  padding: 0 12px;
+  padding: 0 var(--input-l-padding, 12px);
+  font-size: 16px;
+  font-size: var(--form-element-large-font-size, 16px);
+}
+.next-input.next-large input::placeholder {
+  font-size: 16px;
+  font-size: var(--form-element-large-font-size, 16px);
+}
+.next-input.next-large .next-input-text-field {
+  padding: 0 12px;
+  padding: 0 var(--input-l-padding, 12px);
+  font-size: 16px;
+  font-size: var(--form-element-large-font-size, 16px);
+  height: 38px;
+  height: calc(var(--form-element-large-height, 40px) - var(--input-border-width, 1px)*2);
+  line-height: 38px;
+  line-height: calc(var(--form-element-large-height, 40px) - var(--input-border-width, 1px)*2);
+}
+.next-input.next-large .next-icon:before, .next-input.next-large .next-icon .next-icon-remote {
+  width: 16px;
+  width: var(--form-element-large-icon-size, 16px);
+  font-size: 16px;
+  font-size: var(--form-element-large-icon-size, 16px);
+  line-height: inherit;
+}
+.next-input.next-large .next-input-control {
+  border-radius: 0 3px 3px 0;
+  border-radius: 0 var(--form-element-large-corner, 3px) var(--form-element-large-corner, 3px) 0;
+}
+.next-input.next-input-textarea {
+  height: auto;
+  border-radius: 3px;
+  border-radius: var(--input-multiple-corner, 3px);
+  font-size: 0;
+}
+.next-input.next-input-textarea textarea {
+  color: #333333;
+  color: var(--input-text-color, #333333);
+  padding: 4px 8px;
+  padding: var(--input-multiple-padding-tb, 4px) var(--input-multiple-padding-lr, 8px);
+  font-size: 12px;
+  font-size: var(--input-multiple-font-size, 12px);
+  border-radius: 3px;
+  border-radius: var(--input-multiple-corner, 3px);
+}
+.next-input.next-input-textarea.next-small textarea {
+  font-size: 12px;
+  font-size: var(--form-element-medium-font-size, 12px);
+}
+.next-input.next-input-textarea.next-large textarea {
+  font-size: 16px;
+  font-size: var(--form-element-large-font-size, 16px);
+}
+.next-input.next-input-textarea .next-input-control {
+  display: block;
+  width: auto;
+  border-radius: 3px;
+  border-radius: var(--input-multiple-corner, 3px);
+}
+.next-input.next-input-textarea .next-input-textarea-control {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0 8px 4px;
+  padding: 0 var(--input-l-icon-padding-right, 8px) 4px;
+}
+.next-input.next-input-textarea .next-input-len,
+.next-input.next-input-textarea .next-input-textarea-clear {
+  display: block;
+  text-align: right;
+  width: auto;
+}
+.next-input.next-input-textarea .next-input-textarea-clear {
+  cursor: pointer;
+  padding-left: 4px;
+}
+.next-input.next-input-textarea .next-input-textarea-control-line::after {
+  content: "|";
+  color: #E6E7EB;
+  color: var(--input-disabled-border-color, #E6E7EB);
+  display: inline-block;
+  font-size: 12px;
+  font-size: var(--input-multiple-font-size, 12px);
+}
+.next-input-hint-wrap {
+  color: #999999;
+  color: var(--input-hint-color, #999999);
+  position: relative;
+}
+.next-input-hint-wrap .next-input-clear {
+  opacity: 0;
+  z-index: 1;
+  position: absolute;
+}
+.next-input-hint-wrap .next-input-hint {
+  opacity: 1;
+}
+.next-input .next-input-clear-icon:hover,
+.next-input .next-icon-eye:hover,
+.next-input .next-icon-eye-close:hover {
+  cursor: pointer;
+  color: #666666;
+  color: var(--input-hint-hover-color, #666666);
+}
+.next-input .next-input-hover-show {
+  opacity: 0;
+}
+.next-input:hover, .next-input.next-focus {
+  border-color: #A0A2AD;
+  border-color: var(--input-hover-border-color, #A0A2AD);
+  background-color: #FFFFFF;
+  background-color: var(--input-hover-bg-color, #FFFFFF);
+}
+.next-input:hover .next-input-clear, .next-input.next-focus .next-input-clear {
+  opacity: 1;
+}
+.next-input:hover .next-input-clear + .next-input-hint, .next-input.next-focus .next-input-clear + .next-input-hint {
+  opacity: 0;
+}
+.next-input:hover .next-input-hover-show, .next-input.next-focus .next-input-hover-show {
+  opacity: 1;
+}
+.next-input .next-input-clear:focus {
+  opacity: 1;
+}
+.next-input .next-input-clear:focus + .next-input-hint {
+  opacity: 0;
+}
+.next-input.next-focus {
+  border-color: #5584FF;
+  border-color: var(--input-focus-border-color, #5584FF);
+  background-color: #FFFFFF;
+  background-color: var(--input-focus-bg-color, #FFFFFF);
+  box-shadow: 0 0 0 2px rgba(85, 132, 255, 0.2);
+  box-shadow: 0 0 0 var(--input-focus-shadow-spread, 2px) var(--color-calculate-input-focus-shadow, rgba(85, 132, 255, 0.2));
+}
+.next-input.next-warning {
+  border-color: #FF9300;
+  border-color: var(--input-feedback-warning-border-color, #FF9300);
+  background-color: #FFFFFF;
+  background-color: var(--input-feedback-warning-bg-color, #FFFFFF);
+}
+.next-input.next-warning.next-focus, .next-input.next-warning:hover {
+  border-color: #FF9300;
+  border-color: var(--input-feedback-warning-border-color, #FF9300);
+}
+.next-input.next-warning.next-focus {
+  box-shadow: 0 0 0 2px rgba(255, 147, 0, 0.2);
+  box-shadow: 0 0 0 var(--input-focus-shadow-spread, 2px) var(--color-calculate-input-feedback-warning-shadow, rgba(255, 147, 0, 0.2));
+}
+.next-input.next-error {
+  border-color: #FF3000;
+  border-color: var(--input-feedback-error-border-color, #FF3000);
+  background-color: #FFFFFF;
+  background-color: var(--input-feedback-error-bg-color, #FFFFFF);
+}
+.next-input.next-error input,
+.next-input.next-error textarea {
+  color: #333333;
+  color: var(--input-feedback-error-color, #333333);
+}
+.next-input.next-error.next-focus, .next-input.next-error:hover {
+  border-color: #FF3000;
+  border-color: var(--input-feedback-error-border-color, #FF3000);
+}
+.next-input.next-error.next-focus {
+  box-shadow: 0 0 0 2px rgba(255, 48, 0, 0.2);
+  box-shadow: 0 0 0 var(--input-focus-shadow-spread, 2px) var(--color-calculate-input-feedback-error-shadow, rgba(255, 48, 0, 0.2));
+}
+.next-input.next-hidden {
+  display: none;
+}
+.next-input.next-noborder {
+  border: none;
+  box-shadow: none;
+}
+.next-input-control .next-input-len,
+.next-input-control .next-input-textarea-clear {
+  font-size: 12px;
+  font-size: var(--input-maxlen-font-size, 12px);
+  line-height: 12px;
+  line-height: var(--input-maxlen-font-size, 12px);
+  color: #999999;
+  color: var(--input-maxlen-color, #999999);
+  display: table-cell;
+  width: 1px;
+  vertical-align: bottom;
+}
+.next-input-control .next-input-len.next-error,
+.next-input-control .next-input-textarea-clear.next-error {
+  color: #FF3000;
+  color: var(--input-maxlen-error-color, #FF3000);
+}
+.next-input-control .next-input-len.next-warning,
+.next-input-control .next-input-textarea-clear.next-warning {
+  color: #FF9300;
+  color: var(--input-maxlen-warning-color, #FF9300);
+}
+.next-input-control > * {
+  display: table-cell;
+  width: 1%;
+  top: 0;
+}
+.next-input-control > *:not(:last-child) {
+  padding-right: 4px;
+  padding-right: var(--s-1, 4px);
+}
+.next-input-control .next-icon {
+  transition: all 100ms linear;
+  transition: all var(--motion-duration-immediately, 100ms) var(--motion-linear, linear);
+  color: #999999;
+  color: var(--input-hint-color, #999999);
+}
+.next-input-control .next-input-warning-icon {
+  color: #FF9300;
+  color: var(--input-feedback-warning-color, #FF9300);
+}
+.next-input-control .next-input-warning-icon::before {
+  content: "\e60b";
+  content: var(--input-feedback-warning-icon, "\e60b");
+}
+.next-input-control .next-input-success-icon {
+  color: #46BC15;
+  color: var(--input-feedback-success-color, #46BC15);
+}
+.next-input-control .next-input-success-icon::before {
+  content: "\e63a";
+  content: var(--input-feedback-success-icon, "\e63a");
+}
+.next-input-control .next-input-loading-icon {
+  color: #4494F9;
+  color: var(--input-feedback-loading-color, #4494F9);
+}
+.next-input-control .next-input-loading-icon::before {
+  content: "\e646";
+  content: var(--input-feedback-loading-icon, "\e646");
+  animation: loadingCircle 1s infinite linear;
+}
+.next-input-control .next-input-clear-icon::before {
+  content: "\e623";
+  content: var(--input-feedback-clear-icon, "\e623");
+}
+.next-input-label, .next-input-inner-text {
+  color: #666666;
+  color: var(--input-label-color, #666666);
+}
+.next-input input::-moz-placeholder,
+.next-input textarea::-moz-placeholder {
+  color: #999999;
+  color: var(--input-placeholder-color, #999999);
+  opacity: 1;
+}
+.next-input input:-ms-input-placeholder,
+.next-input textarea:-ms-input-placeholder {
+  color: #999999;
+  color: var(--input-placeholder-color, #999999);
+}
+.next-input input::-webkit-input-placeholder,
+.next-input textarea::-webkit-input-placeholder {
+  color: #999999;
+  color: var(--input-placeholder-color, #999999);
+}
+.next-input.next-disabled {
+  color: #CCCCCC;
+  color: var(--input-disabled-color, #CCCCCC);
+  border-color: #E6E7EB;
+  border-color: var(--input-disabled-border-color, #E6E7EB);
+  background-color: #F7F8FA;
+  background-color: var(--input-disabled-bg-color, #F7F8FA);
+  cursor: not-allowed;
+}
+.next-input.next-disabled:hover {
+  border-color: #E6E7EB;
+  border-color: var(--input-disabled-border-color, #E6E7EB);
+  background-color: #F7F8FA;
+  background-color: var(--input-disabled-bg-color, #F7F8FA);
+}
+.next-input.next-disabled input,
+.next-input.next-disabled textarea {
+  -webkit-text-fill-color: #CCCCCC;
+  -webkit-text-fill-color: var(--input-disabled-color, #CCCCCC);
+  color: #CCCCCC;
+  color: var(--input-disabled-color, #CCCCCC);
+}
+.next-input.next-disabled input::-moz-placeholder,
+.next-input.next-disabled textarea::-moz-placeholder {
+  color: #CCCCCC;
+  color: var(--input-disabled-color, #CCCCCC);
+  opacity: 1;
+}
+.next-input.next-disabled input:-ms-input-placeholder,
+.next-input.next-disabled textarea:-ms-input-placeholder {
+  color: #CCCCCC;
+  color: var(--input-disabled-color, #CCCCCC);
+}
+.next-input.next-disabled input::-webkit-input-placeholder,
+.next-input.next-disabled textarea::-webkit-input-placeholder {
+  color: #CCCCCC;
+  color: var(--input-disabled-color, #CCCCCC);
+}
+.next-input.next-disabled .next-input-label,
+.next-input.next-disabled .next-input-inner-text {
+  color: #CCCCCC;
+  color: var(--input-disabled-color, #CCCCCC);
+}
+.next-input.next-disabled .next-input-len {
+  color: #CCCCCC;
+  color: var(--input-disabled-color, #CCCCCC);
+}
+.next-input.next-disabled .next-input-hint-wrap {
+  color: #CCCCCC;
+  color: var(--input-disabled-color, #CCCCCC);
+}
+.next-input.next-disabled .next-input-hint-wrap .next-input-clear {
+  opacity: 0;
+}
+.next-input.next-disabled .next-input-hint-wrap .next-input-hint {
+  opacity: 1;
+}
+.next-input.next-disabled .next-input-hint-wrap .next-input-clear-icon:hover {
+  cursor: not-allowed;
+  color: #CCCCCC;
+  color: var(--input-disabled-color, #CCCCCC);
+}
+.next-input.next-disabled .next-icon {
+  color: #CCCCCC;
+  color: var(--input-disabled-color, #CCCCCC);
+}
+.next-input-inner, .next-input-control, .next-input-label {
+  display: table-cell;
+  width: 1px;
+  vertical-align: middle;
+  line-height: 1;
+  background-color: transparent;
+  white-space: nowrap;
+}
+.next-input-group {
+  box-sizing: border-box;
+  display: inline-table;
+  border-collapse: separate;
+  border-spacing: 0;
+  line-height: 0;
+  width: 100%;
+  overflow: hidden;
+}
+.next-input-group *,
+.next-input-group *:before,
+.next-input-group *:after {
+  box-sizing: border-box;
+}
+.next-input-group-auto-width {
+  width: 100%;
+  border-radius: 0 !important;
+}
+.next-input-group > .next-input {
+  border-radius: 0;
+}
+.next-input-group > .next-input.next-focus, .next-input-group > .next-input:hover {
+  position: relative;
+  z-index: 1;
+}
+.next-input-group > .next-input:first-child.next-small {
+  border-top-left-radius: 3px !important;
+  border-top-left-radius: var(--form-element-small-corner, 3px) !important;
+  border-bottom-left-radius: 3px !important;
+  border-bottom-left-radius: var(--form-element-small-corner, 3px) !important;
+}
+.next-input-group > .next-input:first-child.next-medium {
+  border-top-left-radius: 3px !important;
+  border-top-left-radius: var(--form-element-medium-corner, 3px) !important;
+  border-bottom-left-radius: 3px !important;
+  border-bottom-left-radius: var(--form-element-medium-corner, 3px) !important;
+}
+.next-input-group > .next-input:first-child.next-large {
+  border-top-left-radius: 3px !important;
+  border-top-left-radius: var(--form-element-large-corner, 3px) !important;
+  border-bottom-left-radius: 3px !important;
+  border-bottom-left-radius: var(--form-element-large-corner, 3px) !important;
+}
+.next-input-group > .next-input:last-child.next-small {
+  border-top-right-radius: 3px !important;
+  border-top-right-radius: var(--form-element-small-corner, 3px) !important;
+  border-bottom-right-radius: 3px !important;
+  border-bottom-right-radius: var(--form-element-small-corner, 3px) !important;
+}
+.next-input-group > .next-input:last-child.next-medium {
+  border-top-right-radius: 3px !important;
+  border-top-right-radius: var(--form-element-medium-corner, 3px) !important;
+  border-bottom-right-radius: 3px !important;
+  border-bottom-right-radius: var(--form-element-medium-corner, 3px) !important;
+}
+.next-input-group > .next-input:last-child.next-large {
+  border-top-right-radius: 3px !important;
+  border-top-right-radius: var(--form-element-large-corner, 3px) !important;
+  border-bottom-right-radius: 3px !important;
+  border-bottom-right-radius: var(--form-element-large-corner, 3px) !important;
+}
+.next-input-group-addon {
+  width: 1px;
+  display: table-cell;
+  vertical-align: middle;
+  white-space: nowrap;
+  /* stylelint-disable declaration-no-important */
+}
+.next-input-group-addon:first-child {
+  border-bottom-right-radius: 0 !important;
+  border-top-right-radius: 0 !important;
+}
+.next-input-group-addon:first-child > * {
+  margin-right: -1px;
+  margin-right: calc(0px - var(--input-border-width, 1px));
+  border-bottom-right-radius: 0 !important;
+  border-top-right-radius: 0 !important;
+}
+.next-input-group-addon:first-child > *.next-focus {
+  position: relative;
+  z-index: 1;
+}
+.next-input-group-addon:first-child > * > .next-input {
+  border-bottom-right-radius: 0 !important;
+  border-top-right-radius: 0 !important;
+}
+.next-input-group-addon:first-child > * > .next-input.next-focus {
+  position: relative;
+  z-index: 1;
+}
+.next-input-group-addon:last-child {
+  border-bottom-left-radius: 0 !important;
+  border-top-left-radius: 0 !important;
+}
+.next-input-group-addon:last-child > * {
+  margin-left: -1px;
+  margin-left: calc(0px - var(--input-border-width, 1px));
+  border-bottom-left-radius: 0 !important;
+  border-top-left-radius: 0 !important;
+}
+.next-input-group-addon:last-child > * > .next-input {
+  border-bottom-left-radius: 0 !important;
+  border-top-left-radius: 0 !important;
+}
+.next-input-group-text {
+  color: #999999;
+  color: var(--input-addon-text-color, #999999);
+  background-color: #F2F3F7;
+  background-color: var(--input-addon-bg-color, #F2F3F7);
+  text-align: center;
+  border: 1px solid #C4C6CF;
+  border: var(--input-border-width, 1px) solid var(--input-border-color, #C4C6CF);
+  padding: 0 8px;
+  padding: 0 var(--input-addon-padding, 8px);
+}
+.next-input-group-text:first-child {
+  border-right-width: 0;
+}
+.next-input-group-text:last-child {
+  border-left-width: 0;
+}
+.next-input-group-text.next-disabled {
+  color: #CCCCCC;
+  color: var(--input-disabled-color, #CCCCCC);
+  border-color: #E6E7EB;
+  border-color: var(--input-disabled-border-color, #E6E7EB);
+  background-color: #F7F8FA;
+  background-color: var(--input-disabled-bg-color, #F7F8FA);
+  cursor: not-allowed;
+}
+.next-input-group-text.next-disabled:hover {
+  border-color: #E6E7EB;
+  border-color: var(--input-disabled-border-color, #E6E7EB);
+  background-color: #F7F8FA;
+  background-color: var(--input-disabled-bg-color, #F7F8FA);
+}
+.next-input-group-text.next-small {
+  font-size: 12px;
+  font-size: var(--form-element-small-font-size, 12px);
+  border-radius: 3px;
+  border-radius: var(--form-element-small-corner, 3px);
+}
+.next-input-group-text.next-medium {
+  font-size: 12px;
+  font-size: var(--form-element-medium-font-size, 12px);
+  border-radius: 3px;
+  border-radius: var(--form-element-medium-corner, 3px);
+}
+.next-input-group-text.next-large {
+  font-size: 16px;
+  font-size: var(--form-element-large-font-size, 16px);
+  border-radius: 3px;
+  border-radius: var(--form-element-large-corner, 3px);
+}
+
+.next-input[dir=rtl].next-small .next-input-label {
+  padding-left: 0;
+  padding-right: 8px;
+  padding-right: var(--input-s-label-padding-left, 8px);
+}
+.next-input[dir=rtl].next-small .next-input-control {
+  padding-right: 0;
+  padding-left: 4px;
+  padding-left: var(--input-s-icon-padding-right, 4px);
+}
+.next-input[dir=rtl].next-medium .next-input-label {
+  padding-left: 0;
+  padding-right: 8px;
+  padding-right: var(--input-m-label-padding-left, 8px);
+}
+.next-input[dir=rtl].next-medium .next-input-control {
+  padding-right: 0;
+  padding-left: 8px;
+  padding-left: var(--input-m-icon-padding-right, 8px);
+}
+.next-input[dir=rtl].next-large .next-input-label {
+  padding-left: 0;
+  padding-right: 12px;
+  padding-right: var(--input-l-label-padding-left, 12px);
+}
+.next-input[dir=rtl].next-large .next-input-control {
+  padding-right: 0;
+  padding-left: 8px;
+  padding-left: var(--input-l-icon-padding-right, 8px);
+}
+.next-input[dir=rtl].next-input-textarea .next-input-len {
+  text-align: left;
+}
+.next-input[dir=rtl] .next-input-control > *:not(:last-child) {
+  padding-left: 4px;
+  padding-left: var(--s-1, 4px);
+  padding-right: 0;
+}
+
+.next-input-group[dir=rtl] > .next-input:first-child.next-small {
+  border-top-left-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
+  border-top-right-radius: 3px !important;
+  border-top-right-radius: var(--form-element-small-corner, 3px) !important;
+  border-bottom-right-radius: 3px !important;
+  border-bottom-right-radius: var(--form-element-small-corner, 3px) !important;
+}
+.next-input-group[dir=rtl] > .next-input:first-child.next-medium {
+  border-top-left-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
+  border-top-right-radius: 3px !important;
+  border-top-right-radius: var(--form-element-medium-corner, 3px) !important;
+  border-bottom-right-radius: 3px !important;
+  border-bottom-right-radius: var(--form-element-medium-corner, 3px) !important;
+}
+.next-input-group[dir=rtl] > .next-input:first-child.next-large {
+  border-top-left-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
+  border-top-right-radius: 3px !important;
+  border-top-right-radius: var(--form-element-large-corner, 3px) !important;
+  border-bottom-right-radius: 3px !important;
+  border-bottom-right-radius: var(--form-element-large-corner, 3px) !important;
+}
+.next-input-group[dir=rtl] > .next-input:last-child.next-small {
+  border-top-left-radius: 3px !important;
+  border-top-left-radius: var(--form-element-small-corner, 3px) !important;
+  border-bottom-left-radius: 3px !important;
+  border-bottom-left-radius: var(--form-element-small-corner, 3px) !important;
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+}
+.next-input-group[dir=rtl] > .next-input:last-child.next-medium {
+  border-top-left-radius: 3px !important;
+  border-top-left-radius: var(--form-element-medium-corner, 3px) !important;
+  border-bottom-left-radius: 3px !important;
+  border-bottom-left-radius: var(--form-element-medium-corner, 3px) !important;
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+}
+.next-input-group[dir=rtl] > .next-input:last-child.next-large {
+  border-top-left-radius: 3px !important;
+  border-top-left-radius: var(--form-element-large-corner, 3px) !important;
+  border-bottom-left-radius: 3px !important;
+  border-bottom-left-radius: var(--form-element-large-corner, 3px) !important;
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+}
+.next-input-group[dir=rtl] .next-input-group-addon {
+  /* stylelint-disable declaration-no-important */
+}
+.next-input-group[dir=rtl] .next-input-group-addon:first-child, .next-input-group[dir=rtl] .next-input-group-addon:first-child > .next-input, .next-input-group[dir=rtl] .next-input-group-addon:first-child > * > .next-input {
+  border-bottom-left-radius: 0 !important;
+  border-top-left-radius: 0 !important;
+}
+.next-input-group[dir=rtl] .next-input-group-addon:first-child.next-small, .next-input-group[dir=rtl] .next-input-group-addon:first-child > .next-input.next-small, .next-input-group[dir=rtl] .next-input-group-addon:first-child > * > .next-input.next-small {
+  border-bottom-right-radius: 3px !important;
+  border-bottom-right-radius: var(--form-element-small-corner, 3px) !important;
+  border-top-right-radius: 3px !important;
+  border-top-right-radius: var(--form-element-small-corner, 3px) !important;
+}
+.next-input-group[dir=rtl] .next-input-group-addon:first-child.next-medium, .next-input-group[dir=rtl] .next-input-group-addon:first-child > .next-input.next-medium, .next-input-group[dir=rtl] .next-input-group-addon:first-child > * > .next-input.next-medium {
+  border-bottom-right-radius: 3px !important;
+  border-bottom-right-radius: var(--form-element-medium-corner, 3px) !important;
+  border-top-right-radius: 3px !important;
+  border-top-right-radius: var(--form-element-medium-corner, 3px) !important;
+}
+.next-input-group[dir=rtl] .next-input-group-addon:first-child.next-large, .next-input-group[dir=rtl] .next-input-group-addon:first-child > .next-input.next-large, .next-input-group[dir=rtl] .next-input-group-addon:first-child > * > .next-input.next-large {
+  border-bottom-right-radius: 3px !important;
+  border-bottom-right-radius: var(--form-element-large-corner, 3px) !important;
+  border-top-right-radius: 3px !important;
+  border-top-right-radius: var(--form-element-large-corner, 3px) !important;
+}
+.next-input-group[dir=rtl] .next-input-group-addon:first-child > * {
+  margin-left: -1px;
+  margin-left: calc(0px - var(--input-border-width, 1px));
+  border-bottom-left-radius: 0 !important;
+  border-top-left-radius: 0 !important;
+}
+.next-input-group[dir=rtl] .next-input-group-addon:last-child, .next-input-group[dir=rtl] .next-input-group-addon:last-child > .next-input, .next-input-group[dir=rtl] .next-input-group-addon:last-child > * > .next-input {
+  border-bottom-right-radius: 0 !important;
+  border-top-right-radius: 0 !important;
+}
+.next-input-group[dir=rtl] .next-input-group-addon:last-child.next-small, .next-input-group[dir=rtl] .next-input-group-addon:last-child > .next-input.next-small, .next-input-group[dir=rtl] .next-input-group-addon:last-child > * > .next-input.next-small {
+  border-bottom-left-radius: 3px !important;
+  border-bottom-left-radius: var(--form-element-small-corner, 3px) !important;
+  border-top-left-radius: 3px !important;
+  border-top-left-radius: var(--form-element-small-corner, 3px) !important;
+}
+.next-input-group[dir=rtl] .next-input-group-addon:last-child.next-medium, .next-input-group[dir=rtl] .next-input-group-addon:last-child > .next-input.next-medium, .next-input-group[dir=rtl] .next-input-group-addon:last-child > * > .next-input.next-medium {
+  border-bottom-left-radius: 3px !important;
+  border-bottom-left-radius: var(--form-element-medium-corner, 3px) !important;
+  border-top-left-radius: 3px !important;
+  border-top-left-radius: var(--form-element-medium-corner, 3px) !important;
+}
+.next-input-group[dir=rtl] .next-input-group-addon:last-child.next-large, .next-input-group[dir=rtl] .next-input-group-addon:last-child > .next-input.next-large, .next-input-group[dir=rtl] .next-input-group-addon:last-child > * > .next-input.next-large {
+  border-bottom-left-radius: 3px !important;
+  border-bottom-left-radius: var(--form-element-large-corner, 3px) !important;
+  border-top-left-radius: 3px !important;
+  border-top-left-radius: var(--form-element-large-corner, 3px) !important;
+}
+.next-input-group[dir=rtl] .next-input-group-addon:last-child > * {
+  margin-right: -1px;
+  margin-right: calc(0px - var(--input-border-width, 1px));
+  border-bottom-right-radius: 0 !important;
+  border-top-right-radius: 0 !important;
+}
+.next-input-group[dir=rtl] .next-input-group-text:first-child {
+  border-right-width: 1px;
+  border-right-width: var(--input-border-width, 1px);
+  border-left: 0;
+}
+.next-input-group[dir=rtl] .next-input-group-text:last-child {
+  border-left-width: 1px;
+  border-left-width: var(--input-border-width, 1px);
+  border-right: 0;
+}

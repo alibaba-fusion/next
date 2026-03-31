@@ -1,0 +1,292 @@
+{
+  "name": "Step",
+  "props": {
+    "current": {
+      "type": {
+        "name": "number"
+      },
+      "required": false,
+      "description": "当前步骤",
+      "defaultValue": {
+        "value": "0",
+        "computed": false
+      },
+      "docblock": "当前步骤"
+    },
+    "direction": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'hoz'",
+            "computed": false
+          },
+          {
+            "value": "'ver'",
+            "computed": false
+          }
+        ]
+      },
+      "required": false,
+      "description": "展示方向",
+      "defaultValue": {
+        "value": "'hoz'",
+        "computed": false
+      },
+      "docblock": "展示方向"
+    },
+    "labelPlacement": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'hoz'",
+            "computed": false
+          },
+          {
+            "value": "'ver'",
+            "computed": false
+          }
+        ]
+      },
+      "required": false,
+      "description": "横向布局时( direction 为 hoz )的内容排列",
+      "defaultValue": {
+        "value": "'ver'",
+        "computed": false
+      },
+      "docblock": "横向布局时( direction 为 hoz )的内容排列"
+    },
+    "shape": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'circle'",
+            "computed": false
+          },
+          {
+            "value": "'arrow'",
+            "computed": false
+          },
+          {
+            "value": "'dot'",
+            "computed": false
+          }
+        ]
+      },
+      "required": false,
+      "description": "类型",
+      "defaultValue": {
+        "value": "'circle'",
+        "computed": false
+      },
+      "docblock": "类型"
+    },
+    "readOnly": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否只读模式",
+      "docblock": "是否只读模式"
+    },
+    "animation": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否开启动效",
+      "defaultValue": {
+        "value": "true",
+        "computed": false
+      },
+      "docblock": "是否开启动效"
+    },
+    "className": {
+      "type": {
+        "name": "string"
+      },
+      "required": false,
+      "description": "自定义样式名",
+      "docblock": "自定义样式名"
+    },
+    "itemRender": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "StepItem 的自定义渲染",
+      "defaultValue": {
+        "value": "null",
+        "computed": false
+      },
+      "docblock": "StepItem 的自定义渲染\n@param {Number} index   节点索引\n@param {String} status  节点状态\n@returns {Node} 节点的渲染结果",
+      "params": [
+        {
+          "name": "index",
+          "description": "节点索引",
+          "type": {
+            "name": "Number"
+          }
+        },
+        {
+          "name": "status",
+          "description": "节点状态",
+          "type": {
+            "name": "String"
+          }
+        }
+      ],
+      "returns": {
+        "description": "节点的渲染结果",
+        "type": {
+          "name": "Node"
+        }
+      }
+    },
+    "stretch": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "宽度横向拉伸",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "宽度横向拉伸"
+    }
+  },
+  "methods": [],
+  "subComponents": [
+    {
+      "name": "Item",
+      "props": {
+        "status": {
+          "type": {
+            "name": "enum",
+            "value": [
+              {
+                "value": "'wait'",
+                "computed": false
+              },
+              {
+                "value": "'process'",
+                "computed": false
+              },
+              {
+                "value": "'finish'",
+                "computed": false
+              }
+            ]
+          },
+          "required": false,
+          "description": "步骤的状态，如不传，会根据外层的 Step 的 current 属性生成，可选值为 `wait`, `process`, `finish`",
+          "docblock": "步骤的状态，如不传，会根据外层的 Step 的 current 属性生成，可选值为 `wait`, `process`, `finish`"
+        },
+        "title": {
+          "type": {
+            "name": "node"
+          },
+          "required": false,
+          "description": "标题",
+          "docblock": "标题"
+        },
+        "icon": {
+          "type": {
+            "name": "string"
+          },
+          "required": false,
+          "description": "图标",
+          "docblock": "图标"
+        },
+        "content": {
+          "type": {
+            "name": "node"
+          },
+          "required": false,
+          "description": "内容填充, shape为 arrow 时无效",
+          "docblock": "内容填充, shape为 arrow 时无效"
+        },
+        "itemRender": {
+          "type": {
+            "name": "func"
+          },
+          "required": false,
+          "description": "StepItem 的自定义渲染, 会覆盖父节点设置的itemRender",
+          "docblock": "StepItem 的自定义渲染, 会覆盖父节点设置的itemRender\n@param {Number} index   节点索引\n@param {String} status  节点状态\n@returns {Node} 节点的渲染结果",
+          "params": [
+            {
+              "name": "index",
+              "description": "节点索引",
+              "type": {
+                "name": "Number"
+              }
+            },
+            {
+              "name": "status",
+              "description": "节点状态",
+              "type": {
+                "name": "String"
+              }
+            }
+          ],
+          "returns": {
+            "description": "节点的渲染结果",
+            "type": {
+              "name": "Node"
+            }
+          }
+        },
+        "percent": {
+          "type": {
+            "name": "number"
+          },
+          "required": false,
+          "description": "百分比",
+          "docblock": "百分比"
+        },
+        "disabled": {
+          "type": {
+            "name": "bool"
+          },
+          "required": false,
+          "description": "是否禁用",
+          "docblock": "是否禁用"
+        },
+        "onClick": {
+          "type": {
+            "name": "func"
+          },
+          "required": false,
+          "description": "点击步骤时的回调",
+          "defaultValue": {
+            "value": "() => {}",
+            "computed": false
+          },
+          "docblock": "点击步骤时的回调\n@param {Number} index 节点索引",
+          "params": [
+            {
+              "name": "index",
+              "description": "节点索引",
+              "type": {
+                "name": "Number"
+              }
+            }
+          ],
+          "returns": null
+        },
+        "className": {
+          "type": {
+            "name": "string"
+          },
+          "required": false,
+          "description": "自定义样式",
+          "docblock": "自定义样式"
+        }
+      },
+      "methods": []
+    }
+  ]
+}

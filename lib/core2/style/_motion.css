@@ -1,0 +1,14 @@
+:root {
+--motion-ease: ease;
+--motion-ease-in: ease-in;
+--motion-ease-out: ease-out;
+--motion-ease-in-out: ease-in-out;
+--motion-linear: linear;
+--motion-duration-immediately: 100ms;
+--motion-duration-standard: 300ms;
+--motion-duration-complex: 450ms;
+--motion-duration-continue: 600ms;
+--motion-default: cubic-bezier(0.4, 0, 0.2, 1);
+--motion-duration-standard-in: 300ms;
+--motion-duration-standard-out: 250ms;
+}

@@ -1,0 +1,20 @@
+@include keyframes(zoomInBig) {
+    0% {
+        opacity: 0;
+        @include transform(scale(.9));
+    }
+    100% {
+        opacity: 1;
+        @include transform(scale(1));
+    }
+}
+
+@mixin zoomInBig($count: $countDefault, $duration: $durationSmallDefault, $delay: $delayDefault, $function: $zoom-big-func, $fill: $fillDefault, $visibility: $visibilityDefault) {
+    @include animation-name(zoomInBig);
+    @include count($count);
+    @include duration($duration);
+    @include delay($delay);
+    @include function($function);
+    @include fill-mode($fill);
+    @include visibility($visibility);
+}

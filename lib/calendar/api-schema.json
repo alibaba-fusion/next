@@ -1,0 +1,292 @@
+{
+  "name": "Calendar",
+  "props": {
+    "defaultValue": {
+      "type": {
+        "name": "custom",
+        "raw": "checkMomentObj"
+      },
+      "required": false,
+      "description": "默认选中的日期（moment 对象）",
+      "docblock": "默认选中的日期（moment 对象）"
+    },
+    "value": {
+      "type": {
+        "name": "custom",
+        "raw": "checkMomentObj"
+      },
+      "required": false,
+      "description": "选中的日期值 (moment 对象)",
+      "docblock": "选中的日期值 (moment 对象)"
+    },
+    "mode": {
+      "type": {
+        "name": "enum",
+        "computed": true,
+        "value": "CALENDAR_MODES"
+      },
+      "required": false,
+      "description": "面板模式",
+      "docblock": "面板模式"
+    },
+    "showOtherMonth": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否展示非本月的日期",
+      "defaultValue": {
+        "value": "true",
+        "computed": false
+      },
+      "docblock": "是否展示非本月的日期"
+    },
+    "defaultVisibleMonth": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "默认展示的月份",
+      "docblock": "默认展示的月份",
+      "params": [],
+      "returns": null
+    },
+    "shape": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'card'",
+            "computed": false
+          },
+          {
+            "value": "'fullscreen'",
+            "computed": false
+          },
+          {
+            "value": "'panel'",
+            "computed": false
+          }
+        ]
+      },
+      "required": false,
+      "description": "展现形态",
+      "defaultValue": {
+        "value": "'fullscreen'",
+        "computed": false
+      },
+      "docblock": "展现形态"
+    },
+    "onSelect": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "选择日期单元格时的回调",
+      "defaultValue": {
+        "value": "func.noop",
+        "computed": true
+      },
+      "docblock": "选择日期单元格时的回调\n@param {Object} value 对应的日期值 (moment 对象)",
+      "params": [
+        {
+          "name": "value",
+          "description": "对应的日期值 (moment 对象)",
+          "type": {
+            "name": "Object"
+          }
+        }
+      ],
+      "returns": null
+    },
+    "onModeChange": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "面板模式变化时的回调",
+      "defaultValue": {
+        "value": "func.noop",
+        "computed": true
+      },
+      "docblock": "面板模式变化时的回调\n@param {String} mode 对应面板模式 date month year",
+      "params": [
+        {
+          "name": "mode",
+          "description": "对应面板模式 date month year",
+          "type": {
+            "name": "String"
+          }
+        }
+      ],
+      "returns": null
+    },
+    "onVisibleMonthChange": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "展现的月份变化时的回调",
+      "defaultValue": {
+        "value": "func.noop",
+        "computed": true
+      },
+      "docblock": "展现的月份变化时的回调\n@param {Object} value 显示的月份 (moment 对象)\n@param {String} reason 触发月份改变原因",
+      "params": [
+        {
+          "name": "value",
+          "description": "显示的月份 (moment 对象)",
+          "type": {
+            "name": "Object"
+          }
+        },
+        {
+          "name": "reason",
+          "description": "触发月份改变原因",
+          "type": {
+            "name": "String"
+          }
+        }
+      ],
+      "returns": null
+    },
+    "className": {
+      "type": {
+        "name": "string"
+      },
+      "required": false,
+      "description": "自定义样式类",
+      "docblock": "自定义样式类"
+    },
+    "dateCellRender": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "自定义日期渲染函数",
+      "defaultValue": {
+        "value": "value => value.date()",
+        "computed": false
+      },
+      "docblock": "自定义日期渲染函数\n@param {Object} value 日期值（moment对象）\n@returns {ReactNode}",
+      "params": [
+        {
+          "name": "value",
+          "description": "日期值（moment对象）",
+          "type": {
+            "name": "Object"
+          }
+        }
+      ],
+      "returns": {
+        "description": null,
+        "type": {
+          "name": "ReactNode"
+        }
+      }
+    },
+    "monthCellRender": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "自定义月份渲染函数",
+      "docblock": "自定义月份渲染函数\n@param {Object} calendarDate 对应 Calendar 返回的自定义日期对象\n@returns {ReactNode}",
+      "params": [
+        {
+          "name": "calendarDate",
+          "description": "对应 Calendar 返回的自定义日期对象",
+          "type": {
+            "name": "Object"
+          }
+        }
+      ],
+      "returns": {
+        "description": null,
+        "type": {
+          "name": "ReactNode"
+        }
+      }
+    },
+    "yearRange": {
+      "type": {
+        "name": "arrayOf",
+        "value": {
+          "name": "number"
+        }
+      },
+      "required": false,
+      "description": "年份范围，[START_YEAR, END_YEAR] (只在shape 为 ‘card’, 'fullscreen' 下生效)",
+      "docblock": "年份范围，[START_YEAR, END_YEAR] (只在shape 为 ‘card’, 'fullscreen' 下生效)"
+    },
+    "disabledDate": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "不可选择的日期",
+      "docblock": "不可选择的日期\n@param {Object} calendarDate 对应 Calendar 返回的自定义日期对象\n@param {String} view 当前视图类型，year: 年， month: 月, date: 日\n@returns {Boolean}",
+      "params": [
+        {
+          "name": "calendarDate",
+          "description": "对应 Calendar 返回的自定义日期对象",
+          "type": {
+            "name": "Object"
+          }
+        },
+        {
+          "name": "view",
+          "description": "当前视图类型，year: 年， month: 月, date: 日",
+          "type": {
+            "name": "String"
+          }
+        }
+      ],
+      "returns": {
+        "description": null,
+        "type": {
+          "name": "Boolean"
+        }
+      }
+    },
+    "locale": {
+      "type": {
+        "name": "object"
+      },
+      "required": false,
+      "description": "国际化配置",
+      "defaultValue": {
+        "value": "nextLocale.Calendar",
+        "computed": true
+      },
+      "docblock": "国际化配置",
+      "properties": []
+    }
+  },
+  "methods": [
+    {
+      "name": "changeVisibleMonthByOffset",
+      "docblock": "根据日期偏移量设置当前展示的月份\n@param {Number} offset 日期偏移的数量\n@param {String} type 日期偏移的类型 days, months, years",
+      "modifiers": [],
+      "params": [
+        {
+          "name": "offset",
+          "description": "日期偏移的数量",
+          "type": {
+            "name": "Number"
+          }
+        },
+        {
+          "name": "type",
+          "description": "日期偏移的类型 days, months, years",
+          "type": {
+            "name": "String"
+          }
+        }
+      ],
+      "returns": null,
+      "description": "根据日期偏移量设置当前展示的月份"
+    }
+  ],
+  "subComponents": []
+}

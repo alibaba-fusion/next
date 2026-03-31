@@ -1,0 +1,8 @@
+:root {
+--date-picker-input-separator-width: 16px;
+--date-picker-panel-footer-padding-lr: 20px;
+--date-picker-panel-footer-padding-tb: 8px;
+--date-picker-panel-background: #FFFFFF;
+--date-picker-panel-time-panel-separator-color: #DCDEE3;
+--date-picker-calendar-icon: "\e607";
+}

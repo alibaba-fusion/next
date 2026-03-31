@@ -1,0 +1,124 @@
+{
+  "name": "Typography",
+  "props": {
+    "component": {
+      "type": {
+        "name": "custom",
+        "raw": "PropTypes.elementType"
+      },
+      "required": false,
+      "description": "设置标签类型",
+      "defaultValue": {
+        "value": "'article'",
+        "computed": false
+      },
+      "docblock": "设置标签类型"
+    }
+  },
+  "methods": [],
+  "description": "继承 Typography.Text API",
+  "order": 0,
+  "subComponents": [
+    {
+      "name": "Paragraph",
+      "props": {
+        "component": {
+          "type": {
+            "name": "custom",
+            "raw": "PropTypes.elementType"
+          },
+          "required": false,
+          "description": "设置标签类型",
+          "defaultValue": {
+            "value": "'p'",
+            "computed": false
+          },
+          "docblock": "设置标签类型"
+        }
+      },
+      "methods": [],
+      "description": "继承 Typography.Text 的 API",
+      "order": 2
+    },
+    {
+      "name": "Text",
+      "props": {
+        "delete": {
+          "type": {
+            "name": "bool"
+          },
+          "required": false,
+          "description": "添加删除线样式",
+          "defaultValue": {
+            "value": "false",
+            "computed": false
+          },
+          "docblock": "添加删除线样式"
+        },
+        "mark": {
+          "type": {
+            "name": "bool"
+          },
+          "required": false,
+          "description": "添加标记样式",
+          "defaultValue": {
+            "value": "false",
+            "computed": false
+          },
+          "docblock": "添加标记样式"
+        },
+        "underline": {
+          "type": {
+            "name": "bool"
+          },
+          "required": false,
+          "description": "添加下划线样式",
+          "defaultValue": {
+            "value": "false",
+            "computed": false
+          },
+          "docblock": "添加下划线样式"
+        },
+        "strong": {
+          "type": {
+            "name": "bool"
+          },
+          "required": false,
+          "description": "是否加粗",
+          "defaultValue": {
+            "value": "false",
+            "computed": false
+          },
+          "docblock": "是否加粗"
+        },
+        "code": {
+          "type": {
+            "name": "bool"
+          },
+          "required": false,
+          "description": "添加代码样式",
+          "defaultValue": {
+            "value": "false",
+            "computed": false
+          },
+          "docblock": "添加代码样式"
+        },
+        "component": {
+          "type": {
+            "name": "custom",
+            "raw": "PropTypes.elementType"
+          },
+          "required": false,
+          "description": "设置标签类型",
+          "defaultValue": {
+            "value": "'span'",
+            "computed": false
+          },
+          "docblock": "设置标签类型"
+        }
+      },
+      "methods": [],
+      "order": 3
+    }
+  ]
+}

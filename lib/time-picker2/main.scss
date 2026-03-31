@@ -1,0 +1,127 @@
+@import "../core/index-noreset.scss";
+@import "../input/scss/variable.scss";
+@import "../input/scss/mixin.scss";
+@import "../date-picker2/scss/variable.scss";
+@import "../date-picker2/scss/footer.scss";
+
+@import "./scss/variable";
+@import "./scss/menu.scss";
+@import "./scss/panel.scss";
+@import "./scss/footer.scss";
+@import "./rtl.scss";
+
+#{$time-picker2-prefix} {
+    @include box-sizing;
+
+    display: inline-block;
+
+    &-trigger .#{$css-prefix}input {
+        width: 100%;
+    }
+
+    &-wrapper {
+        padding: $s-1 0;
+    }
+
+    &-body {
+        display: block;
+        overflow: hidden;
+        border: $popup-local-border-width $popup-local-border-style $popup-local-border-color;
+        border-radius: $popup-local-corner;
+        background: $color-white;
+        box-shadow: $popup-local-shadow;
+    }
+
+    &-symbol-clock-icon::before {
+        content: $icon-content-clock;
+    }
+
+
+    &-input {
+        display: inline-flex;
+        align-items: center;
+        outline: none;
+        box-sizing: border-box;
+        border: $input-border-width solid $input-border-color;
+        vertical-align: middle;
+        width: inherit;
+        background-color: $input-bg-color;
+
+        #{$input-prefix} {
+            border: none;
+            width: 100%;
+            height: 100%;
+            input {
+                height: 100%;
+            }
+        }
+
+        &#{$time-picker2-prefix}-input-small {
+            @include input-size(
+                $form-element-small-height,
+                $input-s-padding,
+                $form-element-small-font-size,
+                $input-s-label-padding-left,
+                $input-s-icon-padding-right
+            );
+            @include input-icon-size($form-element-small-icon-size);
+            @include input-border-radius($form-element-small-corner);
+        }
+
+        &#{$time-picker2-prefix}-input-medium {
+            @include input-size(
+                $form-element-medium-height,
+                $input-m-padding,
+                $form-element-medium-font-size,
+                $input-m-label-padding-left,
+                $input-m-icon-padding-right
+            );
+            @include input-icon-size($form-element-medium-icon-size);
+            @include input-border-radius($form-element-medium-corner);
+        }
+
+        &#{$time-picker2-prefix}-input-large {
+            @include input-size(
+                $form-element-large-height,
+                $input-l-padding,
+                $form-element-large-font-size,
+                $input-l-label-padding-left,
+                $input-l-icon-padding-right
+            );
+            @include input-icon-size($form-element-large-icon-size);
+            @include input-border-radius($form-element-large-corner);
+        }
+
+        &:hover {
+            border-color: $input-hover-border-color;
+            background-color: $input-hover-bg-color;
+        }
+
+        &#{$time-picker2-prefix}-input-focus {
+            border-color: $input-focus-border-color;
+            background-color: $input-focus-bg-color;
+            box-shadow: 0 0 0 $input-focus-shadow-spread $color-calculate-input-focus-shadow;
+        }
+
+        &#{$time-picker2-prefix}-input-noborder {
+            border-color: transparent !important;
+            box-shadow: none !important;
+        }
+
+        &#{$time-picker2-prefix}-input-disabled {
+            @include input-disabled();
+        }
+
+        &#{$time-picker2-prefix}-input-error {
+            border-color: $input-feedback-error-border-color;
+        }
+    }
+
+    &-input-separator {
+        color: $input-border-color;
+        font-size: 12px;
+        display: inline-block;
+        min-width: 16px;
+        text-align: center;
+    }
+}

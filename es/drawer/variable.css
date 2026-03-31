@@ -1,0 +1,28 @@
+:root {
+--drawer-title-font-size: 16px;
+--drawer-title-padding-top: 12px;
+--drawer-title-padding-bottom: 12px;
+--drawer-title-padding-left-right: 20px;
+--drawer-title-border-width: 1px;
+--drawer-content-font-size: 12px;
+--drawer-content-padding-top: 20px;
+--drawer-content-padding-bottom: 20px;
+--drawer-content-padding-left-right: 20px;
+--drawer-close-top: 12px;
+--drawer-close-right: 12px;
+--drawer-close-width: 16px;
+--drawer-close-size: 12px;
+--drawer-bg: #FFFFFF;
+--drawer-border-width: 1px;
+--drawer-border-color: #DCDEE3;
+--drawer-border-style: solid;
+--drawer-corner: 3px;
+--drawer-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.12);
+--drawer-title-color: #333333;
+--drawer-title-bg-color: #FFFFFF;
+--drawer-title-border-color: #DCDEE3;
+--drawer-content-color: #666666;
+--drawer-close-color: #999999;
+--drawer-close-color-hovered: #333333;
+--drawer-close-bg-hovered: transparent;
+}

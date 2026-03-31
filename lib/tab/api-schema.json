@@ -1,0 +1,472 @@
+{
+  "name": "Tab",
+  "props": {
+    "activeKey": {
+      "type": {
+        "name": "union",
+        "value": [
+          {
+            "name": "number"
+          },
+          {
+            "name": "string"
+          }
+        ]
+      },
+      "required": false,
+      "description": "被激活的选项卡的 key, 赋值则tab为受控组件, 用户无法切换",
+      "docblock": "被激活的选项卡的 key, 赋值则tab为受控组件, 用户无法切换"
+    },
+    "defaultActiveKey": {
+      "type": {
+        "name": "union",
+        "value": [
+          {
+            "name": "number"
+          },
+          {
+            "name": "string"
+          }
+        ]
+      },
+      "required": false,
+      "description": "初始化时被激活的选项卡的 key",
+      "docblock": "初始化时被激活的选项卡的 key"
+    },
+    "shape": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'pure'",
+            "computed": false
+          },
+          {
+            "value": "'wrapped'",
+            "computed": false
+          },
+          {
+            "value": "'text'",
+            "computed": false
+          },
+          {
+            "value": "'capsule'",
+            "computed": false
+          }
+        ]
+      },
+      "required": false,
+      "description": "外观形态",
+      "defaultValue": {
+        "value": "'pure'",
+        "computed": false
+      },
+      "docblock": "外观形态"
+    },
+    "animation": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否开启动效",
+      "defaultValue": {
+        "value": "true",
+        "computed": false
+      },
+      "docblock": "是否开启动效"
+    },
+    "excessMode": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'slide'",
+            "computed": false
+          },
+          {
+            "value": "'dropdown'",
+            "computed": false
+          }
+        ]
+      },
+      "required": false,
+      "description": "选项卡过多时的滑动模式",
+      "defaultValue": {
+        "value": "'slide'",
+        "computed": false
+      },
+      "docblock": "选项卡过多时的滑动模式"
+    },
+    "tabPosition": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'top'",
+            "computed": false
+          },
+          {
+            "value": "'bottom'",
+            "computed": false
+          },
+          {
+            "value": "'left'",
+            "computed": false
+          },
+          {
+            "value": "'right'",
+            "computed": false
+          }
+        ]
+      },
+      "required": false,
+      "description": "导航选项卡的位置，只适用于包裹型（wrapped）选项卡",
+      "defaultValue": {
+        "value": "'top'",
+        "computed": false
+      },
+      "docblock": "导航选项卡的位置，只适用于包裹型（wrapped）选项卡"
+    },
+    "size": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'small'",
+            "computed": false
+          },
+          {
+            "value": "'medium'",
+            "computed": false
+          }
+        ]
+      },
+      "required": false,
+      "description": "尺寸",
+      "defaultValue": {
+        "value": "'medium'",
+        "computed": false
+      },
+      "docblock": "尺寸"
+    },
+    "triggerType": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'hover'",
+            "computed": false
+          },
+          {
+            "value": "'click'",
+            "computed": false
+          }
+        ]
+      },
+      "required": false,
+      "description": "激活选项卡的触发方式",
+      "defaultValue": {
+        "value": "'click'",
+        "computed": false
+      },
+      "docblock": "激活选项卡的触发方式"
+    },
+    "lazyLoad": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否延迟加载 TabItem 的内容, 默认开启, 即不提前渲染",
+      "defaultValue": {
+        "value": "true",
+        "computed": false
+      },
+      "docblock": "是否延迟加载 TabItem 的内容, 默认开启, 即不提前渲染"
+    },
+    "unmountInactiveTabs": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否自动卸载未处于激活状态的选项卡",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "是否自动卸载未处于激活状态的选项卡"
+    },
+    "navStyle": {
+      "type": {
+        "name": "object"
+      },
+      "required": false,
+      "description": "导航条的自定义样式",
+      "docblock": "导航条的自定义样式",
+      "properties": []
+    },
+    "navClassName": {
+      "type": {
+        "name": "string"
+      },
+      "required": false,
+      "description": "导航条的自定义样式类",
+      "docblock": "导航条的自定义样式类"
+    },
+    "contentStyle": {
+      "type": {
+        "name": "object"
+      },
+      "required": false,
+      "description": "内容区容器的自定义样式",
+      "docblock": "内容区容器的自定义样式",
+      "properties": []
+    },
+    "contentClassName": {
+      "type": {
+        "name": "string"
+      },
+      "required": false,
+      "description": "内容区容器的自定义样式类",
+      "docblock": "内容区容器的自定义样式类"
+    },
+    "extra": {
+      "type": {
+        "name": "node"
+      },
+      "required": false,
+      "description": "导航栏附加内容",
+      "docblock": "导航栏附加内容"
+    },
+    "disableKeyboard": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "禁止键盘事件，设置后无法通过键盘的上下左右按键，切换当前选中的tab",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "禁止键盘事件，设置后无法通过键盘的上下左右按键，切换当前选中的tab"
+    },
+    "onClick": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "点击单个选项卡时触发的回调",
+      "defaultValue": {
+        "value": "() => {}",
+        "computed": false
+      },
+      "docblock": "点击单个选项卡时触发的回调",
+      "params": [],
+      "returns": null
+    },
+    "onChange": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "选项卡发生切换时的事件回调",
+      "defaultValue": {
+        "value": "() => {}",
+        "computed": false
+      },
+      "docblock": "选项卡发生切换时的事件回调\n@param {String|Number} key 改变后的 key",
+      "params": [
+        {
+          "name": "key",
+          "description": "改变后的 key",
+          "type": {
+            "name": "union",
+            "value": [
+              "String",
+              "Number"
+            ]
+          }
+        }
+      ],
+      "returns": null
+    },
+    "onClose": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "选项卡被关闭时的事件回调",
+      "defaultValue": {
+        "value": "() => {}",
+        "computed": false
+      },
+      "docblock": "选项卡被关闭时的事件回调\n@param {String|Number} key   关闭的选项卡的 key",
+      "params": [
+        {
+          "name": "key",
+          "description": "关闭的选项卡的 key",
+          "type": {
+            "name": "union",
+            "value": [
+              "String",
+              "Number"
+            ]
+          }
+        }
+      ],
+      "returns": null
+    },
+    "tabRender": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "自定义选项卡模板渲染函数",
+      "docblock": "自定义选项卡模板渲染函数\n@param {String} key 当前 Tab.Item 的 key 值\n@param {Object} props 传给 Tab.Item 的所有属性键值对\n@return {ReactNode} 返回自定义组件",
+      "params": [
+        {
+          "name": "key",
+          "description": "当前 Tab.Item 的 key 值",
+          "type": {
+            "name": "String"
+          }
+        },
+        {
+          "name": "props",
+          "description": "传给 Tab.Item 的所有属性键值对",
+          "type": {
+            "name": "Object"
+          }
+        }
+      ],
+      "returns": {
+        "description": "返回自定义组件",
+        "type": {
+          "name": "ReactNode"
+        }
+      }
+    },
+    "popupProps": {
+      "type": {
+        "name": "object"
+      },
+      "required": false,
+      "description": "弹层属性透传, 只有当 excessMode 为 dropdown 时生效",
+      "docblock": "弹层属性透传, 只有当 excessMode 为 dropdown 时生效",
+      "properties": []
+    },
+    "icons": {
+      "type": {
+        "name": "shape",
+        "value": {
+          "prev": {
+            "name": "union",
+            "value": [
+              {
+                "name": "node"
+              },
+              {
+                "name": "string"
+              }
+            ],
+            "required": false
+          },
+          "next": {
+            "name": "union",
+            "value": [
+              {
+                "name": "node"
+              },
+              {
+                "name": "string"
+              }
+            ],
+            "required": false
+          },
+          "dropdown": {
+            "name": "union",
+            "value": [
+              {
+                "name": "node"
+              },
+              {
+                "name": "string"
+              }
+            ],
+            "required": false
+          }
+        }
+      },
+      "required": false,
+      "description": "自定义组件内 icon",
+      "defaultValue": {
+        "value": "{}",
+        "computed": false
+      },
+      "docblock": "自定义组件内 icon",
+      "properties": []
+    },
+    "showAdd": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "新增按钮",
+      "docblock": "新增按钮"
+    },
+    "onAdd": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "新增的事件回调",
+      "docblock": "新增的事件回调",
+      "params": [],
+      "returns": null
+    },
+    "addIcon": {
+      "type": {
+        "name": "node"
+      },
+      "required": false,
+      "description": "自定义添加按钮",
+      "docblock": "自定义添加按钮"
+    }
+  },
+  "methods": [],
+  "subComponents": [
+    {
+      "name": "Item",
+      "props": {
+        "title": {
+          "type": {
+            "name": "node"
+          },
+          "required": false,
+          "description": "选项卡标题",
+          "docblock": "选项卡标题"
+        },
+        "closeable": {
+          "type": {
+            "name": "bool"
+          },
+          "required": false,
+          "description": "单个选项卡是否可关闭",
+          "defaultValue": {
+            "value": "false",
+            "computed": false
+          },
+          "docblock": "单个选项卡是否可关闭"
+        },
+        "disabled": {
+          "type": {
+            "name": "bool"
+          },
+          "required": false,
+          "description": "选项卡是否被禁用",
+          "docblock": "选项卡是否被禁用"
+        }
+      },
+      "methods": []
+    }
+  ]
+}

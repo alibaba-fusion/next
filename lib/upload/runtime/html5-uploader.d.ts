@@ -1,0 +1,57 @@
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import Uploader from './uploader';
+import type { Html5Props, UploadFile } from '../types';
+export default class Html5Uploader extends Component<Html5Props> {
+    static propTypes: {
+        action: PropTypes.Requireable<string>;
+        accept: PropTypes.Requireable<string>;
+        data: PropTypes.Requireable<object>;
+        headers: PropTypes.Requireable<object>;
+        withCredentials: PropTypes.Requireable<boolean>;
+        beforeUpload: PropTypes.Requireable<(...args: any[]) => any>;
+        onProgress: PropTypes.Requireable<(...args: any[]) => any>;
+        onSuccess: PropTypes.Requireable<(...args: any[]) => any>;
+        onError: PropTypes.Requireable<(...args: any[]) => any>;
+        children: PropTypes.Requireable<PropTypes.ReactNodeLike>;
+        timeout: PropTypes.Requireable<number>;
+        method: PropTypes.Requireable<string>;
+        request: PropTypes.Requireable<(...args: any[]) => any>;
+        id: PropTypes.Requireable<string>;
+        style: PropTypes.Requireable<object>;
+        className: PropTypes.Requireable<string>;
+        disabled: PropTypes.Requireable<boolean>;
+        multiple: PropTypes.Requireable<boolean>;
+        webkitdirectory: PropTypes.Requireable<boolean>;
+        capture: PropTypes.Requireable<string>;
+        dragable: PropTypes.Requireable<boolean>;
+        onSelect: PropTypes.Requireable<(...args: any[]) => any>;
+        onDragOver: PropTypes.Requireable<(...args: any[]) => any>;
+        onDragLeave: PropTypes.Requireable<(...args: any[]) => any>;
+        onDrop: PropTypes.Requireable<(...args: any[]) => any>;
+        name: PropTypes.Requireable<string>;
+    };
+    static defaultProps: {
+        name: string;
+        multiple: boolean;
+        withCredentials: boolean;
+        beforeUpload: () => void;
+        onSelect: () => void;
+        onDragOver: () => void;
+        onDragLeave: () => void;
+        onDrop: () => void;
+        onProgress: () => void;
+        onSuccess: () => void;
+        onError: () => void;
+        onAbort: () => void;
+        method: string;
+    };
+    uploader: Uploader;
+    componentDidMount(): void;
+    componentDidUpdate(prevProps: Html5Props): void;
+    componentWillUnmount(): void;
+    abort(file?: UploadFile): void;
+    startUpload(fileList: UploadFile[]): void;
+    getUploadOptions: (props: Html5Props) => Record<string, unknown>;
+    render(): React.JSX.Element;
+}

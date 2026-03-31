@@ -1,0 +1,269 @@
+@import "../core/index-noreset";
+
+@import "./scss/variable";
+@import "./scss/normalize";
+@import "./scss/mixin";
+
+@import "./rtl.scss";
+
+
+#{$calendar2-prefix} {
+    font-size: 12px;
+    user-select: none;
+    background: $color-white;
+
+    &-header {
+        display: flex;
+    }
+
+    &-table {
+        width: 100%;
+        table-layout: fixed;
+    }
+
+    &-cell {
+        cursor: pointer;
+        position: relative;
+        transition: background-color .2s, border .2s;
+    }
+
+    #{$calendar2-cell-inner} {
+        color: $color-text1-1;
+        outline: none;
+        min-width: 24px;
+        position: relative;
+        border: 1px solid transparent;
+    }
+
+    &-cell-disabled {
+        &::before {
+            @include calendar-disabled;
+        }
+    }
+
+    &-fullscreen,
+    &-panel,
+    &-card {
+        #{$calendar2-prefix}-header {
+            &-actions {
+                margin-left: auto;
+            }
+            &-ranges,
+            &-actions {
+                & > *:not(:first-child) {
+                    margin-left: 8px;
+                }
+            }
+
+            &-select-year,
+            &-select-month {
+                min-width: 88px;
+                .#{$css-prefix}input {
+                    min-width: auto;
+                }
+            }
+        }
+
+        #{$calendar2-prefix}-body {
+            padding: 8px 0;
+        }
+    }
+
+    &-card,
+    &-panel {
+        #{$calendar2-cell-inner} {
+            z-index: 2;
+            height: 24px;
+            line-height: 22px;
+            border-radius: 2px;
+            display: inline-block;
+        }
+
+        #{$calendar2-prefix} {
+            min-height: 150px;
+            &-table {
+                thead > tr {
+                    height: 24px;
+                    color: $color-text1-2;
+                }
+
+                th,
+                td {
+                    font-weight: 400;
+                    text-align: center;
+                    padding: 4px 0;
+                }
+
+                th {
+                    height: 32px;
+                }
+            }
+
+            &-table-month,
+            &-table-year,
+            &-table-decade {
+                height: 145px;
+                #{$calendar2-prefix}-cell-inner {
+                    min-width: 56px;
+                }
+            }
+            &-table-quarter {
+                height: 50px;
+                #{$calendar2-prefix}-cell-inner {
+                    min-width: 56px;
+                }
+            }
+
+
+            &-table-decade {
+                #{$calendar2-prefix}-cell-inner {
+                    min-width: 80px;
+                }
+            }
+        }
+
+
+        #{$calendar2-prefix}-cell-current {
+            &:not(#{$calendar2-prefix}-cell-disabled):not(#{$calendar2-prefix}-cell-selected):not(#{$calendar2-prefix}-cell-today) {
+                #{$calendar2-cell-inner} {
+                    @include calendar-current;
+                }
+
+                &:hover:not(#{$calendar2-prefix}-cell-hover) #{$calendar2-cell-inner} {
+                    @include calendar-hover;
+                }
+            }
+
+            &#{$calendar2-prefix}-cell-today:not(#{$calendar2-prefix}-cell-disabled) {
+                #{$calendar2-cell-inner} {
+                    color: $color-brand1-6;
+                }
+            }
+
+            &#{$calendar2-prefix}-cell-selected:not(#{$calendar2-prefix}-cell-disabled) {
+                #{$calendar2-cell-inner} {
+                    @include calendar-selected;
+                }
+            }
+        }
+    }
+
+    &-fullscreen {
+        #{$calendar2-prefix} {
+            &-cell-value,
+            &-table th {
+                text-align: right;
+            }
+
+            &-table th {
+                padding: 0 12px 5px 0;
+            }
+
+            &-cell-inner {
+                height: 80px;
+                border-top: 2px solid $color-line1-1;
+                margin: 0 4px;
+                padding: 4px 8px 0;
+            }
+        }
+
+        td #{$calendar2-prefix}-cell-inner {
+            height: 80px;
+            border-top: 2px solid $color-line1-1;
+        }
+
+        #{$calendar2-prefix}-cell-disabled #{$calendar2-cell-inner} {
+            @include calendar-disabled-fullscreen;
+        }
+
+        #{$calendar2-prefix}-cell-current {
+            &:not(#{$calendar2-prefix}-cell-disabled):not(#{$calendar2-prefix}-cell-selected):not(#{$calendar2-prefix}-cell-today) {
+                #{$calendar2-cell-inner} {
+                    @include calendar-current-fullscreen;
+                }
+
+                &:hover #{$calendar2-cell-inner} {
+                    @include calendar-hover-fullscreen;
+                }
+            }
+
+            &#{$calendar2-prefix}-cell-today {
+                #{$calendar2-cell-inner} {
+                    color: $color-brand1-6;
+                }
+            }
+
+            #{$calendar2-cell-inner} {
+                background-color: $color-white;
+            }
+
+            &#{$calendar2-prefix}-cell-selected:not(#{$calendar2-prefix}-cell-disabled) {
+                #{$calendar2-cell-inner} {
+                    @include calendar-selected-fullscreen;
+                }
+            }
+        }
+    }
+
+    &-card {
+        #{$calendar2-prefix} {
+            &-header {
+                padding: 8px 8px;
+                border-bottom: 1px solid $color-line1-1;
+            }
+        }
+    }
+
+    &-panel {
+        #{$calendar2-prefix}-header {
+            padding: 0 8px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid $color-line1-1;
+
+            &-btn {
+                min-width: 20px;
+                line-height: 20px;
+                color: $color-text1-3;
+                font-family: inherit;
+                vertical-align: initial;
+                border-radius: 2px;
+            }
+
+            &-btn > span,
+            &-text-field {
+                text-align: center;
+                font-size: 14px;
+                color: $color-text1-4;
+                font-weight: bolder;
+                vertical-align: initial;
+            }
+
+            &-btn:hover,
+            &-btn:hover > span {
+                color: $color-brand1-6;
+            }
+
+            &-right-btn:hover,
+            &-left-btn:hover {
+                @include calendar-hover;
+            }
+
+
+            &-text-field {
+                flex: 1;
+                height: 38px;
+                line-height: 38px;
+                #{$calendar2-prefix}-header-btn:not(:first-child) {
+                    margin-left: 6px;
+                }
+            }
+        }
+    }
+}
+
+
+#{$calendar2-prefix}-header-select-month-popup,
+#{$calendar2-prefix}-header-select-year-popup {
+    min-width: auto;
+}

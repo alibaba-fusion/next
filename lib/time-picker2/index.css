@@ -1,0 +1,461 @@
+.next-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+  top: 0;
+  margin: -1px;
+}
+
+.next-date-picker2-footer {
+  width: min-content;
+  min-width: 100%;
+  box-sizing: border-box;
+  text-align: center;
+  border-top: 1px solid #E6E7EB;
+  border-top: 1px solid var(--color-line1-1, #E6E7EB);
+  padding: 4px 12px;
+  display: flex;
+  min-height: 40px;
+  align-items: center;
+  flex-wrap: wrap;
+  position: relative;
+}
+.next-date-picker2-footer-preset > .next-btn {
+  margin-right: 8px;
+  margin-right: var(--s-2, 8px);
+}
+.next-date-picker2-footer-actions {
+  margin-left: auto;
+}
+.next-date-picker2-footer-preset-only {
+  width: 100%;
+}
+
+.next-time-picker2-menu {
+  float: left;
+  text-align: center;
+  padding: 8px 0;
+  padding: var(--s-2, 8px) 0;
+}
+.next-time-picker2-menu:not(:last-child) {
+  border-right: 1px solid #DCDEE3;
+  border-right: var(--line-1, 1px) var(--line-solid, solid) var(--color-line1-2, #DCDEE3);
+}
+.next-time-picker2-menu-title {
+  cursor: default;
+  height: 28px;
+  height: var(--s-7, 28px);
+  line-height: 28px;
+  line-height: var(--s-7, 28px);
+  font-size: 12px;
+  font-size: var(--font-size-caption, 12px);
+  font-weight: normal;
+  font-weight: var(--font-weight-2, normal);
+  color: #999999;
+  color: var(--color-text1-2, #999999);
+  background: #FFFFFF;
+}
+.next-time-picker2-menu ul {
+  position: relative;
+  overflow-y: hidden;
+  overflow-x: auto;
+  list-style: none;
+  margin: 0;
+  width: 54px;
+  padding: 0;
+  font-size: 12px;
+  font-size: var(--font-size-caption, 12px);
+  height: 224px;
+  height: calc(var(--s-8, 32px)*7);
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.next-time-picker2-menu ul::-webkit-scrollbar {
+  width: 0;
+}
+.next-time-picker2-menu ul:hover {
+  overflow-y: auto;
+}
+.next-time-picker2-menu ul:after {
+  display: block;
+  height: 192px;
+  height: calc(var(--s-8, 32px)*6);
+  content: "";
+}
+.next-time-picker2-menu-item {
+  cursor: pointer;
+  height: 32px;
+  height: var(--s-8, 32px);
+  line-height: 32px;
+  line-height: var(--s-8, 32px);
+  transition: background 100ms linear;
+  transition: background var(--motion-duration-immediately, 100ms) var(--motion-linear, linear);
+  color: #666666;
+  color: var(--color-text1-3, #666666);
+  background: #FFFFFF;
+  outline: none;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.next-time-picker2-menu-item:hover {
+  color: #333333;
+  color: var(--color-text1-4, #333333);
+  background: #F2F3F7;
+  background: var(--color-fill1-2, #F2F3F7);
+}
+.next-time-picker2-menu-item.next-selected {
+  color: #666666;
+  color: var(--color-text1-3, #666666);
+  background: #DEE8FF;
+  background: var(--color-brand1-1, #DEE8FF);
+}
+.next-time-picker2-menu-item.next-disabled {
+  cursor: not-allowed;
+  color: #CCCCCC;
+  color: var(--color-text1-1, #CCCCCC);
+  background: #F7F8FA;
+  background: var(--color-fill1-1, #F7F8FA);
+}
+
+.next-time-picker2-panel {
+  box-sizing: border-box;
+  display: flex;
+}
+.next-time-picker2-panel *,
+.next-time-picker2-panel *:before,
+.next-time-picker2-panel *:after {
+  box-sizing: border-box;
+}
+.next-time-picker2-panel:after {
+  visibility: hidden;
+  display: block;
+  height: 0;
+  font-size: 0;
+  content: " ";
+  clear: both;
+}
+.next-time-picker2-panel-header {
+  border-bottom: 1px solid #DCDEE3;
+  border-bottom: var(--line-1, 1px) var(--line-solid, solid) var(--popup-local-border-color, #DCDEE3);
+}
+.next-time-picker2-panel-input.next-input {
+  width: 100%;
+  padding: 6px;
+  border-color: transparent;
+  vertical-align: middle;
+}
+.next-time-picker2-panel .next-time-picker2-menu {
+  flex: 1;
+}
+.next-time-picker2-panel-range .next-time-picker2-panel-list:last-of-type {
+  margin-left: 20px;
+  margin-left: var(--s-5, 20px);
+}
+
+.next-time-picker2-footer {
+  width: min-content;
+  min-width: 100%;
+  box-sizing: border-box;
+  text-align: center;
+  border-top: 1px solid #F0F0F0;
+  padding: 4px 12px;
+  display: flex;
+  min-height: 40px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.next-time-picker2-footer-actions {
+  margin-left: auto;
+}
+
+.next-time-picker2-wrapper[dir=rtl] .next-time-picker2-menu {
+  float: right;
+}
+.next-time-picker2-wrapper[dir=rtl] .next-time-picker2-menu:not(:last-child) {
+  border-right: none;
+  border-left: 1px solid #DCDEE3;
+  border-left: var(--line-1, 1px) var(--line-solid, solid) var(--color-line1-2, #DCDEE3);
+}
+
+.next-time-picker2 {
+  box-sizing: border-box;
+  display: inline-block;
+}
+.next-time-picker2 *,
+.next-time-picker2 *:before,
+.next-time-picker2 *:after {
+  box-sizing: border-box;
+}
+.next-time-picker2-trigger .next-input {
+  width: 100%;
+}
+.next-time-picker2-wrapper {
+  padding: 4px 0;
+  padding: var(--s-1, 4px) 0;
+}
+.next-time-picker2-body {
+  display: block;
+  overflow: hidden;
+  border: 1px solid #DCDEE3;
+  border: var(--popup-local-border-width, 1px) var(--popup-local-border-style, solid) var(--popup-local-border-color, #DCDEE3);
+  border-radius: 3px;
+  border-radius: var(--popup-local-corner, 3px);
+  background: #FFFFFF;
+  box-shadow: none;
+  box-shadow: var(--popup-local-shadow, none);
+}
+.next-time-picker2-symbol-clock-icon::before {
+  content: "\e621";
+  content: var(--icon-content-clock, "\e621");
+}
+.next-time-picker2-input {
+  display: inline-flex;
+  align-items: center;
+  outline: none;
+  box-sizing: border-box;
+  border: 1px solid #C4C6CF;
+  border: var(--input-border-width, 1px) solid var(--input-border-color, #C4C6CF);
+  vertical-align: middle;
+  width: inherit;
+  background-color: #FFFFFF;
+  background-color: var(--input-bg-color, #FFFFFF);
+}
+.next-time-picker2-input .next-input {
+  border: none;
+  width: 100%;
+  height: 100%;
+}
+.next-time-picker2-input .next-input input {
+  height: 100%;
+}
+.next-time-picker2-input.next-time-picker2-input-small {
+  height: 20px;
+  height: var(--form-element-small-height, 20px);
+  border-radius: 3px;
+  border-radius: var(--form-element-small-corner, 3px);
+}
+.next-time-picker2-input.next-time-picker2-input-small .next-input-label {
+  padding-left: 8px;
+  padding-left: var(--input-s-label-padding-left, 8px);
+  font-size: 12px;
+  font-size: var(--form-element-small-font-size, 12px);
+}
+.next-time-picker2-input.next-time-picker2-input-small .next-input-inner {
+  font-size: 12px;
+  font-size: var(--form-element-small-font-size, 12px);
+}
+.next-time-picker2-input.next-time-picker2-input-small .next-input-control {
+  padding-right: 4px;
+  padding-right: var(--input-s-icon-padding-right, 4px);
+}
+.next-time-picker2-input.next-time-picker2-input-small .next-input-inner-text {
+  padding-right: 4px;
+  padding-right: var(--input-s-icon-padding-right, 4px);
+}
+.next-time-picker2-input.next-time-picker2-input-small input {
+  height: 18px;
+  height: calc(var(--form-element-small-height, 20px) - var(--input-border-width, 1px)*2);
+  line-height: 18px \0 ;
+  line-height: calc(var(--form-element-small-height, 20px) - var(--input-border-width, 1px)*2) \0 ;
+  padding: 0 4px;
+  padding: 0 var(--input-s-padding, 4px);
+  font-size: 12px;
+  font-size: var(--form-element-small-font-size, 12px);
+}
+.next-time-picker2-input.next-time-picker2-input-small input::placeholder {
+  font-size: 12px;
+  font-size: var(--form-element-small-font-size, 12px);
+}
+.next-time-picker2-input.next-time-picker2-input-small .next-input-text-field {
+  padding: 0 4px;
+  padding: 0 var(--input-s-padding, 4px);
+  font-size: 12px;
+  font-size: var(--form-element-small-font-size, 12px);
+  height: 18px;
+  height: calc(var(--form-element-small-height, 20px) - var(--input-border-width, 1px)*2);
+  line-height: 18px;
+  line-height: calc(var(--form-element-small-height, 20px) - var(--input-border-width, 1px)*2);
+}
+.next-time-picker2-input.next-time-picker2-input-small .next-icon:before, .next-time-picker2-input.next-time-picker2-input-small .next-icon .next-icon-remote {
+  width: 12px;
+  width: var(--form-element-small-icon-size, 12px);
+  font-size: 12px;
+  font-size: var(--form-element-small-icon-size, 12px);
+  line-height: inherit;
+}
+.next-time-picker2-input.next-time-picker2-input-small .next-input-control {
+  border-radius: 0 3px 3px 0;
+  border-radius: 0 var(--form-element-small-corner, 3px) var(--form-element-small-corner, 3px) 0;
+}
+.next-time-picker2-input.next-time-picker2-input-medium {
+  height: 28px;
+  height: var(--form-element-medium-height, 28px);
+  border-radius: 3px;
+  border-radius: var(--form-element-medium-corner, 3px);
+}
+.next-time-picker2-input.next-time-picker2-input-medium .next-input-label {
+  padding-left: 8px;
+  padding-left: var(--input-m-label-padding-left, 8px);
+  font-size: 12px;
+  font-size: var(--form-element-medium-font-size, 12px);
+}
+.next-time-picker2-input.next-time-picker2-input-medium .next-input-inner {
+  font-size: 12px;
+  font-size: var(--form-element-medium-font-size, 12px);
+}
+.next-time-picker2-input.next-time-picker2-input-medium .next-input-control {
+  padding-right: 8px;
+  padding-right: var(--input-m-icon-padding-right, 8px);
+}
+.next-time-picker2-input.next-time-picker2-input-medium .next-input-inner-text {
+  padding-right: 8px;
+  padding-right: var(--input-m-icon-padding-right, 8px);
+}
+.next-time-picker2-input.next-time-picker2-input-medium input {
+  height: 26px;
+  height: calc(var(--form-element-medium-height, 28px) - var(--input-border-width, 1px)*2);
+  line-height: 26px \0 ;
+  line-height: calc(var(--form-element-medium-height, 28px) - var(--input-border-width, 1px)*2) \0 ;
+  padding: 0 8px;
+  padding: 0 var(--input-m-padding, 8px);
+  font-size: 12px;
+  font-size: var(--form-element-medium-font-size, 12px);
+}
+.next-time-picker2-input.next-time-picker2-input-medium input::placeholder {
+  font-size: 12px;
+  font-size: var(--form-element-medium-font-size, 12px);
+}
+.next-time-picker2-input.next-time-picker2-input-medium .next-input-text-field {
+  padding: 0 8px;
+  padding: 0 var(--input-m-padding, 8px);
+  font-size: 12px;
+  font-size: var(--form-element-medium-font-size, 12px);
+  height: 26px;
+  height: calc(var(--form-element-medium-height, 28px) - var(--input-border-width, 1px)*2);
+  line-height: 26px;
+  line-height: calc(var(--form-element-medium-height, 28px) - var(--input-border-width, 1px)*2);
+}
+.next-time-picker2-input.next-time-picker2-input-medium .next-icon:before, .next-time-picker2-input.next-time-picker2-input-medium .next-icon .next-icon-remote {
+  width: 12px;
+  width: var(--form-element-medium-icon-size, 12px);
+  font-size: 12px;
+  font-size: var(--form-element-medium-icon-size, 12px);
+  line-height: inherit;
+}
+.next-time-picker2-input.next-time-picker2-input-medium .next-input-control {
+  border-radius: 0 3px 3px 0;
+  border-radius: 0 var(--form-element-medium-corner, 3px) var(--form-element-medium-corner, 3px) 0;
+}
+.next-time-picker2-input.next-time-picker2-input-large {
+  height: 40px;
+  height: var(--form-element-large-height, 40px);
+  border-radius: 3px;
+  border-radius: var(--form-element-large-corner, 3px);
+}
+.next-time-picker2-input.next-time-picker2-input-large .next-input-label {
+  padding-left: 12px;
+  padding-left: var(--input-l-label-padding-left, 12px);
+  font-size: 16px;
+  font-size: var(--form-element-large-font-size, 16px);
+}
+.next-time-picker2-input.next-time-picker2-input-large .next-input-inner {
+  font-size: 16px;
+  font-size: var(--form-element-large-font-size, 16px);
+}
+.next-time-picker2-input.next-time-picker2-input-large .next-input-control {
+  padding-right: 8px;
+  padding-right: var(--input-l-icon-padding-right, 8px);
+}
+.next-time-picker2-input.next-time-picker2-input-large .next-input-inner-text {
+  padding-right: 8px;
+  padding-right: var(--input-l-icon-padding-right, 8px);
+}
+.next-time-picker2-input.next-time-picker2-input-large input {
+  height: 38px;
+  height: calc(var(--form-element-large-height, 40px) - var(--input-border-width, 1px)*2);
+  line-height: 38px \0 ;
+  line-height: calc(var(--form-element-large-height, 40px) - var(--input-border-width, 1px)*2) \0 ;
+  padding: 0 12px;
+  padding: 0 var(--input-l-padding, 12px);
+  font-size: 16px;
+  font-size: var(--form-element-large-font-size, 16px);
+}
+.next-time-picker2-input.next-time-picker2-input-large input::placeholder {
+  font-size: 16px;
+  font-size: var(--form-element-large-font-size, 16px);
+}
+.next-time-picker2-input.next-time-picker2-input-large .next-input-text-field {
+  padding: 0 12px;
+  padding: 0 var(--input-l-padding, 12px);
+  font-size: 16px;
+  font-size: var(--form-element-large-font-size, 16px);
+  height: 38px;
+  height: calc(var(--form-element-large-height, 40px) - var(--input-border-width, 1px)*2);
+  line-height: 38px;
+  line-height: calc(var(--form-element-large-height, 40px) - var(--input-border-width, 1px)*2);
+}
+.next-time-picker2-input.next-time-picker2-input-large .next-icon:before, .next-time-picker2-input.next-time-picker2-input-large .next-icon .next-icon-remote {
+  width: 16px;
+  width: var(--form-element-large-icon-size, 16px);
+  font-size: 16px;
+  font-size: var(--form-element-large-icon-size, 16px);
+  line-height: inherit;
+}
+.next-time-picker2-input.next-time-picker2-input-large .next-input-control {
+  border-radius: 0 3px 3px 0;
+  border-radius: 0 var(--form-element-large-corner, 3px) var(--form-element-large-corner, 3px) 0;
+}
+.next-time-picker2-input:hover {
+  border-color: #A0A2AD;
+  border-color: var(--input-hover-border-color, #A0A2AD);
+  background-color: #FFFFFF;
+  background-color: var(--input-hover-bg-color, #FFFFFF);
+}
+.next-time-picker2-input.next-time-picker2-input-focus {
+  border-color: #5584FF;
+  border-color: var(--input-focus-border-color, #5584FF);
+  background-color: #FFFFFF;
+  background-color: var(--input-focus-bg-color, #FFFFFF);
+  box-shadow: 0 0 0 2px rgba(85, 132, 255, 0.2);
+  box-shadow: 0 0 0 var(--input-focus-shadow-spread, 2px) var(--color-calculate-input-focus-shadow, rgba(85, 132, 255, 0.2));
+}
+.next-time-picker2-input.next-time-picker2-input-noborder {
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
+.next-time-picker2-input.next-time-picker2-input-disabled {
+  color: #CCCCCC;
+  color: var(--input-disabled-color, #CCCCCC);
+  border-color: #E6E7EB;
+  border-color: var(--input-disabled-border-color, #E6E7EB);
+  background-color: #F7F8FA;
+  background-color: var(--input-disabled-bg-color, #F7F8FA);
+  cursor: not-allowed;
+}
+.next-time-picker2-input.next-time-picker2-input-disabled:hover {
+  border-color: #E6E7EB;
+  border-color: var(--input-disabled-border-color, #E6E7EB);
+  background-color: #F7F8FA;
+  background-color: var(--input-disabled-bg-color, #F7F8FA);
+}
+.next-time-picker2-input.next-time-picker2-input-error {
+  border-color: #FF3000;
+  border-color: var(--input-feedback-error-border-color, #FF3000);
+}
+.next-time-picker2-input-separator {
+  color: #C4C6CF;
+  color: var(--input-border-color, #C4C6CF);
+  font-size: 12px;
+  display: inline-block;
+  min-width: 16px;
+  text-align: center;
+}

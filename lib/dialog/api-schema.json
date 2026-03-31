@@ -1,0 +1,662 @@
+{
+  "name": "Dialog",
+  "props": {
+    "visible": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否显示",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "是否显示"
+    },
+    "title": {
+      "type": {
+        "name": "node"
+      },
+      "required": false,
+      "description": "标题",
+      "docblock": "标题"
+    },
+    "children": {
+      "type": {
+        "name": "node"
+      },
+      "required": false,
+      "description": "内容",
+      "docblock": "内容"
+    },
+    "footer": {
+      "type": {
+        "name": "union",
+        "value": [
+          {
+            "name": "bool"
+          },
+          {
+            "name": "node"
+          }
+        ]
+      },
+      "required": false,
+      "description": "底部内容，设置为 false，则不进行显示",
+      "docblock": "底部内容，设置为 false，则不进行显示\n@default [<Button type=\"primary\">确定</Button>, <Button>取消</Button>]",
+      "defaultValue": {
+        "value": "[<Button type=\"primary\">确定</Button>, <Button>取消</Button>]",
+        "computed": false
+      }
+    },
+    "footerAlign": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'left'",
+            "computed": false
+          },
+          {
+            "value": "'center'",
+            "computed": false
+          },
+          {
+            "value": "'right'",
+            "computed": false
+          }
+        ]
+      },
+      "required": false,
+      "description": "底部按钮的对齐方式",
+      "defaultValue": {
+        "value": "'right'",
+        "computed": false
+      },
+      "docblock": "底部按钮的对齐方式"
+    },
+    "footerActions": {
+      "type": {
+        "name": "array"
+      },
+      "required": false,
+      "description": "指定确定按钮和取消按钮是否存在以及如何排列,<br><br>**可选值**：\n['ok', 'cancel']（确认取消按钮同时存在，确认按钮在左）\n['cancel', 'ok']（确认取消按钮同时存在，确认按钮在右）\n['ok']（只存在确认按钮）\n['cancel']（只存在取消按钮）",
+      "defaultValue": {
+        "value": "['ok', 'cancel']",
+        "computed": false
+      },
+      "docblock": "指定确定按钮和取消按钮是否存在以及如何排列,<br><br>**可选值**：\n['ok', 'cancel']（确认取消按钮同时存在，确认按钮在左）\n['cancel', 'ok']（确认取消按钮同时存在，确认按钮在右）\n['ok']（只存在确认按钮）\n['cancel']（只存在取消按钮）"
+    },
+    "onOk": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "在点击确定按钮时触发的回调函数",
+      "defaultValue": {
+        "value": "() => {}",
+        "computed": false
+      },
+      "docblock": "在点击确定按钮时触发的回调函数\n@param {Object} event 点击事件对象",
+      "params": [
+        {
+          "name": "event",
+          "description": "点击事件对象",
+          "type": {
+            "name": "Object"
+          }
+        }
+      ],
+      "returns": null
+    },
+    "onCancel": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "在点击取消/关闭按钮时触发的回调函数",
+      "defaultValue": {
+        "value": "() => {}",
+        "computed": false
+      },
+      "docblock": "在点击取消/关闭按钮时触发的回调函数\n@param {Object} event 点击事件对象, event.triggerType=esc|closeIcon 可区分点击来源",
+      "params": [
+        {
+          "name": "event",
+          "description": "点击事件对象, event.triggerType=esc|closeIcon 可区分点击来源",
+          "type": {
+            "name": "Object"
+          }
+        }
+      ],
+      "returns": null
+    },
+    "okProps": {
+      "type": {
+        "name": "object"
+      },
+      "required": false,
+      "description": "应用于确定按钮的属性对象",
+      "defaultValue": {
+        "value": "{}",
+        "computed": false
+      },
+      "docblock": "应用于确定按钮的属性对象",
+      "properties": []
+    },
+    "cancelProps": {
+      "type": {
+        "name": "object"
+      },
+      "required": false,
+      "description": "应用于取消按钮的属性对象",
+      "defaultValue": {
+        "value": "{}",
+        "computed": false
+      },
+      "docblock": "应用于取消按钮的属性对象",
+      "properties": []
+    },
+    "closeMode": {
+      "type": {
+        "name": "union",
+        "value": [
+          {
+            "name": "arrayOf",
+            "value": {
+              "name": "enum",
+              "value": [
+                {
+                  "value": "'close'",
+                  "computed": false
+                },
+                {
+                  "value": "'mask'",
+                  "computed": false
+                },
+                {
+                  "value": "'esc'",
+                  "computed": false
+                }
+              ]
+            }
+          },
+          {
+            "name": "enum",
+            "value": [
+              {
+                "value": "'close'",
+                "computed": false
+              },
+              {
+                "value": "'mask'",
+                "computed": false
+              },
+              {
+                "value": "'esc'",
+                "computed": false
+              }
+            ]
+          }
+        ]
+      },
+      "required": false,
+      "description": "[推荐]1.21.x 支持控制对话框关闭的方式，值可以为字符串或者数组，其中字符串、数组均为以下值的枚举：\n**close** 表示点击关闭按钮可以关闭对话框\n**mask** 表示点击遮罩区域可以关闭对话框\n**esc** 表示按下 esc 键可以关闭对话框\n如 'close' 或 ['close','esc','mask'], []",
+      "docblock": "[推荐]1.21.x 支持控制对话框关闭的方式，值可以为字符串或者数组，其中字符串、数组均为以下值的枚举：\n**close** 表示点击关闭按钮可以关闭对话框\n**mask** 表示点击遮罩区域可以关闭对话框\n**esc** 表示按下 esc 键可以关闭对话框\n如 'close' 或 ['close','esc','mask'], []\n@version 1.21",
+      "version": {
+        "value": "1.21",
+        "computed": false
+      }
+    },
+    "cache": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "隐藏时是否保留子节点，不销毁 （低版本通过 overlayProps 实现）",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "隐藏时是否保留子节点，不销毁 （低版本通过 overlayProps 实现）\n@version 1.23",
+      "version": {
+        "value": "1.23",
+        "computed": false
+      }
+    },
+    "afterClose": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "对话框关闭后触发的回调函数, 如果有动画，则在动画结束后触发",
+      "defaultValue": {
+        "value": "() => {}",
+        "computed": false
+      },
+      "docblock": "对话框关闭后触发的回调函数, 如果有动画，则在动画结束后触发",
+      "params": [],
+      "returns": null
+    },
+    "hasMask": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否显示遮罩",
+      "defaultValue": {
+        "value": "true",
+        "computed": false
+      },
+      "docblock": "是否显示遮罩"
+    },
+    "animation": {
+      "type": {
+        "name": "union",
+        "value": [
+          {
+            "name": "object"
+          },
+          {
+            "name": "bool"
+          }
+        ]
+      },
+      "required": false,
+      "description": "显示隐藏时动画的播放方式，支持 { in: 'enter-class', out: 'leave-class' } 的对象参数，如果设置为 false，则不播放动画。 请参考 Animate 组件的文档获取可用的动画名",
+      "defaultValue": {
+        "value": "{ in: 'expandInDown', out: 'expandOutUp' }",
+        "computed": false
+      },
+      "docblock": "显示隐藏时动画的播放方式，支持 { in: 'enter-class', out: 'leave-class' } 的对象参数，如果设置为 false，则不播放动画。 请参考 Animate 组件的文档获取可用的动画名\n@default { in: 'expandInDown', out: 'expandOutUp' }"
+    },
+    "autoFocus": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "对话框弹出时是否自动获得焦点",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "对话框弹出时是否自动获得焦点"
+    },
+    "overlayProps": {
+      "type": {
+        "name": "object"
+      },
+      "required": false,
+      "description": "[v2废弃] 透传到弹层组件的属性对象",
+      "defaultValue": {
+        "value": "{}",
+        "computed": false
+      },
+      "docblock": "[v2废弃] 透传到弹层组件的属性对象",
+      "properties": []
+    },
+    "locale": {
+      "type": {
+        "name": "object"
+      },
+      "required": false,
+      "description": "自定义国际化文案对象",
+      "defaultValue": {
+        "value": "zhCN.Dialog",
+        "computed": true
+      },
+      "docblock": "自定义国际化文案对象\n@property {String} ok 确认按钮文案\n@property {String} cancel 取消按钮文案",
+      "properties": [
+        {
+          "name": "ok",
+          "description": "确认按钮文案",
+          "type": {
+            "name": "String"
+          }
+        },
+        {
+          "name": "cancel",
+          "description": "取消按钮文案",
+          "type": {
+            "name": "String"
+          }
+        }
+      ]
+    },
+    "popupContainer": {
+      "type": {
+        "name": "any"
+      },
+      "required": false,
+      "description": "自定义弹窗挂载位置",
+      "docblock": "自定义弹窗挂载位置"
+    },
+    "height": {
+      "type": {
+        "name": "union",
+        "value": [
+          {
+            "name": "string"
+          },
+          {
+            "name": "number"
+          }
+        ]
+      },
+      "required": false,
+      "description": "对话框的高度样式属性",
+      "docblock": "对话框的高度样式属性"
+    },
+    "v2": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "开启 v2 版本弹窗",
+      "docblock": "开启 v2 版本弹窗"
+    },
+    "width": {
+      "type": {
+        "name": "union",
+        "value": [
+          {
+            "name": "string"
+          },
+          {
+            "name": "number"
+          }
+        ]
+      },
+      "required": false,
+      "description": "[v2] 弹窗宽度",
+      "docblock": "[v2] 弹窗宽度\n@version 1.25",
+      "version": {
+        "value": "1.25",
+        "computed": false
+      }
+    },
+    "top": {
+      "type": {
+        "name": "number"
+      },
+      "required": false,
+      "description": "[v2] 弹窗上边距。默认 100，设置 centered=true 后默认 40",
+      "docblock": "[v2] 弹窗上边距。默认 100，设置 centered=true 后默认 40\n@version 1.25",
+      "version": {
+        "value": "1.25",
+        "computed": false
+      }
+    },
+    "bottom": {
+      "type": {
+        "name": "number"
+      },
+      "required": false,
+      "description": "[v2] 弹窗下边距",
+      "defaultValue": {
+        "value": "40",
+        "computed": false
+      },
+      "docblock": "[v2] 弹窗下边距\n@version 1.25",
+      "version": {
+        "value": "1.25",
+        "computed": false
+      }
+    },
+    "closeIcon": {
+      "type": {
+        "name": "node"
+      },
+      "required": false,
+      "description": "[v2] 定制关闭按钮 icon",
+      "docblock": "[v2] 定制关闭按钮 icon\n@version 1.25",
+      "version": {
+        "value": "1.25",
+        "computed": false
+      }
+    },
+    "centered": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "[v2] 弹窗居中对齐",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "[v2] 弹窗居中对齐\n@version 1.25",
+      "version": {
+        "value": "1.25",
+        "computed": false
+      }
+    },
+    "overflowScroll": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "[v2] 对话框高度超过浏览器视口高度时，对话框是否展示滚动条。关闭此功后对话框会随高度撑开页面。",
+      "defaultValue": {
+        "value": "true",
+        "computed": false
+      },
+      "docblock": "[v2] 对话框高度超过浏览器视口高度时，对话框是否展示滚动条。关闭此功后对话框会随高度撑开页面。\n@version 1.25",
+      "version": {
+        "value": "1.25",
+        "computed": false
+      }
+    },
+    "wrapperClassName": {
+      "type": {
+        "name": "string"
+      },
+      "required": false,
+      "description": "[v2] 最外包裹层 className",
+      "docblock": "[v2] 最外包裹层 className\n@version 1.26",
+      "version": {
+        "value": "1.26",
+        "computed": false
+      }
+    },
+    "closeable": {
+      "type": {
+        "name": "union",
+        "value": [
+          {
+            "name": "string"
+          },
+          {
+            "name": "bool"
+          }
+        ]
+      },
+      "required": false,
+      "description": "[废弃]同closeMode, 控制对话框关闭的方式，值可以为字符串或者布尔值，其中字符串是由以下值组成：\n**close** 表示点击关闭按钮可以关闭对话框\n**mask** 表示点击遮罩区域可以关闭对话框\n**esc** 表示按下 esc 键可以关闭对话框\n如 'close' 或 'close,esc,mask'\n如果设置为 true，则以上关闭方式全部生效\n如果设置为 false，则以上关闭方式全部失效",
+      "defaultValue": {
+        "value": "'esc,close'",
+        "computed": false
+      },
+      "docblock": "[废弃]同closeMode, 控制对话框关闭的方式，值可以为字符串或者布尔值，其中字符串是由以下值组成：\n**close** 表示点击关闭按钮可以关闭对话框\n**mask** 表示点击遮罩区域可以关闭对话框\n**esc** 表示按下 esc 键可以关闭对话框\n如 'close' 或 'close,esc,mask'\n如果设置为 true，则以上关闭方式全部生效\n如果设置为 false，则以上关闭方式全部失效"
+    },
+    "onClose": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "点击对话框关闭按钮时触发的回调函数",
+      "defaultValue": {
+        "value": "() => {}",
+        "computed": false
+      },
+      "docblock": "点击对话框关闭按钮时触发的回调函数\n@param {String} trigger 关闭触发行为的描述字符串\n@param {Object} event 关闭时事件对象",
+      "params": [
+        {
+          "name": "trigger",
+          "description": "关闭触发行为的描述字符串",
+          "type": {
+            "name": "String"
+          }
+        },
+        {
+          "name": "event",
+          "description": "关闭时事件对象",
+          "type": {
+            "name": "Object"
+          }
+        }
+      ],
+      "returns": null
+    },
+    "align": {
+      "type": {
+        "name": "union",
+        "value": [
+          {
+            "name": "string"
+          },
+          {
+            "name": "bool"
+          }
+        ]
+      },
+      "required": false,
+      "description": "[v2废弃] 对话框对齐方式, 具体见Overlay文档",
+      "defaultValue": {
+        "value": "'cc cc'",
+        "computed": false
+      },
+      "docblock": "[v2废弃] 对话框对齐方式, 具体见Overlay文档"
+    },
+    "isFullScreen": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "[v2废弃] 是否撑开页面。 v2 改用 overflowScroll",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "[v2废弃] 是否撑开页面。 v2 改用 overflowScroll"
+    },
+    "shouldUpdatePosition": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "[v2废弃] 是否在对话框重新渲染时及时更新对话框位置，一般用于对话框高度变化后依然能保证原来的对齐方式",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "[v2废弃] 是否在对话框重新渲染时及时更新对话框位置，一般用于对话框高度变化后依然能保证原来的对齐方式"
+    },
+    "minMargin": {
+      "type": {
+        "name": "number"
+      },
+      "required": false,
+      "description": "[v2废弃] 对话框距离浏览器顶部和底部的最小间距，align 被设置为 'cc cc' 并且 isFullScreen 被设置为 true 时不生效",
+      "defaultValue": {
+        "value": "40",
+        "computed": false
+      },
+      "docblock": "[v2废弃] 对话框距离浏览器顶部和底部的最小间距，align 被设置为 'cc cc' 并且 isFullScreen 被设置为 true 时不生效"
+    },
+    "noPadding": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "去除body内间距",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "去除body内间距\n@version 1.26",
+      "version": {
+        "value": "1.26",
+        "computed": false
+      }
+    }
+  },
+  "methods": [
+    {
+      "name": "show",
+      "docblock": "\n  创建对话框\n  @exportName show\n  @param {Object} config 配置项\n  @returns {Object} 包含有 hide 方法，可用来关闭对话框\n ",
+      "description": "创建对话框",
+      "modifiers": [
+        "static"
+      ],
+      "params": [
+        {
+          "name": "config",
+          "description": "配置项",
+          "type": {
+            "type": "NameExpression",
+            "name": "Object"
+          }
+        }
+      ],
+      "returns": {
+        "description": "包含有 hide 方法，可用来关闭对话框",
+        "type": {
+          "type": "NameExpression",
+          "name": "Object"
+        }
+      }
+    },
+    {
+      "name": "alert",
+      "docblock": "\n  创建警示对话框\n  @exportName alert\n  @param {Object} config 配置项\n  @returns {Object} 包含有 hide 方法，可用来关闭对话框\n ",
+      "description": "创建警示对话框",
+      "modifiers": [
+        "static"
+      ],
+      "params": [
+        {
+          "name": "config",
+          "description": "配置项",
+          "type": {
+            "type": "NameExpression",
+            "name": "Object"
+          }
+        }
+      ],
+      "returns": {
+        "description": "包含有 hide 方法，可用来关闭对话框",
+        "type": {
+          "type": "NameExpression",
+          "name": "Object"
+        }
+      }
+    },
+    {
+      "name": "confirm",
+      "docblock": "\n  创建确认对话框\n  @exportName confirm\n  @param {Object} config 配置项\n  @returns {Object} 包含有 hide 方法，可用来关闭对话框\n ",
+      "description": "创建确认对话框",
+      "modifiers": [
+        "static"
+      ],
+      "params": [
+        {
+          "name": "config",
+          "description": "配置项",
+          "type": {
+            "type": "NameExpression",
+            "name": "Object"
+          }
+        }
+      ],
+      "returns": {
+        "description": "包含有 hide 方法，可用来关闭对话框",
+        "type": {
+          "type": "NameExpression",
+          "name": "Object"
+        }
+      }
+    }
+  ],
+  "subComponents": []
+}

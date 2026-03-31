@@ -1,0 +1,177 @@
+div[dir="rtl"] {
+    #{$date-picker2-prefix} {
+        &-footer {
+            &-preset > .#{$css-prefix}btn {
+                margin-left: $s-2;
+                margin-right: 0;
+            }
+
+            &-actions {
+                margin-left: 0;
+                margin-right: auto;
+            }
+        }
+        &-wrapper {
+            #{$calendar2-prefix} {
+                &-cell:last-child::before {
+                    border-top-right-radius: 0;
+                    border-bottom-right-radius: 0;
+                    right: 0;
+                    border-top-left-radius: 2px;
+                    border-bottom-left-radius: 2px;
+                    left: 8px;
+                }
+                &-cell:first-child::before {
+                    border-top-left-radius: 0;
+                    border-bottom-left-radius: 0;
+                    left: 0;
+                    border-top-right-radius: 2px;
+                    border-bottom-right-radius: 2px;
+                    right: 8px;
+                }
+            }
+        }
+    }
+
+    .#{$css-prefix}date-time-picker-wrapper {
+        border-right: 1px solid $color-line1-1;
+        border-left: none;
+
+        .#{$css-prefix}time-picker2-menu:not(:last-child) {
+            border-left: 1px solid #DCDEE3;
+            border-right: none;
+        }
+    }
+
+    #{$range-picker2-prefix}-panel:not(#{$range-picker2-prefix}-panel-single) {
+        #{$calendar2-prefix}-cell-current:not(#{$calendar2-prefix}-cell-disabled) {
+            &#{$calendar2-prefix}-cell-selected {
+                &#{$calendar2-prefix}-cell-range-begin::before {
+                    right: 50%;
+                    left: 0;
+                }
+                &#{$calendar2-prefix}-cell-range-end::before {
+                    left: 50%;
+                    right: 0;
+                }
+            }
+
+            &#{$calendar2-prefix}-cell-hover {
+                &#{$calendar2-prefix}-cell-hover-begin::after,
+                &:first-child::after {
+                    right: 8px;
+                }
+                &#{$calendar2-prefix}-cell-hover-begin:not(:last-child)::after,
+                &:first-child:not(#{$calendar2-prefix}-cell-hover-end)::after {
+                    left: 0;
+                }
+
+                &#{$calendar2-prefix}-cell-hover-end::after,
+                &:last-child::after {
+                    left: 8px;
+                }
+
+                &#{$calendar2-prefix}-cell-hover-end:not(:first-child)::after,
+                &:last-child:not(#{$calendar2-prefix}-cell-hover-begin)::after {
+                    right: 0;
+                }
+
+                &#{$calendar2-prefix}-cell-selected {
+                    &#{$calendar2-prefix}-cell-hover-begin::after {
+                        left: 0;
+                        right: 7px;
+                    }
+                    &#{$calendar2-prefix}-cell-hover-end::after {
+                        right: 0;
+                        left: 7px;
+                    }
+                }
+                &:first-of-type::after {
+                    border-top-left-radius: 0;
+                    border-bottom-left-radius: 0;
+                    border-left: none;
+                    border-top-right-radius: 2px;
+                    border-bottom-right-radius: 2px;
+                    border-right: 1px dashed $color-brand1-9;
+                }
+                &:last-of-type::after {
+                    border-top-right-radius: 0;
+                    border-bottom-right-radius: 0;
+                    border-right: none;
+                    border-top-left-radius: 2px;
+                    border-bottom-left-radius: 2px;
+                    border-left: 1px dashed $color-brand1-9;
+                }
+            }
+
+            &#{$calendar2-prefix}-cell-edge-end {
+                &::before,
+                &::after {
+                    right: 0;
+                    left: 8px;
+                }
+                &#{$calendar2-prefix}-cell-hover::after {
+                    border-top-right-radius: 0;
+                    border-bottom-right-radius: 0;
+                    border-right: none;
+                    border-top-left-radius: 2px;
+                    border-bottom-left-radius: 2px;
+                    border-left: 1px dashed $color-brand1-9;
+                }
+            }
+
+            &#{$calendar2-prefix}-cell-hover-begin::after {
+                border-left: none;
+                border-top-left-radius: 0;
+                border-bottom-left-radius: 0;
+                border-right: 1px dashed $color-brand1-9;
+                border-top-right-radius: 2px;
+                border-bottom-right-radius: 2px;
+            }
+            &#{$calendar2-prefix}-cell-hover-end::after {
+                border-right: none;
+                border-top-right-radius: 0;
+                border-bottom-right-radius: 0;
+                border-left: 1px dashed $color-brand1-9;
+                border-top-left-radius: 2px;
+                border-bottom-left-radius: 2px;
+            }
+        }
+
+        #{$calendar2-prefix}-cell-edge-end + #{$calendar2-prefix}-cell-current:not(#{$calendar2-prefix}-cell-disabled) {
+            &::before,
+            &::after {
+                right: 8px;
+                left: 0;
+            }
+            &#{$calendar2-prefix}-cell-hover {
+                &::after {
+                    right: 8px;
+                    border-top-right-radius: 2px;
+                    border-bottom-right-radius: 2px;
+                    border-right: 1px dashed $color-brand1-9;
+                }
+                &:not(#{$calendar2-prefix}-cell-hover-end):not(#{$calendar2-prefix}-cell-hover-begin)::after {
+                    border-top-left-radius: 0;
+                    border-bottom-left-radius: 0;
+                    border-left: none;
+                }
+            }
+        }
+    }
+
+    #{$calendar2-prefix}-table-week {
+        #{$calendar2-prefix}-week-current {
+            #{$calendar2-prefix}-cell#{$calendar2-prefix}-cell-selected {
+                &:nth-child(2)::before {
+                    right: 50%;
+                    left: 0;
+                }
+                &:last-child::before {
+                    left: 50%;
+                    right: 0;
+                }
+            }
+        }
+    }
+}

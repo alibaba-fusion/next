@@ -1,0 +1,26 @@
+:root {
+--checkbox-size: 16px;
+--checkbox-border-radius: 3px;
+--checkbox-border-width: 1px;
+--checkbox-circle-size: 8px;
+--checkbox-shadow: none;
+--checkbox-border-color: #C4C6CF;
+--checkbox-hovered-border-color: #5584FF;
+--checkbox-checked-border-color: transparent;
+--checkbox-disabled-border-color: #E6E7EB;
+--checkbox-checked-hovered-border-color: transparent;
+--checkbox-checked-circle-color: #FFFFFF;
+--checkbox-label-color: #333333;
+--checkbox-disabled-label-color: #CCCCCC;
+--checkbox-disabled-circle-color: #CCCCCC;
+--checkbox-checked-hovered-circle-color: #FFFFFF;
+--checkbox-bg-color: #FFFFFF;
+--checkbox-checked-bg-color: #5584FF;
+--checkbox-hovered-bg-color: #DEE8FF;
+--checkbox-checked-hovered-bg-color: #3E71F7;
+--checkbox-disabled-bg-color: #F7F8FA;
+--checkbox-font-size: 12px;
+--checkbox-margin-left: 4px;
+--checkbox-semi-select-icon-content: "\e633";
+--checkbox-select-icon-content: "\e632";
+}

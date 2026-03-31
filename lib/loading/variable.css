@@ -1,0 +1,12 @@
+:root {
+--loading-icon-size: 32px;
+--loading-dot-color: #5584FF;
+--loading-fusion-vector-seconds: 5.6s;
+--loading-fusion-vector-dot-seconds: 1.4s;
+--loading-fusion-vector-rotation-step: 90deg;
+--loading-fusion-vector-rotation-step-rtl: -90deg;
+--loading-large-size: 48px;
+--loading-large-dot-size: 12px;
+--loading-medium-size: 32px;
+--loading-medium-dot-size: 8px;
+}

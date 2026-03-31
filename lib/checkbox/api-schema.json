@@ -1,0 +1,453 @@
+{
+  "name": "Checkbox",
+  "props": {
+    "className": {
+      "type": {
+        "name": "string"
+      },
+      "required": false,
+      "description": "自定义类名",
+      "docblock": "自定义类名"
+    },
+    "id": {
+      "type": {
+        "name": "string"
+      },
+      "required": false,
+      "description": "checkbox id, 挂载在input上",
+      "docblock": "checkbox id, 挂载在input上"
+    },
+    "style": {
+      "type": {
+        "name": "object"
+      },
+      "required": false,
+      "description": "自定义内敛样式",
+      "docblock": "自定义内敛样式",
+      "properties": []
+    },
+    "checked": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "选中状态",
+      "docblock": "选中状态"
+    },
+    "defaultChecked": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "默认选中状态",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "默认选中状态"
+    },
+    "disabled": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "禁用",
+      "docblock": "禁用"
+    },
+    "label": {
+      "type": {
+        "name": "node"
+      },
+      "required": false,
+      "description": "通过属性配置label，",
+      "docblock": "通过属性配置label，"
+    },
+    "indeterminate": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "Checkbox 的中间状态，只会影响到 Checkbox 的样式，并不影响其 checked 属性",
+      "docblock": "Checkbox 的中间状态，只会影响到 Checkbox 的样式，并不影响其 checked 属性"
+    },
+    "defaultIndeterminate": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "Checkbox 的默认中间态，只会影响到 Checkbox 的样式，并不影响其 checked 属性",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "Checkbox 的默认中间态，只会影响到 Checkbox 的样式，并不影响其 checked 属性"
+    },
+    "onChange": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "状态变化时触发的事件",
+      "defaultValue": {
+        "value": "func.noop",
+        "computed": true
+      },
+      "docblock": "状态变化时触发的事件\n@param {Boolean} checked 是否选中\n@param {Event} e Dom 事件对象",
+      "params": [
+        {
+          "name": "checked",
+          "description": "是否选中",
+          "type": {
+            "name": "Boolean"
+          }
+        },
+        {
+          "name": "e",
+          "description": "Dom 事件对象",
+          "type": {
+            "name": "Event"
+          }
+        }
+      ],
+      "returns": null
+    },
+    "onMouseEnter": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "鼠标进入enter事件",
+      "defaultValue": {
+        "value": "func.noop",
+        "computed": true
+      },
+      "docblock": "鼠标进入enter事件\n@param {Event} e Dom 事件对象",
+      "params": [
+        {
+          "name": "e",
+          "description": "Dom 事件对象",
+          "type": {
+            "name": "Event"
+          }
+        }
+      ],
+      "returns": null
+    },
+    "onMouseLeave": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "鼠标离开Leave事件",
+      "defaultValue": {
+        "value": "func.noop",
+        "computed": true
+      },
+      "docblock": "鼠标离开Leave事件\n@param {Event} e Dom 事件对象",
+      "params": [
+        {
+          "name": "e",
+          "description": "Dom 事件对象",
+          "type": {
+            "name": "Event"
+          }
+        }
+      ],
+      "returns": null
+    },
+    "value": {
+      "type": {
+        "name": "union",
+        "value": [
+          {
+            "name": "string"
+          },
+          {
+            "name": "number"
+          },
+          {
+            "name": "bool"
+          }
+        ]
+      },
+      "required": false,
+      "description": "checkbox 的value",
+      "docblock": "checkbox 的value"
+    },
+    "name": {
+      "type": {
+        "name": "string"
+      },
+      "required": false,
+      "description": "name",
+      "docblock": "name"
+    },
+    "isPreview": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否为预览态",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "是否为预览态\n@version 1.19",
+      "version": {
+        "value": "1.19",
+        "computed": false
+      }
+    },
+    "renderPreview": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "预览态模式下渲染的内容",
+      "docblock": "预览态模式下渲染的内容\n@param {Boolean} checked 是否选中\n@param {Object} props 所有传入的参数\n@returns {reactNode} Element 渲染内容\n@version 1.19",
+      "params": [
+        {
+          "name": "checked",
+          "description": "是否选中",
+          "type": {
+            "name": "Boolean"
+          }
+        },
+        {
+          "name": "props",
+          "description": "所有传入的参数",
+          "type": {
+            "name": "Object"
+          }
+        }
+      ],
+      "returns": {
+        "description": "Element 渲染内容",
+        "type": {
+          "name": "reactNode"
+        }
+      },
+      "version": {
+        "value": "1.19",
+        "computed": false
+      }
+    }
+  },
+  "methods": [],
+  "order": 1,
+  "subComponents": [
+    {
+      "name": "Group",
+      "props": {
+        "className": {
+          "type": {
+            "name": "string"
+          },
+          "required": false,
+          "description": "自定义类名",
+          "docblock": "自定义类名"
+        },
+        "style": {
+          "type": {
+            "name": "object"
+          },
+          "required": false,
+          "description": "自定义内敛样式",
+          "docblock": "自定义内敛样式",
+          "properties": []
+        },
+        "disabled": {
+          "type": {
+            "name": "bool"
+          },
+          "required": false,
+          "description": "整体禁用",
+          "docblock": "整体禁用"
+        },
+        "dataSource": {
+          "type": {
+            "name": "union",
+            "value": [
+              {
+                "name": "arrayOf",
+                "value": {
+                  "name": "string"
+                }
+              },
+              {
+                "name": "arrayOf",
+                "value": {
+                  "name": "object"
+                }
+              }
+            ]
+          },
+          "required": false,
+          "description": "可选项列表, 数据项可为 String 或者 Object, 如 `['apple', 'pear', 'orange']` 或者 `[{value: 'apple', label: '苹果',}, {value: 'pear', label: '梨'}, {value: 'orange', label: '橙子'}]`",
+          "defaultValue": {
+            "value": "[]",
+            "computed": false
+          },
+          "docblock": "可选项列表, 数据项可为 String 或者 Object, 如 `['apple', 'pear', 'orange']` 或者 `[{value: 'apple', label: '苹果',}, {value: 'pear', label: '梨'}, {value: 'orange', label: '橙子'}]`"
+        },
+        "value": {
+          "type": {
+            "name": "union",
+            "value": [
+              {
+                "name": "array"
+              },
+              {
+                "name": "string"
+              },
+              {
+                "name": "number"
+              },
+              {
+                "name": "bool"
+              }
+            ]
+          },
+          "required": false,
+          "description": "被选中的值列表",
+          "docblock": "被选中的值列表"
+        },
+        "defaultValue": {
+          "type": {
+            "name": "union",
+            "value": [
+              {
+                "name": "array"
+              },
+              {
+                "name": "string"
+              },
+              {
+                "name": "number"
+              },
+              {
+                "name": "bool"
+              }
+            ]
+          },
+          "required": false,
+          "description": "默认被选中的值列表",
+          "docblock": "默认被选中的值列表"
+        },
+        "children": {
+          "type": {
+            "name": "arrayOf",
+            "value": {
+              "name": "element"
+            }
+          },
+          "required": false,
+          "description": "通过子元素方式设置内部 checkbox",
+          "docblock": "通过子元素方式设置内部 checkbox"
+        },
+        "onChange": {
+          "type": {
+            "name": "func"
+          },
+          "required": false,
+          "description": "选中值改变时的事件",
+          "defaultValue": {
+            "value": "() => {}",
+            "computed": false
+          },
+          "docblock": "选中值改变时的事件\n@param {Array} value 选中项列表\n@param {Event} e Dom 事件对象",
+          "params": [
+            {
+              "name": "value",
+              "description": "选中项列表",
+              "type": {
+                "name": "Array"
+              }
+            },
+            {
+              "name": "e",
+              "description": "Dom 事件对象",
+              "type": {
+                "name": "Event"
+              }
+            }
+          ],
+          "returns": null
+        },
+        "direction": {
+          "type": {
+            "name": "enum",
+            "value": [
+              {
+                "value": "'hoz'",
+                "computed": false
+              },
+              {
+                "value": "'ver'",
+                "computed": false
+              }
+            ]
+          },
+          "required": false,
+          "description": "子项目的排列方式\n- hoz: 水平排列 (default)\n- ver: 垂直排列",
+          "defaultValue": {
+            "value": "'hoz'",
+            "computed": false
+          },
+          "docblock": "子项目的排列方式\n- hoz: 水平排列 (default)\n- ver: 垂直排列"
+        },
+        "isPreview": {
+          "type": {
+            "name": "bool"
+          },
+          "required": false,
+          "description": "是否为预览态",
+          "defaultValue": {
+            "value": "false",
+            "computed": false
+          },
+          "docblock": "是否为预览态\n@version 1.19",
+          "version": {
+            "value": "1.19",
+            "computed": false
+          }
+        },
+        "renderPreview": {
+          "type": {
+            "name": "func"
+          },
+          "required": false,
+          "description": "预览态模式下渲染的内容",
+          "docblock": "预览态模式下渲染的内容\n@param {Array} previewed 预览值 [{label: '', value:''},...]\n@param {Object} props 所有传入的参数\n@returns {reactNode} Element 渲染内容\n@version 1.19",
+          "params": [
+            {
+              "name": "previewed",
+              "description": "预览值 [{label: '', value:''},...]",
+              "type": {
+                "name": "Array"
+              }
+            },
+            {
+              "name": "props",
+              "description": "所有传入的参数",
+              "type": {
+                "name": "Object"
+              }
+            }
+          ],
+          "returns": {
+            "description": "Element 渲染内容",
+            "type": {
+              "name": "reactNode"
+            }
+          },
+          "version": {
+            "value": "1.19",
+            "computed": false
+          }
+        }
+      },
+      "methods": []
+    }
+  ]
+}

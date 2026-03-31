@@ -1,0 +1,26 @@
+#{$time-picker2-prefix}-panel {
+    @include box-sizing;
+    @include clearfix;
+
+    display: flex;
+    &-header {
+        border-bottom: $line-1 $line-solid $popup-local-border-color;
+    }
+
+    &-input.#{$css-prefix}input {
+        width: 100%;
+        padding: 6px;
+        border-color: $color-transparent;
+        vertical-align: middle;
+    }
+
+    #{$time-picker2-prefix}-menu {
+        flex: 1;
+    }
+
+    &-range {
+        #{$time-picker2-prefix}-panel-list:last-of-type {
+            margin-left: $s-5;
+        }
+    }
+}

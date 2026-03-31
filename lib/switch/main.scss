@@ -1,0 +1,163 @@
+@charset "UTF-8";
+
+@import "../core/index-noreset.scss";
+@import "./scss/mixin";
+@import "./scss/variable";
+@import "./rtl.scss";
+
+.#{$css-prefix}switch {
+    @include box-sizing;
+    outline: none;
+    text-align: left;
+    cursor: pointer;
+    vertical-align: middle;
+    user-select: none;
+    overflow: hidden;
+    transition: background .1s $motion-default, border-color .1s $motion-default;
+
+    &-btn {
+        transition: all .15s $motion-default;
+        transform-origin: left center;
+    }
+    &:after {
+        content: "";
+    }
+
+    &-loading {
+        pointer-events: none;
+        .#{$css-prefix}icon-loading {
+            color: $color-brand1-6;
+            text-align: center;
+            transform: translate(calc(0px - #{$switch-border-width-trigger}), calc(0px - #{$switch-border-width-trigger}));
+
+            &.#{$css-prefix}switch-inner-icon:before {
+                vertical-align: top;
+            }
+        }
+    }
+
+    &-medium {
+        @include bounding($switch-size-m-width, $switch-size-m-trigger, #{$switch-border-width-container}, $switch-border-width-trigger, $switch-size-m-radius-container, $switch-size-m-radius-trigger);
+
+        > .#{$css-prefix}switch-children {
+            font-size: $form-element-medium-font-size;
+        }
+
+        &.#{$css-prefix}switch.#{$css-prefix}switch-on > .#{$css-prefix}switch-children {
+            margin: 0 calc(#{$switch-size-m-trigger} + #{$switch-size-m-trigger-padding-r}) 0 $switch-size-m-trigger-padding-l;
+        }
+
+        &.#{$css-prefix}switch.#{$css-prefix}switch-off > .#{$css-prefix}switch-children {
+            margin: 0 $switch-size-m-trigger-padding-r 0 calc(#{$switch-size-m-trigger} + #{$switch-size-m-trigger-padding-l});
+        }
+
+        &.#{$css-prefix}switch-loading .#{$css-prefix}icon-loading {
+            @include icon-size($switch-size-m-inner-icon);
+            line-height: $switch-size-m-trigger;
+            height: $switch-size-m-trigger;
+            width: $switch-size-m-trigger;
+        }
+    }
+
+    &-small {
+        @include bounding($switch-size-s-width, $switch-size-s-trigger, #{$switch-border-width-container}, $switch-border-width-trigger, $switch-size-s-radius-container, $switch-size-s-radius-trigger);
+
+        > .#{$css-prefix}switch-children {
+            font-size: $form-element-small-font-size;
+        }
+
+        &.#{$css-prefix}switch.#{$css-prefix}switch-on > .#{$css-prefix}switch-children {
+            margin: 0 calc(#{$switch-size-s-trigger} + #{$switch-size-s-trigger-padding-r}) 0 $switch-size-s-trigger-padding-l;
+        }
+
+        &.#{$css-prefix}switch.#{$css-prefix}switch-off > .#{$css-prefix}switch-children {
+            margin: 0 $switch-size-s-trigger-padding-r 0 calc(#{$switch-size-s-trigger} + #{$switch-size-s-trigger-padding-l});
+        }
+        &.#{$css-prefix}switch-loading .#{$css-prefix}icon-loading {
+            @include icon-size($switch-size-s-inner-icon);
+            line-height: $switch-size-s-trigger;
+            height: $switch-size-s-trigger;
+            width: $switch-size-s-trigger;
+        }
+    }
+
+    &-on {
+        background-color: $switch-normal-on-bg-color;
+        .#{$css-prefix}switch-btn {
+            box-shadow: $switch-on-shadow;
+            background-color: $switch-normal-on-trigger-bg-color;
+            border-color: $switch-handle-on-border-color;
+        }
+
+        > .#{$css-prefix}switch-children {
+            color: $switch-normal-on-color-font;
+        }
+
+        &:focus,
+        &.hover,
+        &:hover {
+            background-color: $switch-hover-on-bg-color;
+            .#{$css-prefix}switch-btn {
+                background-color: $switch-hover-on-trigger-bg-color;
+            }
+        }
+    }
+
+    &-on[disabled] {
+        background-color: $switch-disabled-on-bg-color;
+        cursor: not-allowed;
+
+        .#{$css-prefix}switch-btn {
+            right: 0;
+            box-shadow: $switch-on-shadow;
+            background-color: $switch-disabled-on-trigger-bg-color;
+            border-color: $switch-handle-disabled-border-color;
+        }
+
+        > .#{$css-prefix}switch-children {
+            color: $switch-disabled-on-color-font;
+        }
+    }
+    &-off {
+        background-color: $switch-normal-off-bg-color;
+        border-color: $switch-normal-off-border-color;
+
+        &:focus,
+        &.hover,
+        &:hover {
+            background-color: $switch-hover-off-bg-color;
+            border-color: $switch-hover-off-border-color;
+        }
+
+        .#{$css-prefix}switch-btn {
+            left: 0;
+            box-shadow: $switch-on-shadow;
+            background-color: $switch-normal-off-trigger-bg-color;
+            border-color: $switch-handle-off-border-color;
+        }
+        &:focus,
+        &.hover,
+        &:hover {
+            .#{$css-prefix}switch-btn {
+                background-color: $switch-hover-off-trigger-bg-color;
+            }
+        }
+
+        > .#{$css-prefix}switch-children {
+            color: $switch-normal-off-color-font;
+        }
+    }
+    &-off[disabled] {
+        background-color: $switch-disabled-off-bg-color;
+        cursor: not-allowed;
+
+        .#{$css-prefix}switch-btn {
+            box-shadow: $switch-off-shadow;
+            background-color: $switch-disabled-off-trigger-bg-color;
+            border-color: $switch-handle-disabled-border-color;
+        }
+        > .#{$css-prefix}switch-children {
+            color: $switch-disabled-off-color-font;
+        }
+    }
+}

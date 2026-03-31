@@ -1,0 +1,29 @@
+@import "../core/index-noreset.scss";
+@import "./scss/variable";
+@import "../tree/scss/variable.scss";
+
+#{$tree-select-prefix} {
+    @include box-sizing;
+
+    &-dropdown {
+        background: $tree-select-background;
+        border: $popup-local-border-width $popup-local-border-style $popup-local-border-color;
+        border-radius: $popup-local-corner;
+        box-shadow: $popup-local-shadow;
+        max-height: 260px;
+        overflow: auto;
+
+        & > {
+            #{$tree-prefix},
+            #{$tree-select-prefix}-not-found,
+            .#{$css-prefix}virtual-tree-container {
+                padding: $tree-select-padding-vertical $tree-select-padding-horizontal;
+            }
+        }
+    }
+
+    &-not-found {
+        font-size: $font-size-body-1;
+        color: $color-text1-2;
+    }
+}

@@ -1,0 +1,344 @@
+.next-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+  top: 0;
+  margin: -1px;
+}
+
+.next-form {
+  box-sizing: border-box;
+}
+.next-form *,
+.next-form *:before,
+.next-form *:after {
+  box-sizing: border-box;
+}
+.next-form-preview.next-form-item .next-form-item-label {
+  color: #666666;
+  color: var(--form-element-preview-label-color, #666666);
+}
+.next-form-preview.next-form-item .next-form-preview {
+  color: #333333;
+  color: var(--form-element-preview-text-color, #333333);
+}
+.next-form-preview.next-form-item.next-medium .next-form-item-label {
+  font-size: 12px;
+  font-size: var(--form-element-medium-preview-label-font-size, 12px);
+  line-height: 28px;
+  line-height: var(--form-element-medium-preview-height, 28px);
+}
+.next-form-preview.next-form-item.next-small .next-form-item-label {
+  font-size: 12px;
+  font-size: var(--form-element-small-preview-label-font-size, 12px);
+  line-height: 20px;
+  line-height: var(--form-element-small-preview-height, 20px);
+}
+.next-form-preview.next-form-item.next-large .next-form-item-label {
+  font-size: 16px;
+  font-size: var(--form-element-large-preview-label-font-size, 16px);
+  line-height: 40px;
+  line-height: var(--form-element-large-preview-height, 40px);
+}
+.next-form-responsive-grid .next-form-item-control {
+  flex: 1;
+}
+.next-form-responsive-grid .next-form-item {
+  margin-bottom: 0;
+}
+.next-form-responsive-grid .next-form-item .next-form-item-help-margin-offset {
+  margin-top: 0;
+}
+.next-form-responsive-grid .next-form-item.next-left {
+  display: flex;
+}
+.next-form-responsive-grid.next-small .next-responsive-grid {
+  gap: 16px;
+  gap: var(--form-inline-s-item-margin-r, 16px);
+}
+.next-form-responsive-grid.next-small .next-form-item.next-left .next-form-item-label {
+  line-height: 20px;
+  line-height: var(--form-element-small-height, 20px);
+}
+.next-form-responsive-grid.next-medium .next-responsive-grid {
+  gap: 20px;
+  gap: var(--form-inline-m-item-margin-r, 20px);
+}
+.next-form-responsive-grid.next-medium .next-form-item.next-left .next-form-item-label {
+  line-height: 28px;
+  line-height: var(--form-element-medium-height, 28px);
+}
+.next-form-responsive-grid.next-large .next-responsive-grid {
+  gap: 24px;
+  gap: var(--form-inline-l-item-margin-r, 24px);
+}
+.next-form-responsive-grid.next-large .next-form-item.next-left .next-form-item-label {
+  line-height: 40px;
+  line-height: var(--form-element-large-height, 40px);
+}
+.next-form-item {
+  /* medium */
+  margin-bottom: 16px;
+  margin-bottom: var(--form-item-m-margin-b, 16px);
+}
+.next-form-item.has-error > .next-form-item-control > .next-form-item-help {
+  color: #FF3000;
+  color: var(--form-error-color, #FF3000);
+}
+.next-form-item.has-warning > .next-form-item-control > .next-form-item-help {
+  color: #FF9300;
+  color: var(--form-warning-color, #FF9300);
+}
+.next-form-item .next-form-item-label, .next-form-item .next-form-text-align, .next-form-item p {
+  line-height: 28px;
+  line-height: var(--form-element-medium-height, 28px);
+}
+.next-form-item .next-form-text-align, .next-form-item p {
+  margin: 0;
+}
+.next-form-item .next-rating,
+.next-form-item .next-checkbox-wrapper,
+.next-form-item .next-checkbox-group,
+.next-form-item .next-radio-wrapper,
+.next-form-item .next-radio-group {
+  line-height: 24px;
+  line-height: calc(var(--form-element-medium-height, 28px) - 4px);
+}
+.next-form-item .next-form-preview {
+  font-size: 12px;
+  font-size: var(--form-element-medium-preview-font-size, 12px);
+  line-height: 28px;
+  line-height: var(--form-element-medium-preview-height, 28px);
+}
+.next-form-item .next-form-preview.next-input-textarea > p {
+  font-size: 12px;
+  font-size: var(--form-element-medium-preview-font-size, 12px);
+  text-align: justify;
+  min-height: 16.8px;
+  min-height: calc(var(--form-element-medium-preview-font-size, 12px)*1.4);
+  line-height: 1.4;
+  margin-top: 5.6px;
+  margin-top: calc(var(--form-element-medium-preview-height, 28px)/2 - var(--form-element-medium-preview-font-size, 12px)*1.4/2);
+}
+.next-form-item .next-form-item-label {
+  font-size: 12px;
+  font-size: var(--form-element-medium-font-size, 12px);
+}
+.next-form-item .next-form-item-label > label {
+  display: inline-block;
+  line-height: 1.5;
+  line-height: var(--font-lineheight-2, 1.5);
+}
+.next-form-item.next-large {
+  margin-bottom: 20px;
+  margin-bottom: var(--form-item-l-margin-b, 20px);
+}
+.next-form-item.next-large .next-form-item-label, .next-form-item.next-large .next-form-text-align, .next-form-item.next-large p {
+  line-height: 40px;
+  line-height: var(--form-element-large-height, 40px);
+}
+.next-form-item.next-large .next-rating,
+.next-form-item.next-large .next-checkbox-wrapper,
+.next-form-item.next-large .next-checkbox-group,
+.next-form-item.next-large .next-radio-wrapper,
+.next-form-item.next-large .next-radio-group {
+  line-height: 39px;
+  line-height: calc(var(--form-element-large-height, 40px) - 1px);
+}
+.next-form-item.next-large .next-form-preview {
+  font-size: 16px;
+  font-size: var(--form-element-large-preview-font-size, 16px);
+  line-height: 40px;
+  line-height: var(--form-element-large-preview-height, 40px);
+}
+.next-form-item.next-large .next-form-preview.next-input-textarea > p {
+  font-size: 16px;
+  font-size: var(--form-element-large-preview-font-size, 16px);
+  text-align: justify;
+  min-height: 22.4px;
+  min-height: calc(var(--form-element-large-preview-font-size, 16px)*1.4);
+  line-height: 1.4;
+  margin-top: 8.8px;
+  margin-top: calc(var(--form-element-large-preview-height, 40px)/2 - var(--form-element-large-preview-font-size, 16px)*1.4/2);
+}
+.next-form-item.next-large .next-switch {
+  margin-top: 7px;
+  margin-top: calc(var(--form-element-large-height, 40px)/2 - 13px);
+}
+.next-form-item.next-large .next-form-item-label {
+  font-size: 16px;
+  font-size: var(--form-element-large-font-size, 16px);
+}
+.next-form-item.next-large .next-form-item-help-margin-offset {
+  margin-top: -var(--form-item-l-margin-b, 20px);
+}
+.next-form-item.next-small {
+  margin-bottom: 12px;
+  margin-bottom: var(--form-item-s-margin-b, 12px);
+}
+.next-form-item.next-small .next-form-item-label, .next-form-item.next-small .next-form-text-align, .next-form-item.next-small p {
+  line-height: 20px;
+  line-height: var(--form-element-small-height, 20px);
+}
+.next-form-item.next-small .next-rating,
+.next-form-item.next-small .next-checkbox-wrapper,
+.next-form-item.next-small .next-checkbox-group,
+.next-form-item.next-small .next-radio-wrapper,
+.next-form-item.next-small .next-radio-group {
+  line-height: 20px;
+  line-height: var(--form-element-small-height, 20px);
+}
+.next-form-item.next-small .next-form-preview {
+  font-size: 12px;
+  font-size: var(--form-element-small-preview-font-size, 12px);
+  line-height: 20px;
+  line-height: var(--form-element-small-preview-height, 20px);
+}
+.next-form-item.next-small .next-form-preview.next-input-textarea > p {
+  font-size: 12px;
+  font-size: var(--form-element-small-preview-font-size, 12px);
+  text-align: justify;
+  min-height: 16.8px;
+  min-height: calc(var(--form-element-small-preview-font-size, 12px)*1.4);
+  line-height: 1.4;
+  margin-top: 1.6px;
+  margin-top: calc(var(--form-element-small-preview-height, 20px)/2 - var(--form-element-small-preview-font-size, 12px)*1.4/2);
+}
+.next-form-item.next-small .next-form-item-label {
+  font-size: 12px;
+  font-size: var(--form-element-small-font-size, 12px);
+}
+.next-form-item.next-small .next-form-item-help-margin-offset {
+  margin-top: -var(--form-item-s-margin-b, 12px);
+}
+.next-form-item.next-top > .next-form-item-label {
+  margin-bottom: 2px;
+  margin-bottom: var(--form-top-label-margin-b, 2px);
+}
+.next-form-item.next-inset .next-form-item-label {
+  padding-right: 0;
+  padding-left: 0;
+  line-height: inherit;
+}
+.next-form-item-control .next-form-text-align {
+  margin: 0;
+}
+.next-form-item-control > .next-input-group, .next-form-item-control > .next-input {
+  width: 100%;
+}
+.next-form-item-fullwidth .next-form-item-control > .next-input-group,
+.next-form-item-fullwidth .next-form-item-control > .next-input,
+.next-form-item-fullwidth .next-form-item-control > .next-select,
+.next-form-item-fullwidth .next-form-item-control > .next-date-picker,
+.next-form-item-fullwidth .next-form-item-control > .next-month-picker,
+.next-form-item-fullwidth .next-form-item-control > .next-year-picker,
+.next-form-item-fullwidth .next-form-item-control > .next-range-picker,
+.next-form-item-fullwidth .next-form-item-control > .next-time-picker {
+  width: 100%;
+}
+.next-form-item-fullwidth .next-form-item-control > .next-date-picker2 .next-date-picker2-input input {
+  width: inherit;
+}
+.next-form-item-label {
+  display: inline-block;
+  vertical-align: top;
+  color: #666666;
+  color: var(--form-label-color, #666666);
+  text-align: right;
+  padding-right: 12px;
+  padding-right: var(--form-label-padding-r, 12px);
+}
+.next-form-item-label label[required]:before {
+  margin-right: 4px;
+  content: "*";
+  color: #FF3000;
+  color: var(--form-error-color, #FF3000);
+}
+.next-form-item-label.has-colon label::after {
+  content: ":";
+  position: relative;
+  top: -0.5px;
+  margin: 0 0 0 2px;
+}
+.next-form-item-label.next-left {
+  text-align: left;
+}
+.next-form-item-label.next-left > label[required]::before {
+  display: none;
+}
+.next-form-item-label.next-left > label[required]::after {
+  margin-left: 4px;
+  content: "*";
+  color: #FF3000;
+  color: var(--form-error-color, #FF3000);
+}
+.next-form-item-help {
+  margin-top: 4px;
+  margin-top: var(--form-help-margin-top, 4px);
+  font-size: 12px;
+  font-size: var(--form-help-font-size, 12px);
+  line-height: 1.5;
+  line-height: var(--font-lineheight-2, 1.5);
+  color: #999999;
+  color: var(--form-help-color, #999999);
+}
+.next-form .next-form-item-help-margin-offset {
+  margin-top: -var(--form-item-m-margin-b, 16px);
+}
+.next-form.next-inline .next-form-item {
+  display: inline-block;
+  vertical-align: top;
+  /* label on left */
+}
+.next-form.next-inline .next-form-item.next-left .next-form-item-control {
+  display: inline-block;
+  vertical-align: top;
+  line-height: 0;
+}
+.next-form.next-inline .next-form-item:not(:last-child) {
+  margin-right: 20px;
+  margin-right: var(--form-inline-m-item-margin-r, 20px);
+}
+.next-form.next-inline .next-form-item.next-large:not(:last-child) {
+  margin-right: 24px;
+  margin-right: var(--form-inline-l-item-margin-r, 24px);
+}
+.next-form.next-inline .next-form-item.next-small:not(:last-child) {
+  margin-right: 16px;
+  margin-right: var(--form-inline-s-item-margin-r, 16px);
+}
+
+@media screen and (min-width: 0\0 ) and (min-resolution: 0.001dpcm) {
+  .next-form-item.next-left > .next-form-item-label {
+    display: table-cell;
+  }
+  .next-form.next-inline .next-form-item.next-left .next-form-item-control {
+    display: table-cell;
+  }
+}
+.next-form[dir=rtl] .next-form-item-label {
+  text-align: left;
+  padding-left: 12px;
+  padding-left: var(--form-label-padding-r, 12px);
+  padding-right: 0;
+}
+.next-form[dir=rtl].next-inline .next-form-item:not(:last-child) {
+  margin-left: 20px;
+  margin-left: var(--form-inline-m-item-margin-r, 20px);
+  margin-right: 0;
+}
+.next-form[dir=rtl].next-inline .next-form-item.next-large:not(:last-child) {
+  margin-left: 24px;
+  margin-left: var(--form-inline-l-item-margin-r, 24px);
+  margin-right: 0;
+}
+.next-form[dir=rtl].next-inline .next-form-item.next-small:not(:last-child) {
+  margin-left: 16px;
+  margin-left: var(--form-inline-s-item-margin-r, 16px);
+  margin-right: 0;
+}

@@ -1,0 +1,146 @@
+{
+  "name": "Collapse",
+  "props": {
+    "prefix": {
+      "type": {
+        "name": "string"
+      },
+      "required": false,
+      "description": "样式前缀",
+      "defaultValue": {
+        "value": "'next-'",
+        "computed": false
+      },
+      "docblock": "样式前缀"
+    },
+    "style": {
+      "type": {
+        "name": "object"
+      },
+      "required": false,
+      "description": "组件接受行内样式",
+      "docblock": "组件接受行内样式",
+      "properties": []
+    },
+    "dataSource": {
+      "type": {
+        "name": "array"
+      },
+      "required": false,
+      "description": "使用数据模型构建",
+      "docblock": "使用数据模型构建"
+    },
+    "defaultExpandedKeys": {
+      "type": {
+        "name": "array"
+      },
+      "required": false,
+      "description": "默认展开keys",
+      "docblock": "默认展开keys"
+    },
+    "expandedKeys": {
+      "type": {
+        "name": "array"
+      },
+      "required": false,
+      "description": "受控展开keys",
+      "docblock": "受控展开keys"
+    },
+    "onExpand": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "展开状态发升变化时候的回调",
+      "defaultValue": {
+        "value": "func.noop",
+        "computed": true
+      },
+      "docblock": "展开状态发升变化时候的回调",
+      "params": [],
+      "returns": null
+    },
+    "disabled": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "所有禁用",
+      "docblock": "所有禁用"
+    },
+    "className": {
+      "type": {
+        "name": "string"
+      },
+      "required": false,
+      "description": "扩展class",
+      "docblock": "扩展class"
+    },
+    "accordion": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "手风琴模式，一次只能打开一个",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "手风琴模式，一次只能打开一个"
+    }
+  },
+  "methods": [],
+  "subComponents": [
+    {
+      "name": "Panel",
+      "props": {
+        "prefix": {
+          "type": {
+            "name": "string"
+          },
+          "required": false,
+          "description": "样式类名的品牌前缀",
+          "defaultValue": {
+            "value": "'next-'",
+            "computed": false
+          },
+          "docblock": "样式类名的品牌前缀"
+        },
+        "style": {
+          "type": {
+            "name": "object"
+          },
+          "required": false,
+          "description": "子组件接受行内样式",
+          "docblock": "子组件接受行内样式",
+          "properties": []
+        },
+        "disabled": {
+          "type": {
+            "name": "bool"
+          },
+          "required": false,
+          "description": "是否禁止用户操作",
+          "docblock": "是否禁止用户操作"
+        },
+        "title": {
+          "type": {
+            "name": "node"
+          },
+          "required": false,
+          "description": "标题",
+          "docblock": "标题"
+        },
+        "className": {
+          "type": {
+            "name": "string"
+          },
+          "required": false,
+          "description": "扩展class",
+          "docblock": "扩展class"
+        }
+      },
+      "methods": []
+    }
+  ]
+}

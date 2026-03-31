@@ -1,0 +1,26 @@
+:root {
+--time-picker-panel-border-color: #DCDEE3;
+--time-picker-panel-corner: 3px;
+--time-picker-panel-shadow: none;
+--time-picker-panel-width: 200px;
+--time-picker-panel-background: #FFFFFF;
+--time-picker-menu-border-width: 1px;
+--time-picker-menu-title-font-size: 12px;
+--time-picker-menu-item-font-size: 12px;
+--time-picker-menu-title-height: 28px;
+--time-picker-menu-item-height: 28px;
+--time-picker-menu-border-color: #C4C6CF;
+--time-picker-menu-title-color: #999999;
+--time-picker-menu-title-background: #FFFFFF;
+--time-pikcer-menu-title-font-weight: normal;
+--time-picker-menu-item-color: #666666;
+--time-picker-menu-item-color-hover: #333333;
+--time-picker-menu-item-color-selected: #666666;
+--time-picker-menu-item-color-disabled: #CCCCCC;
+--time-picker-menu-item-background: #FFFFFF;
+--time-picker-menu-item-background-hover: #F2F3F7;
+--time-picker-menu-item-background-selected: #F2F3F7;
+--time-picker-menu-item-background-disabled: #FFFFFF;
+--time-picker-menu-item-font-weight-selected: bold;
+--time-picker-clock-icon: "\e621";
+}

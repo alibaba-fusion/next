@@ -1,0 +1,25 @@
+:root {
+--badge-size-dot-width: 8px;
+--badge-size-list-margin: 0px;
+--badge-size-count-config-height: 16px;
+--badge-size-count-padding-lr: 4px;
+--badge-size-custom-padding-lr: 4px;
+--badge-size-count-font: 12px;
+--badge-size-count-border-width: 0px;
+--badge-normal-count-border-color: #FFFFFF;
+--badge-size-count-width: auto;
+--badge-size-count-height: 16px;
+--badge-size-count-min-width: 16px;
+--badge-size-count-padding: 0 4px 0 4px;
+--badge-size-count-lineheight: 16px;
+--badge-size-dot-min-width: 8px;
+--badge-size-dot-height: 8px;
+--badge-size-dot-padding: 0px;
+--badge-color-bg: #FF3000;
+--badge-size-count-border-radius: 8px;
+--badge-dot-color-bg: #FF3000;
+--badge-size-dot-border-radius: 8px;
+--badge-size-custom-border-radius: 3px;
+--badge-color: #FFFFFF;
+--badge-dot-color: #FFFFFF;
+}

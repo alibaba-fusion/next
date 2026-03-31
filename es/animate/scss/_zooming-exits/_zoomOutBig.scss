@@ -1,0 +1,19 @@
+@include keyframes(zoomOutBig) {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+        @include transform(scale(.8));
+    }
+}
+
+@mixin zoomOutBig($count: $countDefault, $duration: $durationSmallDefault, $delay: $delayDefault, $function: $zoom-big-func, $fill: $fillDefault, $visibility: $visibilityDefault) {
+    @include animation-name(zoomOutBig);
+    @include count($count);
+    @include duration($duration);
+    @include delay($delay);
+    @include function($function);
+    @include fill-mode($fill);
+    @include visibility($visibility);
+}

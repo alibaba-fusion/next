@@ -1,0 +1,25 @@
+:root {
+--number-picker-normal-up-icon: "\e625";
+--number-picker-normal-down-icon: "\e63d";
+--number-picker-normal-s-button-width: 20px;
+--number-picker-normal-m-button-width: 20px;
+--number-picker-normal-l-button-width: 20px;
+--number-picker-normal-m-input-width: 80px;
+--number-picker-normal-l-input-width: 80px;
+--number-picker-normal-s-button-icon-size: 8px;
+--number-picker-normal-m-button-icon-size: 8px;
+--number-picker-normal-l-button-icon-size: 8px;
+--number-picker-inline-add-icon: "\e655";
+--number-picker-inline-minus-icon: "\e601";
+--number-picker-inline-s-button-icon-size: 12px;
+--number-picker-inline-s-button-margin: 2px;
+--number-picker-inline-s-button-corner: 3px;
+--number-picker-inline-m-button-icon-size: 12px;
+--number-picker-inline-m-button-margin: 2px;
+--number-picker-inline-m-button-corner: 3px;
+--number-picker-inline-m-input-width: 100px;
+--number-picker-inline-l-button-icon-size: 12px;
+--number-picker-inline-l-button-margin: 2px;
+--number-picker-inline-l-button-corner: 3px;
+--number-picker-inline-l-input-width: 128px;
+}

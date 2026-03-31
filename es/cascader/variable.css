@@ -1,0 +1,13 @@
+:root {
+--cascader-menu-border-width: 1px;
+--cascader-menu-width: auto;
+--cascader-menu-min-width: 100px;
+--cascader-menu-height: 192px;
+--cascader-menu-icon-expand-size: 8px;
+--cascader-menu-border-color: #DCDEE3;
+--cascader-menu-border-radius: 3px;
+--cascader-menu-icon-expand-color: #666666;
+--cascader-menu-icon-hover-expand-color: #333333;
+--cascader-menu-item-expanded-color: #333333;
+--cascader-menu-item-expanded-background-color: #F2F3F7;
+}

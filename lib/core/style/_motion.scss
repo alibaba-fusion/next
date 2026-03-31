@@ -1,0 +1,17 @@
+// Motion
+$motion-ease: ease;
+$motion-ease-in: ease-in;
+$motion-ease-out: ease-out;
+$motion-ease-in-out: ease-in-out;
+$motion-linear: linear;
+
+$motion-duration-immediately: 100ms;
+$motion-duration-standard: 300ms;
+$motion-duration-complex: 450ms;
+$motion-duration-continue: 600ms;
+
+$motion-default: cubic-bezier(.4, 0, .2, 1);
+// 进入类动画默认时长300ms
+$motion-duration-standard-in: 300ms;
+// 消失类动画默认时长250ms
+$motion-duration-standard-out: 250ms;

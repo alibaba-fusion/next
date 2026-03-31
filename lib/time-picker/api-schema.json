@@ -1,0 +1,428 @@
+{
+  "name": "TimePicker",
+  "props": {
+    "label": {
+      "type": {
+        "name": "node"
+      },
+      "required": false,
+      "description": "按钮的文案",
+      "docblock": "按钮的文案"
+    },
+    "state": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'error'",
+            "computed": false
+          },
+          {
+            "value": "'success'",
+            "computed": false
+          }
+        ]
+      },
+      "required": false,
+      "description": "输入框状态",
+      "docblock": "输入框状态"
+    },
+    "placeholder": {
+      "type": {
+        "name": "string"
+      },
+      "required": false,
+      "description": "输入框提示",
+      "docblock": "输入框提示"
+    },
+    "value": {
+      "type": {
+        "name": "custom",
+        "raw": "checkDateValue"
+      },
+      "required": false,
+      "description": "时间值（moment 对象或时间字符串，受控状态使用）",
+      "docblock": "时间值（moment 对象或时间字符串，受控状态使用）"
+    },
+    "defaultValue": {
+      "type": {
+        "name": "custom",
+        "raw": "checkDateValue"
+      },
+      "required": false,
+      "description": "时间初值（moment 对象或时间字符串，非受控状态使用）",
+      "docblock": "时间初值（moment 对象或时间字符串，非受控状态使用）"
+    },
+    "size": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'small'",
+            "computed": false
+          },
+          {
+            "value": "'medium'",
+            "computed": false
+          },
+          {
+            "value": "'large'",
+            "computed": false
+          }
+        ]
+      },
+      "required": false,
+      "description": "时间选择框的尺寸",
+      "defaultValue": {
+        "value": "'medium'",
+        "computed": false
+      },
+      "docblock": "时间选择框的尺寸"
+    },
+    "hasClear": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否允许清空时间",
+      "defaultValue": {
+        "value": "true",
+        "computed": false
+      },
+      "docblock": "是否允许清空时间"
+    },
+    "format": {
+      "type": {
+        "name": "string"
+      },
+      "required": false,
+      "description": "时间的格式\nhttps://momentjs.com/docs/#/parsing/string-format/",
+      "defaultValue": {
+        "value": "'HH:mm:ss'",
+        "computed": false
+      },
+      "docblock": "时间的格式\nhttps://momentjs.com/docs/#/parsing/string-format/"
+    },
+    "hourStep": {
+      "type": {
+        "name": "number"
+      },
+      "required": false,
+      "description": "小时选项步长",
+      "docblock": "小时选项步长"
+    },
+    "minuteStep": {
+      "type": {
+        "name": "number"
+      },
+      "required": false,
+      "description": "分钟选项步长",
+      "docblock": "分钟选项步长"
+    },
+    "secondStep": {
+      "type": {
+        "name": "number"
+      },
+      "required": false,
+      "description": "秒钟选项步长",
+      "docblock": "秒钟选项步长"
+    },
+    "disabledHours": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "禁用小时函数",
+      "docblock": "禁用小时函数\n@param {Number} index 时 0 - 23\n@return {Boolean} 是否禁用",
+      "params": [
+        {
+          "name": "index",
+          "description": "时 0 - 23",
+          "type": {
+            "name": "Number"
+          }
+        }
+      ],
+      "returns": {
+        "description": "是否禁用",
+        "type": {
+          "name": "Boolean"
+        }
+      }
+    },
+    "disabledMinutes": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "禁用分钟函数",
+      "docblock": "禁用分钟函数\n@param {Number} index 分 0 - 59\n@return {Boolean} 是否禁用",
+      "params": [
+        {
+          "name": "index",
+          "description": "分 0 - 59",
+          "type": {
+            "name": "Number"
+          }
+        }
+      ],
+      "returns": {
+        "description": "是否禁用",
+        "type": {
+          "name": "Boolean"
+        }
+      }
+    },
+    "disabledSeconds": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "禁用秒钟函数",
+      "docblock": "禁用秒钟函数\n@param {Number} index 秒 0 - 59\n@return {Boolean} 是否禁用",
+      "params": [
+        {
+          "name": "index",
+          "description": "秒 0 - 59",
+          "type": {
+            "name": "Number"
+          }
+        }
+      ],
+      "returns": {
+        "description": "是否禁用",
+        "type": {
+          "name": "Boolean"
+        }
+      }
+    },
+    "renderTimeMenuItems": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "渲染的可选择时间列表\n[{\n label: '01',\n value: 1\n}]",
+      "docblock": "渲染的可选择时间列表\n[{\n label: '01',\n value: 1\n}]\n@param {Array} list 默认渲染的列表\n@param {String} mode 渲染的菜单 hour, minute, second\n@param {moment} value 当前时间，可能为 null\n@return {Array} 返回需要渲染的数据",
+      "params": [
+        {
+          "name": "list",
+          "description": "默认渲染的列表",
+          "type": {
+            "name": "Array"
+          }
+        },
+        {
+          "name": "mode",
+          "description": "渲染的菜单 hour, minute, second",
+          "type": {
+            "name": "String"
+          }
+        },
+        {
+          "name": "value",
+          "description": "当前时间，可能为 null",
+          "type": {
+            "name": "moment"
+          }
+        }
+      ],
+      "returns": {
+        "description": "返回需要渲染的数据",
+        "type": {
+          "name": "Array"
+        }
+      }
+    },
+    "visible": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "弹层是否显示（受控）",
+      "docblock": "弹层是否显示（受控）"
+    },
+    "defaultVisible": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "弹层默认是否显示（非受控）",
+      "docblock": "弹层默认是否显示（非受控）"
+    },
+    "popupContainer": {
+      "type": {
+        "name": "any"
+      },
+      "required": false,
+      "description": "弹层容器",
+      "docblock": "弹层容器\n@param {Object} target 目标节点\n@return {ReactNode} 容器节点"
+    },
+    "popupAlign": {
+      "type": {
+        "name": "string"
+      },
+      "required": false,
+      "description": "弹层对齐方式, 详情见Overlay 文档",
+      "defaultValue": {
+        "value": "'tl tl'",
+        "computed": false
+      },
+      "docblock": "弹层对齐方式, 详情见Overlay 文档"
+    },
+    "popupTriggerType": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'click'",
+            "computed": false
+          },
+          {
+            "value": "'hover'",
+            "computed": false
+          }
+        ]
+      },
+      "required": false,
+      "description": "弹层触发方式",
+      "defaultValue": {
+        "value": "'click'",
+        "computed": false
+      },
+      "docblock": "弹层触发方式"
+    },
+    "onVisibleChange": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "弹层展示状态变化时的回调",
+      "defaultValue": {
+        "value": "func.noop",
+        "computed": true
+      },
+      "docblock": "弹层展示状态变化时的回调\n@param {Boolean} visible 弹层是否隐藏和显示\n@param {String} type 触发弹层显示和隐藏的来源 fromTrigger 表示由trigger的点击触发； docClick 表示由document的点击触发",
+      "params": [
+        {
+          "name": "visible",
+          "description": "弹层是否隐藏和显示",
+          "type": {
+            "name": "Boolean"
+          }
+        },
+        {
+          "name": "type",
+          "description": "触发弹层显示和隐藏的来源 fromTrigger 表示由trigger的点击触发； docClick 表示由document的点击触发",
+          "type": {
+            "name": "String"
+          }
+        }
+      ],
+      "returns": null
+    },
+    "popupStyle": {
+      "type": {
+        "name": "object"
+      },
+      "required": false,
+      "description": "弹层自定义样式",
+      "docblock": "弹层自定义样式",
+      "properties": []
+    },
+    "popupClassName": {
+      "type": {
+        "name": "string"
+      },
+      "required": false,
+      "description": "弹层自定义样式类",
+      "docblock": "弹层自定义样式类"
+    },
+    "popupProps": {
+      "type": {
+        "name": "object"
+      },
+      "required": false,
+      "description": "弹层属性",
+      "docblock": "弹层属性",
+      "properties": []
+    },
+    "followTrigger": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否跟随滚动",
+      "docblock": "是否跟随滚动"
+    },
+    "disabled": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否禁用",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "是否禁用"
+    },
+    "isPreview": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否为预览态",
+      "docblock": "是否为预览态"
+    },
+    "renderPreview": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "预览态模式下渲染的内容",
+      "docblock": "预览态模式下渲染的内容\n@param {MomentObject|null} value 时间",
+      "params": [
+        {
+          "name": "value",
+          "description": "时间",
+          "type": {
+            "name": "union",
+            "value": [
+              "MomentObject",
+              null
+            ]
+          }
+        }
+      ],
+      "returns": null
+    },
+    "onChange": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "时间值改变时的回调",
+      "defaultValue": {
+        "value": "func.noop",
+        "computed": true
+      },
+      "docblock": "时间值改变时的回调\n@param {Object|String} value 时间对象或时间字符串",
+      "params": [
+        {
+          "name": "value",
+          "description": "时间对象或时间字符串",
+          "type": {
+            "name": "union",
+            "value": [
+              "Object",
+              "String"
+            ]
+          }
+        }
+      ],
+      "returns": null
+    }
+  },
+  "methods": [],
+  "subComponents": []
+}

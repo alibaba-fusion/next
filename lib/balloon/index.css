@@ -1,0 +1,974 @@
+
+.next-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+  top: 0;
+  margin: -1px;
+}
+
+.next-balloon {
+  box-sizing: border-box;
+  position: absolute;
+  top: 0;
+  max-width: 300px;
+  max-width: var(--balloon-size-max-width, 300px);
+  border-style: solid;
+  border-style: var(--balloon-border-style, solid);
+  border-radius: 3px;
+  border-radius: var(--balloon-corner, 3px);
+  font-size: 12px;
+  font-size: var(--balloon-content-font-size, 12px);
+  font-weight: normal;
+  font-weight: var(--balloon-content-font-weight, normal);
+  /* stylelint-disable */
+  word-wrap: break-all;
+  word-wrap: break-word;
+  /* stylelint-enable */
+  z-index: 0;
+  /* size */
+  /* 带关闭按钮的右侧padding变大 */
+}
+.next-balloon *,
+.next-balloon *:before,
+.next-balloon *:after {
+  box-sizing: border-box;
+}
+.next-balloon:focus, .next-balloon *:focus {
+  outline: 0;
+}
+.next-balloon-title {
+  margin-bottom: 8px;
+  margin-bottom: var(--balloon-size-header-margin-bottom, 8px);
+  font-size: 16px;
+  font-size: var(--balloon-title-font-size, 16px);
+  font-weight: bold;
+  font-weight: var(--balloon-title-font-weight, bold);
+}
+.next-balloon-title.next-balloon-closable {
+  padding: 0 40px 0 0;
+  padding: 0 var(--balloon-size-padding-closable-right, 40px) 0 0;
+}
+.next-balloon-title.next-balloon-closable .next-balloon-close {
+  top: -1px;
+  transform: translateY(18px);
+  transform: translateY(calc(var(--balloon-size-padding-top, 16px) + var(--balloon-title-font-size, 16px)/2 - var(--balloon-size-close, 12px)/2));
+  right: 16px;
+  right: var(--balloon-size-padding-right, 16px);
+}
+.next-balloon-primary {
+  color: #333333;
+  color: var(--balloon-primary-color, #333333);
+  border-color: #4494F9;
+  border-color: var(--balloon-primary-color-border, #4494F9);
+  background-color: #E3F2FD;
+  background-color: var(--balloon-primary-color-bg, #E3F2FD);
+  box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+  box-shadow: var(--balloon-primary-shadow, 0px 1px 3px 0px rgba(0, 0, 0, 0.12));
+  border-width: 1px;
+  border-width: var(--balloon-primary-border-width, 1px);
+}
+.next-balloon-primary .next-balloon-close {
+  position: absolute;
+  top: -1px;
+  transform: translateY(16px);
+  transform: translateY(calc(var(--balloon-size-padding-top, 16px) + var(--balloon-content-font-size, 12px)/2 - var(--balloon-size-close, 12px)/2));
+  right: 12px;
+  right: var(--balloon-size-close-margin-right, 12px);
+  font-size: 12px;
+  font-size: var(--balloon-size-close, 12px);
+  cursor: pointer;
+  color: #999999;
+  color: var(--balloon-primary-color-close, #999999);
+}
+.next-balloon-primary .next-balloon-close .next-icon {
+  width: 12px;
+  width: var(--balloon-size-close, 12px);
+  height: 12px;
+  height: var(--balloon-size-close, 12px);
+  line-height: 1em;
+}
+.next-balloon-primary .next-balloon-close .next-icon:before {
+  width: 12px;
+  width: var(--balloon-size-close, 12px);
+  height: 12px;
+  height: var(--balloon-size-close, 12px);
+  font-size: 12px;
+  font-size: var(--balloon-size-close, 12px);
+  line-height: 1em;
+}
+.next-balloon-primary .next-balloon-close :hover {
+  color: #333333;
+  color: var(--balloon-primary-color-close-hover, #333333);
+}
+.next-balloon-primary .next-balloon-arrow {
+  position: absolute;
+  display: block;
+  width: 24px;
+  width: calc(var(--balloon-size-arrow-size, 12px)*2);
+  height: 24px;
+  height: calc(var(--balloon-size-arrow-size, 12px)*2);
+  overflow: hidden;
+  background: 0 0;
+  pointer-events: none;
+}
+.next-balloon-primary .next-balloon-arrow .next-balloon-arrow-content {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: block;
+  width: 12px;
+  width: var(--balloon-size-arrow-size, 12px);
+  height: 12px;
+  height: var(--balloon-size-arrow-size, 12px);
+  margin: auto;
+  background-color: #E3F2FD;
+  background-color: var(--balloon-primary-color-bg, #E3F2FD);
+  border: 1px solid #4494F9;
+  border: var(--balloon-primary-border-width, 1px) var(--balloon-border-style, solid) var(--balloon-primary-color-border, #4494F9);
+  pointer-events: auto;
+}
+.next-balloon-primary.next-balloon-top .next-balloon-arrow {
+  top: -24px;
+  top: calc(0px - var(--balloon-size-arrow-size, 12px)*2);
+  left: calc(50% - 12px);
+  left: calc(50% - var(--balloon-size-arrow-size, 12px));
+}
+.next-balloon-primary.next-balloon-top .next-balloon-arrow .next-balloon-arrow-content {
+  transform: translateY(12px) rotate(45deg);
+  transform: translateY(var(--balloon-size-arrow-size, 12px)) rotate(45deg);
+}
+.next-balloon-primary.next-balloon-right .next-balloon-arrow {
+  top: calc(50% - 12px);
+  top: calc(50% - var(--balloon-size-arrow-size, 12px));
+  right: -24px;
+  right: calc(0px - var(--balloon-size-arrow-size, 12px)*2);
+}
+.next-balloon-primary.next-balloon-right .next-balloon-arrow .next-balloon-arrow-content {
+  transform: translateX(-12px) rotate(45deg);
+  transform: translateX(calc(0px - var(--balloon-size-arrow-size, 12px))) rotate(45deg);
+}
+.next-balloon-primary.next-balloon-bottom .next-balloon-arrow {
+  left: calc(50% - 12px);
+  left: calc(50% - var(--balloon-size-arrow-size, 12px));
+  bottom: -24px;
+  bottom: calc(0px - var(--balloon-size-arrow-size, 12px)*2);
+}
+.next-balloon-primary.next-balloon-bottom .next-balloon-arrow .next-balloon-arrow-content {
+  transform: translateY(-12px) rotate(45deg);
+  transform: translateY(calc(0px - var(--balloon-size-arrow-size, 12px))) rotate(45deg);
+}
+.next-balloon-primary.next-balloon-left .next-balloon-arrow {
+  top: calc(50% - 12px);
+  top: calc(50% - var(--balloon-size-arrow-size, 12px));
+  left: -24px;
+  left: calc(0px - var(--balloon-size-arrow-size, 12px)*2);
+}
+.next-balloon-primary.next-balloon-left .next-balloon-arrow .next-balloon-arrow-content {
+  transform: translateX(12px) rotate(45deg);
+  transform: translateX(var(--balloon-size-arrow-size, 12px)) rotate(45deg);
+}
+.next-balloon-primary.next-balloon-left-top .next-balloon-arrow {
+  top: 6px;
+  top: calc(var(--balloon-size-arrow-margin, 12px) - var(--balloon-size-arrow-size, 12px)/2);
+  left: -24px;
+  left: calc(0px - var(--balloon-size-arrow-size, 12px)*2);
+}
+.next-balloon-primary.next-balloon-left-top .next-balloon-arrow .next-balloon-arrow-content {
+  transform: translateX(12px) rotate(45deg);
+  transform: translateX(var(--balloon-size-arrow-size, 12px)) rotate(45deg);
+}
+.next-balloon-primary.next-balloon-left-bottom .next-balloon-arrow {
+  bottom: 6px;
+  bottom: calc(var(--balloon-size-arrow-margin, 12px) - var(--balloon-size-arrow-size, 12px)/2);
+  left: -24px;
+  left: calc(0px - var(--balloon-size-arrow-size, 12px)*2);
+}
+.next-balloon-primary.next-balloon-left-bottom .next-balloon-arrow .next-balloon-arrow-content {
+  transform: translateX(12px) rotate(45deg);
+  transform: translateX(var(--balloon-size-arrow-size, 12px)) rotate(45deg);
+}
+.next-balloon-primary.next-balloon-right-top .next-balloon-arrow {
+  top: 6px;
+  top: calc(var(--balloon-size-arrow-margin, 12px) - var(--balloon-size-arrow-size, 12px)/2);
+  right: -24px;
+  right: calc(0px - var(--balloon-size-arrow-size, 12px)*2);
+}
+.next-balloon-primary.next-balloon-right-top .next-balloon-arrow .next-balloon-arrow-content {
+  transform: translateX(-12px) rotate(45deg);
+  transform: translateX(calc(0px - var(--balloon-size-arrow-size, 12px))) rotate(45deg);
+}
+.next-balloon-primary.next-balloon-right-bottom .next-balloon-arrow {
+  bottom: 6px;
+  bottom: calc(var(--balloon-size-arrow-margin, 12px) - var(--balloon-size-arrow-size, 12px)/2);
+  right: -24px;
+  right: calc(0px - var(--balloon-size-arrow-size, 12px)*2);
+}
+.next-balloon-primary.next-balloon-right-bottom .next-balloon-arrow .next-balloon-arrow-content {
+  transform: translateX(-12px) rotate(45deg);
+  transform: translateX(calc(0px - var(--balloon-size-arrow-size, 12px))) rotate(45deg);
+}
+.next-balloon-primary.next-balloon-top-left .next-balloon-arrow {
+  left: 6px;
+  left: calc(var(--balloon-size-arrow-margin, 12px) - var(--balloon-size-arrow-size, 12px)/2);
+  top: -24px;
+  top: calc(0px - var(--balloon-size-arrow-size, 12px)*2);
+}
+.next-balloon-primary.next-balloon-top-left .next-balloon-arrow .next-balloon-arrow-content {
+  transform: translateY(12px) rotate(45deg);
+  transform: translateY(var(--balloon-size-arrow-size, 12px)) rotate(45deg);
+}
+.next-balloon-primary.next-balloon-top-right .next-balloon-arrow {
+  right: 6px;
+  right: calc(var(--balloon-size-arrow-margin, 12px) - var(--balloon-size-arrow-size, 12px)/2);
+  top: -24px;
+  top: calc(0px - var(--balloon-size-arrow-size, 12px)*2);
+}
+.next-balloon-primary.next-balloon-top-right .next-balloon-arrow .next-balloon-arrow-content {
+  transform: translateY(12px) rotate(45deg);
+  transform: translateY(var(--balloon-size-arrow-size, 12px)) rotate(45deg);
+}
+.next-balloon-primary.next-balloon-bottom-left .next-balloon-arrow {
+  left: 6px;
+  left: calc(var(--balloon-size-arrow-margin, 12px) - var(--balloon-size-arrow-size, 12px)/2);
+  bottom: -24px;
+  bottom: calc(0px - var(--balloon-size-arrow-size, 12px)*2);
+}
+.next-balloon-primary.next-balloon-bottom-left .next-balloon-arrow .next-balloon-arrow-content {
+  transform: translateY(-12px) rotate(45deg);
+  transform: translateY(calc(0px - var(--balloon-size-arrow-size, 12px))) rotate(45deg);
+}
+.next-balloon-primary.next-balloon-bottom-right .next-balloon-arrow {
+  right: 6px;
+  right: calc(var(--balloon-size-arrow-margin, 12px) - var(--balloon-size-arrow-size, 12px)/2);
+  bottom: -24px;
+  bottom: calc(0px - var(--balloon-size-arrow-size, 12px)*2);
+}
+.next-balloon-primary.next-balloon-bottom-right .next-balloon-arrow .next-balloon-arrow-content {
+  transform: translateY(-12px) rotate(45deg);
+  transform: translateY(calc(0px - var(--balloon-size-arrow-size, 12px))) rotate(45deg);
+}
+.next-balloon-normal {
+  color: #333333;
+  color: var(--balloon-normal-color, #333333);
+  border-color: #DCDEE3;
+  border-color: var(--balloon-normal-color-border, #DCDEE3);
+  background-color: #FFFFFF;
+  background-color: var(--balloon-normal-color-bg, #FFFFFF);
+  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.12);
+  box-shadow: var(--balloon-normal-shadow, 0px 2px 4px 0px rgba(0, 0, 0, 0.12));
+  border-width: 1px;
+  border-width: var(--balloon-normal-border-width, 1px);
+}
+.next-balloon-normal .next-balloon-close {
+  position: absolute;
+  top: -1px;
+  transform: translateY(16px);
+  transform: translateY(calc(var(--balloon-size-padding-top, 16px) + var(--balloon-content-font-size, 12px)/2 - var(--balloon-size-close, 12px)/2));
+  right: 12px;
+  right: var(--balloon-size-close-margin-right, 12px);
+  font-size: 12px;
+  font-size: var(--balloon-size-close, 12px);
+  cursor: pointer;
+  color: #999999;
+  color: var(--balloon-normal-color-close, #999999);
+}
+.next-balloon-normal .next-balloon-close .next-icon {
+  width: 12px;
+  width: var(--balloon-size-close, 12px);
+  height: 12px;
+  height: var(--balloon-size-close, 12px);
+  line-height: 1em;
+}
+.next-balloon-normal .next-balloon-close .next-icon:before {
+  width: 12px;
+  width: var(--balloon-size-close, 12px);
+  height: 12px;
+  height: var(--balloon-size-close, 12px);
+  font-size: 12px;
+  font-size: var(--balloon-size-close, 12px);
+  line-height: 1em;
+}
+.next-balloon-normal .next-balloon-close :hover {
+  color: #666666;
+  color: var(--balloon-normal-color-close-hover, #666666);
+}
+.next-balloon-normal .next-balloon-arrow {
+  position: absolute;
+  display: block;
+  width: 24px;
+  width: calc(var(--balloon-size-arrow-size, 12px)*2);
+  height: 24px;
+  height: calc(var(--balloon-size-arrow-size, 12px)*2);
+  overflow: hidden;
+  background: 0 0;
+  pointer-events: none;
+}
+.next-balloon-normal .next-balloon-arrow .next-balloon-arrow-content {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: block;
+  width: 12px;
+  width: var(--balloon-size-arrow-size, 12px);
+  height: 12px;
+  height: var(--balloon-size-arrow-size, 12px);
+  margin: auto;
+  background-color: #FFFFFF;
+  background-color: var(--balloon-normal-color-bg, #FFFFFF);
+  border: 1px solid #DCDEE3;
+  border: var(--balloon-normal-border-width, 1px) var(--balloon-border-style, solid) var(--balloon-normal-color-border, #DCDEE3);
+  pointer-events: auto;
+}
+.next-balloon-normal.next-balloon-top .next-balloon-arrow {
+  top: -24px;
+  top: calc(0px - var(--balloon-size-arrow-size, 12px)*2);
+  left: calc(50% - 12px);
+  left: calc(50% - var(--balloon-size-arrow-size, 12px));
+}
+.next-balloon-normal.next-balloon-top .next-balloon-arrow .next-balloon-arrow-content {
+  transform: translateY(12px) rotate(45deg);
+  transform: translateY(var(--balloon-size-arrow-size, 12px)) rotate(45deg);
+}
+.next-balloon-normal.next-balloon-right .next-balloon-arrow {
+  top: calc(50% - 12px);
+  top: calc(50% - var(--balloon-size-arrow-size, 12px));
+  right: -24px;
+  right: calc(0px - var(--balloon-size-arrow-size, 12px)*2);
+}
+.next-balloon-normal.next-balloon-right .next-balloon-arrow .next-balloon-arrow-content {
+  transform: translateX(-12px) rotate(45deg);
+  transform: translateX(calc(0px - var(--balloon-size-arrow-size, 12px))) rotate(45deg);
+}
+.next-balloon-normal.next-balloon-bottom .next-balloon-arrow {
+  left: calc(50% - 12px);
+  left: calc(50% - var(--balloon-size-arrow-size, 12px));
+  bottom: -24px;
+  bottom: calc(0px - var(--balloon-size-arrow-size, 12px)*2);
+}
+.next-balloon-normal.next-balloon-bottom .next-balloon-arrow .next-balloon-arrow-content {
+  transform: translateY(-12px) rotate(45deg);
+  transform: translateY(calc(0px - var(--balloon-size-arrow-size, 12px))) rotate(45deg);
+}
+.next-balloon-normal.next-balloon-left .next-balloon-arrow {
+  top: calc(50% - 12px);
+  top: calc(50% - var(--balloon-size-arrow-size, 12px));
+  left: -24px;
+  left: calc(0px - var(--balloon-size-arrow-size, 12px)*2);
+}
+.next-balloon-normal.next-balloon-left .next-balloon-arrow .next-balloon-arrow-content {
+  transform: translateX(12px) rotate(45deg);
+  transform: translateX(var(--balloon-size-arrow-size, 12px)) rotate(45deg);
+}
+.next-balloon-normal.next-balloon-left-top .next-balloon-arrow {
+  top: 6px;
+  top: calc(var(--balloon-size-arrow-margin, 12px) - var(--balloon-size-arrow-size, 12px)/2);
+  left: -24px;
+  left: calc(0px - var(--balloon-size-arrow-size, 12px)*2);
+}
+.next-balloon-normal.next-balloon-left-top .next-balloon-arrow .next-balloon-arrow-content {
+  transform: translateX(12px) rotate(45deg);
+  transform: translateX(var(--balloon-size-arrow-size, 12px)) rotate(45deg);
+}
+.next-balloon-normal.next-balloon-left-bottom .next-balloon-arrow {
+  bottom: 6px;
+  bottom: calc(var(--balloon-size-arrow-margin, 12px) - var(--balloon-size-arrow-size, 12px)/2);
+  left: -24px;
+  left: calc(0px - var(--balloon-size-arrow-size, 12px)*2);
+}
+.next-balloon-normal.next-balloon-left-bottom .next-balloon-arrow .next-balloon-arrow-content {
+  transform: translateX(12px) rotate(45deg);
+  transform: translateX(var(--balloon-size-arrow-size, 12px)) rotate(45deg);
+}
+.next-balloon-normal.next-balloon-right-top .next-balloon-arrow {
+  top: 6px;
+  top: calc(var(--balloon-size-arrow-margin, 12px) - var(--balloon-size-arrow-size, 12px)/2);
+  right: -24px;
+  right: calc(0px - var(--balloon-size-arrow-size, 12px)*2);
+}
+.next-balloon-normal.next-balloon-right-top .next-balloon-arrow .next-balloon-arrow-content {
+  transform: translateX(-12px) rotate(45deg);
+  transform: translateX(calc(0px - var(--balloon-size-arrow-size, 12px))) rotate(45deg);
+}
+.next-balloon-normal.next-balloon-right-bottom .next-balloon-arrow {
+  bottom: 6px;
+  bottom: calc(var(--balloon-size-arrow-margin, 12px) - var(--balloon-size-arrow-size, 12px)/2);
+  right: -24px;
+  right: calc(0px - var(--balloon-size-arrow-size, 12px)*2);
+}
+.next-balloon-normal.next-balloon-right-bottom .next-balloon-arrow .next-balloon-arrow-content {
+  transform: translateX(-12px) rotate(45deg);
+  transform: translateX(calc(0px - var(--balloon-size-arrow-size, 12px))) rotate(45deg);
+}
+.next-balloon-normal.next-balloon-top-left .next-balloon-arrow {
+  left: 6px;
+  left: calc(var(--balloon-size-arrow-margin, 12px) - var(--balloon-size-arrow-size, 12px)/2);
+  top: -24px;
+  top: calc(0px - var(--balloon-size-arrow-size, 12px)*2);
+}
+.next-balloon-normal.next-balloon-top-left .next-balloon-arrow .next-balloon-arrow-content {
+  transform: translateY(12px) rotate(45deg);
+  transform: translateY(var(--balloon-size-arrow-size, 12px)) rotate(45deg);
+}
+.next-balloon-normal.next-balloon-top-right .next-balloon-arrow {
+  right: 6px;
+  right: calc(var(--balloon-size-arrow-margin, 12px) - var(--balloon-size-arrow-size, 12px)/2);
+  top: -24px;
+  top: calc(0px - var(--balloon-size-arrow-size, 12px)*2);
+}
+.next-balloon-normal.next-balloon-top-right .next-balloon-arrow .next-balloon-arrow-content {
+  transform: translateY(12px) rotate(45deg);
+  transform: translateY(var(--balloon-size-arrow-size, 12px)) rotate(45deg);
+}
+.next-balloon-normal.next-balloon-bottom-left .next-balloon-arrow {
+  left: 6px;
+  left: calc(var(--balloon-size-arrow-margin, 12px) - var(--balloon-size-arrow-size, 12px)/2);
+  bottom: -24px;
+  bottom: calc(0px - var(--balloon-size-arrow-size, 12px)*2);
+}
+.next-balloon-normal.next-balloon-bottom-left .next-balloon-arrow .next-balloon-arrow-content {
+  transform: translateY(-12px) rotate(45deg);
+  transform: translateY(calc(0px - var(--balloon-size-arrow-size, 12px))) rotate(45deg);
+}
+.next-balloon-normal.next-balloon-bottom-right .next-balloon-arrow {
+  right: 6px;
+  right: calc(var(--balloon-size-arrow-margin, 12px) - var(--balloon-size-arrow-size, 12px)/2);
+  bottom: -24px;
+  bottom: calc(0px - var(--balloon-size-arrow-size, 12px)*2);
+}
+.next-balloon-normal.next-balloon-bottom-right .next-balloon-arrow .next-balloon-arrow-content {
+  transform: translateY(-12px) rotate(45deg);
+  transform: translateY(calc(0px - var(--balloon-size-arrow-size, 12px))) rotate(45deg);
+}
+.next-balloon.visible {
+  display: block;
+}
+.next-balloon.hidden {
+  display: none;
+}
+.next-balloon-medium {
+  padding: 16px 16px 16px 16px;
+  padding: var(--balloon-size-padding-top, 16px) var(--balloon-size-padding-right, 16px) var(--balloon-size-padding-top, 16px) var(--balloon-size-padding-right, 16px);
+}
+.next-balloon-closable {
+  padding: 16px 40px 16px 16px;
+  padding: var(--balloon-size-padding-top, 16px) var(--balloon-size-padding-closable-right, 40px) var(--balloon-size-padding-top, 16px) var(--balloon-size-padding-right, 16px);
+}
+
+.next-balloon-tooltip {
+  box-sizing: border-box;
+  position: absolute;
+  top: 0;
+  max-width: 300px;
+  max-width: var(--balloon-size-max-width, 300px);
+  border-style: solid;
+  border-style: var(--balloon-tooltip-border-style, solid);
+  border-radius: 3px;
+  border-radius: var(--balloon-corner, 3px);
+  font-size: 12px;
+  font-size: var(--balloon-tooltip-content-font-size, 12px);
+  font-weight: normal;
+  font-weight: var(--balloon-tooltip-content-font-weight, normal);
+  z-index: 0;
+  /* stylelint-disable */
+  word-wrap: break-all;
+  word-wrap: break-word;
+  /* stylelint-enable */
+  color: #333333;
+  color: var(--balloon-tooltip-color, #333333);
+  border-color: #DCDEE3;
+  border-color: var(--balloon-tooltip-color-border, #DCDEE3);
+  background-color: #F2F3F7;
+  background-color: var(--balloon-tooltip-color-bg, #F2F3F7);
+  box-shadow: none;
+  box-shadow: var(--balloon-tooltip-shadow, none);
+  border-width: 1px;
+  border-width: var(--balloon-tooltip-border-width, 1px);
+  /* size */
+}
+.next-balloon-tooltip *,
+.next-balloon-tooltip *:before,
+.next-balloon-tooltip *:after {
+  box-sizing: border-box;
+}
+.next-balloon-tooltip .next-balloon-arrow {
+  position: absolute;
+  display: block;
+  width: 24px;
+  width: calc(var(--balloon-size-arrow-size, 12px)*2);
+  height: 24px;
+  height: calc(var(--balloon-size-arrow-size, 12px)*2);
+  overflow: hidden;
+  background: 0 0;
+  pointer-events: none;
+}
+.next-balloon-tooltip .next-balloon-arrow .next-balloon-arrow-content {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: block;
+  width: 12px;
+  width: var(--balloon-size-arrow-size, 12px);
+  height: 12px;
+  height: var(--balloon-size-arrow-size, 12px);
+  margin: auto;
+  background-color: #F2F3F7;
+  background-color: var(--balloon-tooltip-color-bg, #F2F3F7);
+  border: 1px solid #DCDEE3;
+  border: var(--balloon-tooltip-border-width, 1px) var(--balloon-tooltip-border-style, solid) var(--balloon-tooltip-color-border, #DCDEE3);
+  pointer-events: auto;
+}
+.next-balloon-tooltip-top .next-balloon-arrow {
+  top: -24px;
+  top: calc(0px - var(--balloon-size-arrow-size, 12px)*2);
+  left: calc(50% - 12px);
+  left: calc(50% - var(--balloon-size-arrow-size, 12px));
+}
+.next-balloon-tooltip-top .next-balloon-arrow .next-balloon-arrow-content {
+  transform: translateY(12px) rotate(45deg);
+  transform: translateY(var(--balloon-size-arrow-size, 12px)) rotate(45deg);
+}
+.next-balloon-tooltip-right .next-balloon-arrow {
+  top: calc(50% - 12px);
+  top: calc(50% - var(--balloon-size-arrow-size, 12px));
+  right: -24px;
+  right: calc(0px - var(--balloon-size-arrow-size, 12px)*2);
+}
+.next-balloon-tooltip-right .next-balloon-arrow .next-balloon-arrow-content {
+  transform: translateX(-12px) rotate(45deg);
+  transform: translateX(calc(0px - var(--balloon-size-arrow-size, 12px))) rotate(45deg);
+}
+.next-balloon-tooltip-bottom .next-balloon-arrow {
+  left: calc(50% - 12px);
+  left: calc(50% - var(--balloon-size-arrow-size, 12px));
+  bottom: -24px;
+  bottom: calc(0px - var(--balloon-size-arrow-size, 12px)*2);
+}
+.next-balloon-tooltip-bottom .next-balloon-arrow .next-balloon-arrow-content {
+  transform: translateY(-12px) rotate(45deg);
+  transform: translateY(calc(0px - var(--balloon-size-arrow-size, 12px))) rotate(45deg);
+}
+.next-balloon-tooltip-left .next-balloon-arrow {
+  top: calc(50% - 12px);
+  top: calc(50% - var(--balloon-size-arrow-size, 12px));
+  left: -24px;
+  left: calc(0px - var(--balloon-size-arrow-size, 12px)*2);
+}
+.next-balloon-tooltip-left .next-balloon-arrow .next-balloon-arrow-content {
+  transform: translateX(12px) rotate(45deg);
+  transform: translateX(var(--balloon-size-arrow-size, 12px)) rotate(45deg);
+}
+.next-balloon-tooltip-left-top .next-balloon-arrow {
+  top: 6px;
+  top: calc(var(--balloon-size-arrow-margin, 12px) - var(--balloon-size-arrow-size, 12px)/2);
+  left: -24px;
+  left: calc(0px - var(--balloon-size-arrow-size, 12px)*2);
+}
+.next-balloon-tooltip-left-top .next-balloon-arrow .next-balloon-arrow-content {
+  transform: translateX(12px) rotate(45deg);
+  transform: translateX(var(--balloon-size-arrow-size, 12px)) rotate(45deg);
+}
+.next-balloon-tooltip-left-bottom .next-balloon-arrow {
+  bottom: 6px;
+  bottom: calc(var(--balloon-size-arrow-margin, 12px) - var(--balloon-size-arrow-size, 12px)/2);
+  left: -24px;
+  left: calc(0px - var(--balloon-size-arrow-size, 12px)*2);
+}
+.next-balloon-tooltip-left-bottom .next-balloon-arrow .next-balloon-arrow-content {
+  transform: translateX(12px) rotate(45deg);
+  transform: translateX(var(--balloon-size-arrow-size, 12px)) rotate(45deg);
+}
+.next-balloon-tooltip-right-top .next-balloon-arrow {
+  top: 6px;
+  top: calc(var(--balloon-size-arrow-margin, 12px) - var(--balloon-size-arrow-size, 12px)/2);
+  right: -24px;
+  right: calc(0px - var(--balloon-size-arrow-size, 12px)*2);
+}
+.next-balloon-tooltip-right-top .next-balloon-arrow .next-balloon-arrow-content {
+  transform: translateX(-12px) rotate(45deg);
+  transform: translateX(calc(0px - var(--balloon-size-arrow-size, 12px))) rotate(45deg);
+}
+.next-balloon-tooltip-right-bottom .next-balloon-arrow {
+  bottom: 6px;
+  bottom: calc(var(--balloon-size-arrow-margin, 12px) - var(--balloon-size-arrow-size, 12px)/2);
+  right: -24px;
+  right: calc(0px - var(--balloon-size-arrow-size, 12px)*2);
+}
+.next-balloon-tooltip-right-bottom .next-balloon-arrow .next-balloon-arrow-content {
+  transform: translateX(-12px) rotate(45deg);
+  transform: translateX(calc(0px - var(--balloon-size-arrow-size, 12px))) rotate(45deg);
+}
+.next-balloon-tooltip-top-left .next-balloon-arrow {
+  left: 6px;
+  left: calc(var(--balloon-size-arrow-margin, 12px) - var(--balloon-size-arrow-size, 12px)/2);
+  top: -24px;
+  top: calc(0px - var(--balloon-size-arrow-size, 12px)*2);
+}
+.next-balloon-tooltip-top-left .next-balloon-arrow .next-balloon-arrow-content {
+  transform: translateY(12px) rotate(45deg);
+  transform: translateY(var(--balloon-size-arrow-size, 12px)) rotate(45deg);
+}
+.next-balloon-tooltip-top-right .next-balloon-arrow {
+  right: 6px;
+  right: calc(var(--balloon-size-arrow-margin, 12px) - var(--balloon-size-arrow-size, 12px)/2);
+  top: -24px;
+  top: calc(0px - var(--balloon-size-arrow-size, 12px)*2);
+}
+.next-balloon-tooltip-top-right .next-balloon-arrow .next-balloon-arrow-content {
+  transform: translateY(12px) rotate(45deg);
+  transform: translateY(var(--balloon-size-arrow-size, 12px)) rotate(45deg);
+}
+.next-balloon-tooltip-bottom-left .next-balloon-arrow {
+  left: 6px;
+  left: calc(var(--balloon-size-arrow-margin, 12px) - var(--balloon-size-arrow-size, 12px)/2);
+  bottom: -24px;
+  bottom: calc(0px - var(--balloon-size-arrow-size, 12px)*2);
+}
+.next-balloon-tooltip-bottom-left .next-balloon-arrow .next-balloon-arrow-content {
+  transform: translateY(-12px) rotate(45deg);
+  transform: translateY(calc(0px - var(--balloon-size-arrow-size, 12px))) rotate(45deg);
+}
+.next-balloon-tooltip-bottom-right .next-balloon-arrow {
+  right: 6px;
+  right: calc(var(--balloon-size-arrow-margin, 12px) - var(--balloon-size-arrow-size, 12px)/2);
+  bottom: -24px;
+  bottom: calc(0px - var(--balloon-size-arrow-size, 12px)*2);
+}
+.next-balloon-tooltip-bottom-right .next-balloon-arrow .next-balloon-arrow-content {
+  transform: translateY(-12px) rotate(45deg);
+  transform: translateY(calc(0px - var(--balloon-size-arrow-size, 12px))) rotate(45deg);
+}
+.next-balloon-tooltip.visible {
+  display: block;
+}
+.next-balloon-tooltip.hidden {
+  display: none;
+}
+.next-balloon-tooltip-medium {
+  padding: 8px 8px 8px 8px;
+  padding: var(--balloon-tooltip-size-padding-top, 8px) var(--balloon-tooltip-size-padding-right, 8px) var(--balloon-tooltip-size-padding-bottom, 8px) var(--balloon-tooltip-size-padding-left, 8px);
+}
+
+.next-balloon[dir=rtl] {
+  /* 带关闭按钮的右侧padding变大 */
+}
+.next-balloon[dir=rtl].next-balloon-primary .next-balloon-close {
+  left: 12px;
+  left: var(--balloon-size-close-margin-right, 12px);
+  right: auto;
+}
+.next-balloon[dir=rtl].next-balloon-primary.next-balloon-right .next-balloon-arrow {
+  left: -24px;
+  left: calc(0px - var(--balloon-size-arrow-size, 12px)*2);
+  right: auto;
+}
+.next-balloon[dir=rtl].next-balloon-primary.next-balloon-right .next-balloon-arrow .next-balloon-arrow-content {
+  transform: translateX(12px) rotate(45deg);
+  transform: translateX(var(--balloon-size-arrow-size, 12px)) rotate(45deg);
+}
+.next-balloon[dir=rtl].next-balloon-primary.next-balloon-left .next-balloon-arrow {
+  right: -24px;
+  right: calc(0px - var(--balloon-size-arrow-size, 12px)*2);
+  left: auto;
+}
+.next-balloon[dir=rtl].next-balloon-primary.next-balloon-left .next-balloon-arrow .next-balloon-arrow-content {
+  transform: translateX(-12px) rotate(45deg);
+}
+.next-balloon[dir=rtl].next-balloon-primary.next-balloon-left-top .next-balloon-arrow {
+  right: -24px;
+  right: calc(0px - var(--balloon-size-arrow-size, 12px)*2);
+  left: auto;
+}
+.next-balloon[dir=rtl].next-balloon-primary.next-balloon-left-top .next-balloon-arrow .next-balloon-arrow-content {
+  transform: translateX(-12px) rotate(45deg);
+}
+.next-balloon[dir=rtl].next-balloon-primary.next-balloon-left-bottom .next-balloon-arrow {
+  right: -24px;
+  right: calc(0px - var(--balloon-size-arrow-size, 12px)*2);
+  left: auto;
+}
+.next-balloon[dir=rtl].next-balloon-primary.next-balloon-left-bottom .next-balloon-arrow .next-balloon-arrow-content {
+  transform: translateX(-12px) rotate(45deg);
+}
+.next-balloon[dir=rtl].next-balloon-primary.next-balloon-right-top .next-balloon-arrow {
+  left: -24px;
+  left: calc(0px - var(--balloon-size-arrow-size, 12px)*2);
+  right: auto;
+}
+.next-balloon[dir=rtl].next-balloon-primary.next-balloon-right-top .next-balloon-arrow .next-balloon-arrow-content {
+  transform: translateX(12px) rotate(45deg);
+  transform: translateX(var(--balloon-size-arrow-size, 12px)) rotate(45deg);
+}
+.next-balloon[dir=rtl].next-balloon-primary.next-balloon-right-bottom .next-balloon-arrow {
+  left: -24px;
+  left: calc(0px - var(--balloon-size-arrow-size, 12px)*2);
+  right: auto;
+}
+.next-balloon[dir=rtl].next-balloon-primary.next-balloon-right-bottom .next-balloon-arrow .next-balloon-arrow-content {
+  transform: translateX(12px) rotate(45deg);
+  transform: translateX(var(--balloon-size-arrow-size, 12px)) rotate(45deg);
+}
+.next-balloon[dir=rtl].next-balloon-primary.next-balloon-top-left .next-balloon-arrow {
+  right: 10px;
+  right: calc(var(--balloon-size-arrow-margin, 12px) - 2px);
+  left: auto;
+}
+.next-balloon[dir=rtl].next-balloon-primary.next-balloon-top-right .next-balloon-arrow {
+  left: 10px;
+  left: calc(var(--balloon-size-arrow-margin, 12px) - 2px);
+  right: auto;
+}
+.next-balloon[dir=rtl].next-balloon-primary.next-balloon-bottom-left .next-balloon-arrow {
+  right: 10px;
+  right: calc(var(--balloon-size-arrow-margin, 12px) - 2px);
+  left: auto;
+}
+.next-balloon[dir=rtl].next-balloon-primary.next-balloon-bottom-right .next-balloon-arrow {
+  left: 10px;
+  left: calc(var(--balloon-size-arrow-margin, 12px) - 2px);
+  right: auto;
+}
+.next-balloon[dir=rtl].next-balloon-normal .next-balloon-close {
+  left: 12px;
+  left: var(--balloon-size-close-margin-right, 12px);
+  right: auto;
+}
+.next-balloon[dir=rtl].next-balloon-normal.next-balloon-right .next-balloon-arrow {
+  left: -24px;
+  left: calc(0px - var(--balloon-size-arrow-size, 12px)*2);
+  right: auto;
+}
+.next-balloon[dir=rtl].next-balloon-normal.next-balloon-right .next-balloon-arrow .next-balloon-arrow-content {
+  transform: translateX(12px) rotate(45deg);
+  transform: translateX(var(--balloon-size-arrow-size, 12px)) rotate(45deg);
+}
+.next-balloon[dir=rtl].next-balloon-normal.next-balloon-left .next-balloon-arrow {
+  right: -24px;
+  right: calc(0px - var(--balloon-size-arrow-size, 12px)*2);
+  left: auto;
+}
+.next-balloon[dir=rtl].next-balloon-normal.next-balloon-left .next-balloon-arrow .next-balloon-arrow-content {
+  transform: translateX(-12px) rotate(45deg);
+}
+.next-balloon[dir=rtl].next-balloon-normal.next-balloon-left-top .next-balloon-arrow {
+  right: -24px;
+  right: calc(0px - var(--balloon-size-arrow-size, 12px)*2);
+  left: auto;
+}
+.next-balloon[dir=rtl].next-balloon-normal.next-balloon-left-top .next-balloon-arrow .next-balloon-arrow-content {
+  transform: translateX(-12px) rotate(45deg);
+}
+.next-balloon[dir=rtl].next-balloon-normal.next-balloon-left-bottom .next-balloon-arrow {
+  right: -24px;
+  right: calc(0px - var(--balloon-size-arrow-size, 12px)*2);
+  left: auto;
+}
+.next-balloon[dir=rtl].next-balloon-normal.next-balloon-left-bottom .next-balloon-arrow .next-balloon-arrow-content {
+  transform: translateX(-12px) rotate(45deg);
+}
+.next-balloon[dir=rtl].next-balloon-normal.next-balloon-right-top .next-balloon-arrow {
+  left: -24px;
+  left: calc(0px - var(--balloon-size-arrow-size, 12px)*2);
+  right: auto;
+}
+.next-balloon[dir=rtl].next-balloon-normal.next-balloon-right-top .next-balloon-arrow .next-balloon-arrow-content {
+  transform: translateX(12px) rotate(45deg);
+  transform: translateX(var(--balloon-size-arrow-size, 12px)) rotate(45deg);
+}
+.next-balloon[dir=rtl].next-balloon-normal.next-balloon-right-bottom .next-balloon-arrow {
+  left: -24px;
+  left: calc(0px - var(--balloon-size-arrow-size, 12px)*2);
+  right: auto;
+}
+.next-balloon[dir=rtl].next-balloon-normal.next-balloon-right-bottom .next-balloon-arrow .next-balloon-arrow-content {
+  transform: translateX(12px) rotate(45deg);
+  transform: translateX(var(--balloon-size-arrow-size, 12px)) rotate(45deg);
+}
+.next-balloon[dir=rtl].next-balloon-normal.next-balloon-top-left .next-balloon-arrow {
+  right: 10px;
+  right: calc(var(--balloon-size-arrow-margin, 12px) - 2px);
+  left: auto;
+}
+.next-balloon[dir=rtl].next-balloon-normal.next-balloon-top-right .next-balloon-arrow {
+  left: 10px;
+  left: calc(var(--balloon-size-arrow-margin, 12px) - 2px);
+  right: auto;
+}
+.next-balloon[dir=rtl].next-balloon-normal.next-balloon-bottom-left .next-balloon-arrow {
+  right: 10px;
+  right: calc(var(--balloon-size-arrow-margin, 12px) - 2px);
+  left: auto;
+}
+.next-balloon[dir=rtl].next-balloon-normal.next-balloon-bottom-right .next-balloon-arrow {
+  left: 10px;
+  left: calc(var(--balloon-size-arrow-margin, 12px) - 2px);
+  right: auto;
+}
+.next-balloon[dir=rtl].next-balloon-closable {
+  padding: 16px 16px 16px 40px;
+  padding: var(--balloon-size-padding-top, 16px) var(--balloon-size-padding-right, 16px) var(--balloon-size-padding-top, 16px) var(--balloon-size-padding-closable-right, 40px);
+}
+
+.next-balloon-tooltip[dir=rtl] {
+  /* size */
+}
+.next-balloon-tooltip[dir=rtl].next-balloon-tooltip-right .next-balloon-arrow {
+  left: -24px;
+  left: calc(0px - var(--balloon-size-arrow-size, 12px)*2);
+  right: auto;
+}
+.next-balloon-tooltip[dir=rtl].next-balloon-tooltip-right .next-balloon-arrow .next-balloon-arrow-content {
+  transform: translateX(12px) rotate(45deg);
+  transform: translateX(var(--balloon-size-arrow-size, 12px)) rotate(45deg);
+}
+.next-balloon-tooltip[dir=rtl].next-balloon-tooltip-left .next-balloon-arrow {
+  right: -24px;
+  right: calc(0px - var(--balloon-size-arrow-size, 12px)*2);
+  left: auto;
+}
+.next-balloon-tooltip[dir=rtl].next-balloon-tooltip-left .next-balloon-arrow .next-balloon-arrow-content {
+  transform: translateX(-12px) rotate(45deg);
+}
+.next-balloon-tooltip[dir=rtl].next-balloon-tooltip-left-top .next-balloon-arrow {
+  right: -24px;
+  right: calc(0px - var(--balloon-size-arrow-size, 12px)*2);
+  left: auto;
+}
+.next-balloon-tooltip[dir=rtl].next-balloon-tooltip-left-top .next-balloon-arrow .next-balloon-arrow-content {
+  transform: translateX(-12px) rotate(45deg);
+}
+.next-balloon-tooltip[dir=rtl].next-balloon-tooltip-left-bottom .next-balloon-arrow {
+  right: -24px;
+  right: calc(0px - var(--balloon-size-arrow-size, 12px)*2);
+  left: auto;
+}
+.next-balloon-tooltip[dir=rtl].next-balloon-tooltip-left-bottom .next-balloon-arrow .next-balloon-arrow-content {
+  transform: translateX(-12px) rotate(45deg);
+}
+.next-balloon-tooltip[dir=rtl].next-balloon-tooltip-right-top .next-balloon-arrow {
+  left: -24px;
+  left: calc(0px - var(--balloon-size-arrow-size, 12px)*2);
+  right: auto;
+}
+.next-balloon-tooltip[dir=rtl].next-balloon-tooltip-right-top .next-balloon-arrow .next-balloon-arrow-content {
+  transform: translateX(12px) rotate(45deg);
+  transform: translateX(var(--balloon-size-arrow-size, 12px)) rotate(45deg);
+}
+.next-balloon-tooltip[dir=rtl].next-balloon-tooltip-right-bottom .next-balloon-arrow {
+  left: -24px;
+  left: calc(0px - var(--balloon-size-arrow-size, 12px)*2);
+  right: auto;
+}
+.next-balloon-tooltip[dir=rtl].next-balloon-tooltip-right-bottom .next-balloon-arrow .next-balloon-arrow-content {
+  transform: translateX(12px) rotate(45deg);
+  transform: translateX(var(--balloon-size-arrow-size, 12px)) rotate(45deg);
+}
+.next-balloon-tooltip[dir=rtl].next-balloon-tooltip-top-left .next-balloon-arrow {
+  right: 10px;
+  right: calc(var(--balloon-size-arrow-margin, 12px) - 2px);
+  left: auto;
+}
+.next-balloon-tooltip[dir=rtl].next-balloon-tooltip-top-right .next-balloon-arrow {
+  left: 10px;
+  left: calc(var(--balloon-size-arrow-margin, 12px) - 2px);
+  right: auto;
+}
+.next-balloon-tooltip[dir=rtl].next-balloon-tooltip-bottom-left .next-balloon-arrow {
+  right: 10px;
+  right: calc(var(--balloon-size-arrow-margin, 12px) - 2px);
+  left: auto;
+}
+.next-balloon-tooltip[dir=rtl].next-balloon-tooltip-bottom-right .next-balloon-arrow {
+  left: 10px;
+  left: calc(var(--balloon-size-arrow-margin, 12px) - 2px);
+  right: auto;
+}
+.next-balloon-tooltip[dir=rtl].next-balloon-tooltip-v2.next-balloon-tooltip-right .next-balloon-arrow {
+  right: -24px;
+  right: calc(0px - var(--balloon-size-arrow-size, 12px)*2);
+  left: auto;
+}
+.next-balloon-tooltip[dir=rtl].next-balloon-tooltip-v2.next-balloon-tooltip-right .next-balloon-arrow .next-balloon-arrow-content {
+  transform: translateX(-12px) rotate(45deg);
+}
+.next-balloon-tooltip[dir=rtl].next-balloon-tooltip-v2.next-balloon-tooltip-left .next-balloon-arrow {
+  left: -24px;
+  left: calc(0px - var(--balloon-size-arrow-size, 12px)*2);
+  right: auto;
+}
+.next-balloon-tooltip[dir=rtl].next-balloon-tooltip-v2.next-balloon-tooltip-left .next-balloon-arrow .next-balloon-arrow-content {
+  transform: translateX(12px) rotate(45deg);
+  transform: translateX(var(--balloon-size-arrow-size, 12px)) rotate(45deg);
+}
+.next-balloon-tooltip[dir=rtl].next-balloon-tooltip-v2.next-balloon-tooltip-left-top .next-balloon-arrow {
+  left: -24px;
+  left: calc(0px - var(--balloon-size-arrow-size, 12px)*2);
+  right: auto;
+}
+.next-balloon-tooltip[dir=rtl].next-balloon-tooltip-v2.next-balloon-tooltip-left-top .next-balloon-arrow .next-balloon-arrow-content {
+  transform: translateX(12px) rotate(45deg);
+  transform: translateX(var(--balloon-size-arrow-size, 12px)) rotate(45deg);
+}
+.next-balloon-tooltip[dir=rtl].next-balloon-tooltip-v2.next-balloon-tooltip-left-bottom .next-balloon-arrow {
+  left: -24px;
+  left: calc(0px - var(--balloon-size-arrow-size, 12px)*2);
+  right: auto;
+}
+.next-balloon-tooltip[dir=rtl].next-balloon-tooltip-v2.next-balloon-tooltip-left-bottom .next-balloon-arrow .next-balloon-arrow-content {
+  transform: translateX(12px) rotate(45deg);
+  transform: translateX(var(--balloon-size-arrow-size, 12px)) rotate(45deg);
+}
+.next-balloon-tooltip[dir=rtl].next-balloon-tooltip-v2.next-balloon-tooltip-right-top .next-balloon-arrow {
+  right: -24px;
+  right: calc(0px - var(--balloon-size-arrow-size, 12px)*2);
+  left: auto;
+}
+.next-balloon-tooltip[dir=rtl].next-balloon-tooltip-v2.next-balloon-tooltip-right-top .next-balloon-arrow .next-balloon-arrow-content {
+  transform: translateX(-12px) rotate(45deg);
+}
+.next-balloon-tooltip[dir=rtl].next-balloon-tooltip-v2.next-balloon-tooltip-right-bottom .next-balloon-arrow {
+  right: -24px;
+  right: calc(0px - var(--balloon-size-arrow-size, 12px)*2);
+  left: auto;
+}
+.next-balloon-tooltip[dir=rtl].next-balloon-tooltip-v2.next-balloon-tooltip-right-bottom .next-balloon-arrow .next-balloon-arrow-content {
+  transform: translateX(-12px) rotate(45deg);
+}
+.next-balloon-tooltip[dir=rtl].next-balloon-tooltip-v2.next-balloon-tooltip-top-left .next-balloon-arrow {
+  left: 10px;
+  left: calc(var(--balloon-size-arrow-margin, 12px) - 2px);
+  right: auto;
+}
+.next-balloon-tooltip[dir=rtl].next-balloon-tooltip-v2.next-balloon-tooltip-top-right .next-balloon-arrow {
+  right: 10px;
+  right: calc(var(--balloon-size-arrow-margin, 12px) - 2px);
+  left: auto;
+}
+.next-balloon-tooltip[dir=rtl].next-balloon-tooltip-v2.next-balloon-tooltip-bottom-left .next-balloon-arrow {
+  left: 10px;
+  left: calc(var(--balloon-size-arrow-margin, 12px) - 2px);
+  right: auto;
+}
+.next-balloon-tooltip[dir=rtl].next-balloon-tooltip-v2.next-balloon-tooltip-bottom-right .next-balloon-arrow {
+  right: 10px;
+  right: calc(var(--balloon-size-arrow-margin, 12px) - 2px);
+  left: auto;
+}
+.next-balloon-tooltip[dir=rtl].next-balloon-tooltip-medium {
+  padding: 8px 8px 8px 8px;
+  padding: var(--balloon-tooltip-size-padding-top, 8px) var(--balloon-tooltip-size-padding-left, 8px) var(--balloon-tooltip-size-padding-bottom, 8px) var(--balloon-tooltip-size-padding-right, 8px);
+}

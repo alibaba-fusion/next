@@ -1,0 +1,341 @@
+{
+  "name": "SplitButton",
+  "props": {
+    "type": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'normal'",
+            "computed": false
+          },
+          {
+            "value": "'primary'",
+            "computed": false
+          },
+          {
+            "value": "'secondary'",
+            "computed": false
+          }
+        ]
+      },
+      "required": false,
+      "description": "按钮的类型",
+      "defaultValue": {
+        "value": "'normal'",
+        "computed": false
+      },
+      "docblock": "按钮的类型"
+    },
+    "size": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'small'",
+            "computed": false
+          },
+          {
+            "value": "'medium'",
+            "computed": false
+          },
+          {
+            "value": "'large'",
+            "computed": false
+          }
+        ]
+      },
+      "required": false,
+      "description": "按钮组的尺寸",
+      "defaultValue": {
+        "value": "'medium'",
+        "computed": false
+      },
+      "docblock": "按钮组的尺寸"
+    },
+    "label": {
+      "type": {
+        "name": "node"
+      },
+      "required": false,
+      "description": "主按钮的文案",
+      "docblock": "主按钮的文案"
+    },
+    "component": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'button'",
+            "computed": false
+          },
+          {
+            "value": "'a'",
+            "computed": false
+          }
+        ]
+      },
+      "required": false,
+      "description": "设置标签类型",
+      "docblock": "设置标签类型"
+    },
+    "ghost": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'light'",
+            "computed": false
+          },
+          {
+            "value": "'dark'",
+            "computed": false
+          },
+          {
+            "value": "false",
+            "computed": false
+          },
+          {
+            "value": "true",
+            "computed": false
+          }
+        ]
+      },
+      "required": false,
+      "description": "是否为幽灵按钮",
+      "docblock": "是否为幽灵按钮"
+    },
+    "defaultSelectedKeys": {
+      "type": {
+        "name": "array"
+      },
+      "required": false,
+      "description": "默认激活的菜单项（用法同 Menu 非受控）",
+      "defaultValue": {
+        "value": "[]",
+        "computed": false
+      },
+      "docblock": "默认激活的菜单项（用法同 Menu 非受控）"
+    },
+    "selectedKeys": {
+      "type": {
+        "name": "array"
+      },
+      "required": false,
+      "description": "激活的菜单项（用法同 Menu 受控）",
+      "docblock": "激活的菜单项（用法同 Menu 受控）"
+    },
+    "selectMode": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'single'",
+            "computed": false
+          },
+          {
+            "value": "'multiple'",
+            "computed": false
+          }
+        ]
+      },
+      "required": false,
+      "description": "菜单的选择模式",
+      "docblock": "菜单的选择模式"
+    },
+    "onSelect": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "选择菜单项时的回调，参考 Menu",
+      "defaultValue": {
+        "value": "func.noop",
+        "computed": true
+      },
+      "docblock": "选择菜单项时的回调，参考 Menu",
+      "params": [],
+      "returns": null
+    },
+    "onItemClick": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "点击菜单项时的回调，参考 Menu",
+      "defaultValue": {
+        "value": "func.noop",
+        "computed": true
+      },
+      "docblock": "点击菜单项时的回调，参考 Menu",
+      "params": [],
+      "returns": null
+    },
+    "triggerProps": {
+      "type": {
+        "name": "object"
+      },
+      "required": false,
+      "description": "触发按钮的属性（支持 Button 的所有属性透传）",
+      "docblock": "触发按钮的属性（支持 Button 的所有属性透传）",
+      "properties": []
+    },
+    "autoWidth": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "弹层菜单的宽度是否与按钮组一致",
+      "defaultValue": {
+        "value": "true",
+        "computed": false
+      },
+      "docblock": "弹层菜单的宽度是否与按钮组一致"
+    },
+    "visible": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "弹层是否显示",
+      "docblock": "弹层是否显示"
+    },
+    "defaultVisible": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "弹层默认是否显示",
+      "docblock": "弹层默认是否显示"
+    },
+    "onVisibleChange": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "弹层显示状态变化时的回调函数",
+      "defaultValue": {
+        "value": "func.noop",
+        "computed": true
+      },
+      "docblock": "弹层显示状态变化时的回调函数\n@param {Boolean} visible 弹层显示状态\n@param {String} type 触发弹层显示或隐藏的来源 menuSelect 表示由menu触发； fromTrigger 表示由trigger的点击触发； docClick 表示由document的点击触发",
+      "params": [
+        {
+          "name": "visible",
+          "description": "弹层显示状态",
+          "type": {
+            "name": "Boolean"
+          }
+        },
+        {
+          "name": "type",
+          "description": "触发弹层显示或隐藏的来源 menuSelect 表示由menu触发； fromTrigger 表示由trigger的点击触发； docClick 表示由document的点击触发",
+          "type": {
+            "name": "String"
+          }
+        }
+      ],
+      "returns": null
+    },
+    "popupTriggerType": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'click'",
+            "computed": false
+          },
+          {
+            "value": "'hover'",
+            "computed": false
+          }
+        ]
+      },
+      "required": false,
+      "description": "弹层的触发方式",
+      "defaultValue": {
+        "value": "'click'",
+        "computed": false
+      },
+      "docblock": "弹层的触发方式"
+    },
+    "popupAlign": {
+      "type": {
+        "name": "string"
+      },
+      "required": false,
+      "description": "弹层对齐方式, 详情见Overlay align",
+      "docblock": "弹层对齐方式, 详情见Overlay align"
+    },
+    "popupStyle": {
+      "type": {
+        "name": "object"
+      },
+      "required": false,
+      "description": "弹层自定义样式",
+      "docblock": "弹层自定义样式",
+      "properties": []
+    },
+    "popupClassName": {
+      "type": {
+        "name": "string"
+      },
+      "required": false,
+      "description": "弹层自定义样式类",
+      "docblock": "弹层自定义样式类"
+    },
+    "popupProps": {
+      "type": {
+        "name": "object"
+      },
+      "required": false,
+      "description": "透传给弹层的属性",
+      "docblock": "透传给弹层的属性",
+      "properties": []
+    },
+    "popupContainer": {
+      "type": {
+        "name": "any"
+      },
+      "required": false,
+      "description": "弹层容器",
+      "docblock": "弹层容器"
+    },
+    "followTrigger": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否跟随滚动",
+      "docblock": "是否跟随滚动"
+    },
+    "menuProps": {
+      "type": {
+        "name": "object"
+      },
+      "required": false,
+      "description": "透传给 Menu 的属性",
+      "defaultValue": {
+        "value": "{}",
+        "computed": false
+      },
+      "docblock": "透传给 Menu 的属性",
+      "properties": []
+    },
+    "leftButtonProps": {
+      "type": {
+        "name": "object"
+      },
+      "required": false,
+      "description": "透传给 左侧按钮 的属性",
+      "defaultValue": {
+        "value": "{}",
+        "computed": false
+      },
+      "docblock": "透传给 左侧按钮 的属性",
+      "properties": []
+    }
+  },
+  "methods": [],
+  "subComponents": []
+}

@@ -1,0 +1,14 @@
+:root {
+--popup-spacing-lr: 0px;
+--popup-spacing-tb: 0px;
+--popup-local-border-width: 1px;
+--popup-local-border-style: solid;
+--popup-local-border-color: #DCDEE3;
+--popup-local-corner: 3px;
+--popup-local-shadow: none;
+--popup-global-border-width: 0px;
+--popup-global-border-style: solid;
+--popup-global-border-color: #DCDEE3;
+--popup-global-corner: 3px;
+--popup-global-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.12);
+}

@@ -1,0 +1,215 @@
+
+.next-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+  top: 0;
+  margin: -1px;
+}
+
+.next-rating[dir=rtl] .next-rating-overlay {
+  right: 0;
+  left: auto;
+}
+.next-rating[dir=rtl] .next-rating-underlay .next-rating-icon,
+.next-rating[dir=rtl] .next-rating-overlay .next-rating-icon {
+  margin-right: 4px;
+  margin-right: var(--s-1, 4px);
+  margin-left: 0;
+}
+.next-rating[dir=rtl] .next-rating-underlay .next-rating-icon:last-child,
+.next-rating[dir=rtl] .next-rating-overlay .next-rating-icon:last-child {
+  /* icon 放大会产生边缘溢出，这里使用 margin 为放大扩展一部分空间 */
+  margin-left: 4px;
+  margin-left: var(--s-1, 4px);
+}
+
+.next-rating {
+  vertical-align: top;
+}
+.next-rating {
+  display: inline-block;
+  position: relative;
+}
+.next-rating:after {
+  visibility: hidden;
+  display: block;
+  height: 0;
+  font-size: 0;
+  content: " ";
+  clear: both;
+}
+.next-rating-base {
+  float: left;
+}
+.next-rating-text {
+  float: left;
+}
+.next-rating-base-disabled {
+  cursor: not-allowed;
+}
+.next-rating-base-disabled .next-rating-underlay .next-rating-icon {
+  cursor: not-allowed;
+}
+.next-rating-base-disabled .next-rating-overlay .next-rating-icon {
+  cursor: not-allowed;
+}
+.next-rating-symbol-icon::before {
+  content: "\e60e";
+  content: var(--rating-grade-icon-content, "\e60e");
+}
+.next-rating-underlay {
+  white-space: nowrap;
+  overflow: hidden;
+}
+.next-rating-underlay .next-icon {
+  color: #E2E4E8;
+  color: var(--rating-normal-underlay-color, #E2E4E8);
+}
+.next-rating-stroke-mode .next-rating-underlay .next-icon {
+  color: transparent;
+  -webkit-text-stroke: 1px #5584FF;
+  -webkit-text-stroke: 1px var(--rating-normal-overlay-color, #5584FF);
+}
+.next-rating-overlay {
+  white-space: nowrap;
+  overflow: hidden;
+  position: absolute;
+  width: 0;
+  top: 0;
+  left: 0;
+}
+.next-rating-overlay .next-icon {
+  color: #5584FF;
+  color: var(--rating-normal-overlay-color, #5584FF);
+}
+.next-rating-underlay .next-rating-icon, .next-rating-overlay .next-rating-icon {
+  cursor: pointer;
+  margin-left: 4px;
+  margin-left: var(--s-1, 4px);
+}
+.next-rating-underlay .next-rating-icon:last-child, .next-rating-overlay .next-rating-icon:last-child {
+  /* icon 放大会产生边缘溢出，这里使用 margin 为放大扩展一部分空间 */
+  margin-right: 4px;
+  margin-right: var(--s-1, 4px);
+}
+.next-rating-underlay .next-icon, .next-rating-overlay .next-icon {
+  transition: all 100ms linear;
+  transition: all var(--motion-duration-immediately, 100ms) var(--motion-linear, linear);
+}
+.next-rating-underlay .next-icon.hover, .next-rating-overlay .next-icon.hover {
+  transform: scale3d(1.1, 1.1, 1.1);
+}
+.next-rating-underlay .next-icon.clicked, .next-rating-overlay .next-icon.clicked {
+  transform: scale3d(0.9, 0.9, 0.9);
+}
+.next-rating-info {
+  position: absolute;
+  top: calc(100% + 4px);
+  top: calc(100% + var(--s-1, 4px));
+  left: 0;
+  border: 1px solid #E2E4E8;
+  border: 1px solid var(--color-fill1-4, #E2E4E8);
+  background: #FFFFFF;
+  background: var(--rating-grade-background, #FFFFFF);
+  padding: 4px 8px 3px;
+  font-size: 12px;
+  white-space: nowrap;
+}
+.next-rating-info:after {
+  position: absolute;
+  content: "";
+  width: 4px;
+  height: 4px;
+  transform: rotate(45deg);
+  border: 1px solid #E2E4E8;
+  border: 1px solid var(--color-fill1-4, #E2E4E8);
+  background: #FFFFFF;
+  background: var(--rating-grade-background, #FFFFFF);
+  border-bottom-color: transparent;
+  border-right-color: transparent;
+  top: -3px;
+  left: 4px;
+}
+.next-rating:focus .next-rating-base:not(.next-rating-base-disabled), .next-rating.hover {
+  outline: none;
+}
+.next-rating:focus .next-rating-base:not(.next-rating-base-disabled) .next-rating-overlay .next-icon, .next-rating.hover .next-rating-overlay .next-icon {
+  color: #5584FF;
+  color: var(--rating-normal-overlay-hover-color, #5584FF);
+}
+
+/* 状态 */
+/* ======================================== */
+.next-rating-grade-low .next-rating-overlay .next-icon {
+  color: #666666;
+  color: var(--rating-grade-low-overlay-color, #666666);
+}
+.next-rating-grade-low.hover .next-rating-overlay .next-icon {
+  color: #666666;
+  color: var(--rating-grade-low-overlay-color, #666666);
+}
+
+.next-rating-grade-high .next-rating-overlay .next-icon {
+  color: #5584FF;
+  color: var(--rating-grade-high-overlay-color, #5584FF);
+}
+.next-rating-grade-high.hover .next-rating-overlay .next-icon {
+  color: #5584FF;
+  color: var(--rating-grade-high-overlay-hover-color, #5584FF);
+}
+
+/* 尺寸 */
+/* ======================================== */
+.next-rating-small {
+  font-size: 12px;
+  font-size: var(--rating-small-font-size, 12px);
+}
+.next-rating-small .next-icon:before, .next-rating-small .next-icon .next-icon-remote {
+  width: 12px;
+  width: var(--rating-small-icon-size, 12px);
+  font-size: 12px;
+  font-size: var(--rating-small-icon-size, 12px);
+  line-height: inherit;
+}
+.next-rating-small .next-rating-text {
+  margin-left: 8px;
+  margin-left: var(--rating-small-text-margin-left, 8px);
+}
+
+.next-rating-medium {
+  font-size: 12px;
+  font-size: var(--rating-medium-font-size, 12px);
+}
+.next-rating-medium .next-icon:before, .next-rating-medium .next-icon .next-icon-remote {
+  width: 16px;
+  width: var(--rating-medium-icon-size, 16px);
+  font-size: 16px;
+  font-size: var(--rating-medium-icon-size, 16px);
+  line-height: inherit;
+}
+.next-rating-medium .next-rating-text {
+  margin-left: 12px;
+  margin-left: var(--rating-medium-text-margin-left, 12px);
+}
+
+.next-rating-large {
+  font-size: 16px;
+  font-size: var(--rating-large-font-size, 16px);
+}
+.next-rating-large .next-icon:before, .next-rating-large .next-icon .next-icon-remote {
+  width: 20px;
+  width: var(--rating-large-icon-size, 20px);
+  font-size: 20px;
+  font-size: var(--rating-large-icon-size, 20px);
+  line-height: inherit;
+}
+.next-rating-large .next-rating-text {
+  margin-left: 16px;
+  margin-left: var(--rating-large-text-margin-left, 16px);
+}

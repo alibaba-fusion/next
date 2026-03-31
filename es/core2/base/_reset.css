@@ -1,0 +1,38 @@
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+ul,
+ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+li {
+  margin-left: 0;
+}
+
+hr {
+  border: 0 var(--line-solid, solid) var(--color-line1-2, #DCDEE3);
+  border-top-width: var(--line-1, 1px);
+}
+
+a {
+  text-decoration: none;
+}
+a:link {
+  color: var(--color-link-1, #5584FF);
+}
+a:visited {
+  color: var(--color-link-2, #5584FF);
+}
+a:hover {
+  color: var(--color-link-3, #3E71F7);
+}
+a:active {
+  text-decoration: underline;
+  color: var(--color-link-3, #3E71F7);
+}

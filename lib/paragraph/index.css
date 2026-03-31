@@ -1,0 +1,33 @@
+.next-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+  top: 0;
+  margin: -1px;
+}
+
+.next-paragraph {
+  color: #333333;
+  color: var(--paragraph-text-color, #333333);
+}
+.next-paragraph-short {
+  line-height: 1.5;
+  line-height: var(--paragraph-s-line-height, 1.5);
+}
+.next-paragraph-long {
+  line-height: 1.7;
+  line-height: var(--paragraph-l-line-height, 1.7);
+}
+.next-paragraph-small {
+  font-size: 12px;
+  font-size: var(--paragraph-s-font-size, 12px);
+}
+.next-paragraph-medium {
+  font-size: 14px;
+  font-size: var(--paragraph-m-font-size, 14px);
+}

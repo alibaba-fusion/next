@@ -1,0 +1,14 @@
+:root {
+--divider-hoz-size: 1px;
+--divider-hoz-color: #DCDEE3;
+--divider-hoz-text-center-paddingLeft: 16px;
+--divider-hoz-text-left-paddingLeft: 16px;
+--divider-hoz-text-marginTop: 16px;
+--divider-hoz-marginTop: 16px;
+--divider-hoz-text-size: 16px;
+--divider-hoz-text-weight: normal;
+--divider-hoz-text-color: #333333;
+--divider-ver-size: 1px;
+--divider-ver-color: #DCDEE3;
+--divider-ver-marginLeft: 8px;
+}

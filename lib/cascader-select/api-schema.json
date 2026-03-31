@@ -1,0 +1,735 @@
+{
+  "name": "CascaderSelect",
+  "props": {
+    "size": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'small'",
+            "computed": false
+          },
+          {
+            "value": "'medium'",
+            "computed": false
+          },
+          {
+            "value": "'large'",
+            "computed": false
+          }
+        ]
+      },
+      "required": false,
+      "description": "选择框大小",
+      "defaultValue": {
+        "value": "'medium'",
+        "computed": false
+      },
+      "docblock": "选择框大小"
+    },
+    "placeholder": {
+      "type": {
+        "name": "string"
+      },
+      "required": false,
+      "description": "选择框占位符",
+      "docblock": "选择框占位符"
+    },
+    "disabled": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否禁用",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "是否禁用"
+    },
+    "hasArrow": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否有下拉箭头",
+      "defaultValue": {
+        "value": "true",
+        "computed": false
+      },
+      "docblock": "是否有下拉箭头"
+    },
+    "hasBorder": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否有边框",
+      "defaultValue": {
+        "value": "true",
+        "computed": false
+      },
+      "docblock": "是否有边框"
+    },
+    "hasClear": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否有清除按钮",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "是否有清除按钮"
+    },
+    "label": {
+      "type": {
+        "name": "node"
+      },
+      "required": false,
+      "description": "自定义内联 label",
+      "docblock": "自定义内联 label"
+    },
+    "readOnly": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否只读，只读模式下可以展开弹层但不能选",
+      "docblock": "是否只读，只读模式下可以展开弹层但不能选"
+    },
+    "dataSource": {
+      "type": {
+        "name": "arrayOf",
+        "value": {
+          "name": "object"
+        }
+      },
+      "required": false,
+      "description": "数据源，结构可参考下方说明",
+      "defaultValue": {
+        "value": "[]",
+        "computed": false
+      },
+      "docblock": "数据源，结构可参考下方说明"
+    },
+    "defaultValue": {
+      "type": {
+        "name": "union",
+        "value": [
+          {
+            "name": "string"
+          },
+          {
+            "name": "arrayOf",
+            "value": {
+              "name": "string"
+            }
+          }
+        ]
+      },
+      "required": false,
+      "description": "（非受控）默认值",
+      "defaultValue": {
+        "value": "null",
+        "computed": false
+      },
+      "docblock": "（非受控）默认值"
+    },
+    "value": {
+      "type": {
+        "name": "union",
+        "value": [
+          {
+            "name": "string"
+          },
+          {
+            "name": "arrayOf",
+            "value": {
+              "name": "string"
+            }
+          }
+        ]
+      },
+      "required": false,
+      "description": "（受控）当前值",
+      "docblock": "（受控）当前值"
+    },
+    "onChange": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "选中值改变时触发的回调函数",
+      "docblock": "选中值改变时触发的回调函数\n@param {String|Array} value 选中的值，单选时返回单个值，多选时返回数组\n@param {Object|Array} data 选中的数据，包括 value 和 label，单选时返回单个值，多选时返回数组，父子节点选中关联时，同时选中，只返回父节点\n@param {Object} extra 额外参数\n@param {Array} extra.selectedPath 单选时选中的数据的路径\n@param {Boolean} extra.checked 多选时当前的操作是选中还是取消选中\n@param {Object} extra.currentData 多选时当前操作的数据\n@param {Array} extra.checkedData 多选时所有被选中的数据\n@param {Array} extra.indeterminateData 多选时半选的数据",
+      "params": [
+        {
+          "name": "value",
+          "description": "选中的值，单选时返回单个值，多选时返回数组",
+          "type": {
+            "name": "union",
+            "value": [
+              "String",
+              "Array"
+            ]
+          }
+        },
+        {
+          "name": "data",
+          "description": "选中的数据，包括 value 和 label，单选时返回单个值，多选时返回数组，父子节点选中关联时，同时选中，只返回父节点",
+          "type": {
+            "name": "union",
+            "value": [
+              "Object",
+              "Array"
+            ]
+          }
+        },
+        {
+          "name": "extra",
+          "description": "额外参数",
+          "type": {
+            "name": "Object"
+          }
+        },
+        {
+          "name": "extra.selectedPath",
+          "description": "单选时选中的数据的路径",
+          "type": {
+            "name": "Array"
+          }
+        },
+        {
+          "name": "extra.checked",
+          "description": "多选时当前的操作是选中还是取消选中",
+          "type": {
+            "name": "Boolean"
+          }
+        },
+        {
+          "name": "extra.currentData",
+          "description": "多选时当前操作的数据",
+          "type": {
+            "name": "Object"
+          }
+        },
+        {
+          "name": "extra.checkedData",
+          "description": "多选时所有被选中的数据",
+          "type": {
+            "name": "Array"
+          }
+        },
+        {
+          "name": "extra.indeterminateData",
+          "description": "多选时半选的数据",
+          "type": {
+            "name": "Array"
+          }
+        }
+      ],
+      "returns": null
+    },
+    "defaultExpandedValue": {
+      "type": {
+        "name": "arrayOf",
+        "value": {
+          "name": "string"
+        }
+      },
+      "required": false,
+      "description": "默认展开值，如果不设置，组件内部会根据 defaultValue/value 进行自动设置",
+      "docblock": "默认展开值，如果不设置，组件内部会根据 defaultValue/value 进行自动设置"
+    },
+    "expandedValue": {
+      "type": {
+        "name": "arrayOf",
+        "value": {
+          "name": "string"
+        }
+      },
+      "required": false,
+      "description": "（受控）当前展开值",
+      "docblock": "（受控）当前展开值"
+    },
+    "expandTriggerType": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'click'",
+            "computed": false
+          },
+          {
+            "value": "'hover'",
+            "computed": false
+          }
+        ]
+      },
+      "required": false,
+      "description": "展开触发的方式",
+      "defaultValue": {
+        "value": "'click'",
+        "computed": false
+      },
+      "docblock": "展开触发的方式"
+    },
+    "useVirtual": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否开启虚拟滚动",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "是否开启虚拟滚动"
+    },
+    "multiple": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否多选",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "是否多选"
+    },
+    "changeOnSelect": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否选中即发生改变, 该属性仅在单选模式下有效",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "是否选中即发生改变, 该属性仅在单选模式下有效"
+    },
+    "canOnlyCheckLeaf": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否只能勾选叶子项的checkbox，该属性仅在多选模式下有效",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "是否只能勾选叶子项的checkbox，该属性仅在多选模式下有效"
+    },
+    "checkStrictly": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "父子节点是否选中不关联",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "父子节点是否选中不关联"
+    },
+    "listStyle": {
+      "type": {
+        "name": "object"
+      },
+      "required": false,
+      "description": "每列列表样式对象",
+      "docblock": "每列列表样式对象",
+      "properties": []
+    },
+    "listClassName": {
+      "type": {
+        "name": "string"
+      },
+      "required": false,
+      "description": "每列列表类名",
+      "docblock": "每列列表类名"
+    },
+    "displayRender": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "选择框单选时展示结果的自定义渲染函数",
+      "docblock": "选择框单选时展示结果的自定义渲染函数\n@param {Array} label 选中路径的文本数组\n@return {ReactNode} 渲染在选择框中的内容\n@default 单选时：labelPath => labelPath.join(' / ')；多选时：labelPath => labelPath[labelPath.length - 1]",
+      "params": [
+        {
+          "name": "label",
+          "description": "选中路径的文本数组",
+          "type": {
+            "name": "Array"
+          }
+        }
+      ],
+      "returns": {
+        "description": "渲染在选择框中的内容",
+        "type": {
+          "name": "ReactNode"
+        }
+      },
+      "defaultValue": {
+        "value": "单选时：labelPath => labelPath.join(' / ')；多选时：labelPath => labelPath[labelPath.length - 1]",
+        "computed": false
+      }
+    },
+    "itemRender": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "渲染 item 内容的方法",
+      "docblock": "渲染 item 内容的方法\n@param {Object} item 渲染节点的item\n@return {ReactNode} item node",
+      "params": [
+        {
+          "name": "item",
+          "description": "渲染节点的item",
+          "type": {
+            "name": "Object"
+          }
+        }
+      ],
+      "returns": {
+        "description": "item node",
+        "type": {
+          "name": "ReactNode"
+        }
+      }
+    },
+    "showSearch": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否显示搜索框",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "是否显示搜索框"
+    },
+    "filter": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "自定义搜索函数",
+      "defaultValue": {
+        "value": "根据路径所有节点的文本值模糊匹配",
+        "computed": false
+      },
+      "docblock": "自定义搜索函数\n@param {String} searchValue 搜索的关键字\n@param {Array} path 节点路径\n@return {Boolean} 是否匹配\n@default 根据路径所有节点的文本值模糊匹配",
+      "params": [
+        {
+          "name": "searchValue",
+          "description": "搜索的关键字",
+          "type": {
+            "name": "String"
+          }
+        },
+        {
+          "name": "path",
+          "description": "节点路径",
+          "type": {
+            "name": "Array"
+          }
+        }
+      ],
+      "returns": {
+        "description": "是否匹配",
+        "type": {
+          "name": "Boolean"
+        }
+      }
+    },
+    "onSearch": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "当搜索框值变化时回调",
+      "docblock": "当搜索框值变化时回调\n@param {String} value 数据\n@version 1.23",
+      "params": [
+        {
+          "name": "value",
+          "description": "数据",
+          "type": {
+            "name": "String"
+          }
+        }
+      ],
+      "returns": null,
+      "version": {
+        "value": "1.23",
+        "computed": false
+      }
+    },
+    "resultRender": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "搜索结果自定义渲染函数",
+      "defaultValue": {
+        "value": "按照节点文本 a / b / c 的模式渲染",
+        "computed": false
+      },
+      "docblock": "搜索结果自定义渲染函数\n@param {String} searchValue 搜索的关键字\n@param {Array} path 匹配到的节点路径\n@return {ReactNode} 渲染的内容\n@default 按照节点文本 a / b / c 的模式渲染",
+      "params": [
+        {
+          "name": "searchValue",
+          "description": "搜索的关键字",
+          "type": {
+            "name": "String"
+          }
+        },
+        {
+          "name": "path",
+          "description": "匹配到的节点路径",
+          "type": {
+            "name": "Array"
+          }
+        }
+      ],
+      "returns": {
+        "description": "渲染的内容",
+        "type": {
+          "name": "ReactNode"
+        }
+      }
+    },
+    "resultAutoWidth": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "搜索结果列表是否和选择框等宽",
+      "defaultValue": {
+        "value": "true",
+        "computed": false
+      },
+      "docblock": "搜索结果列表是否和选择框等宽"
+    },
+    "notFoundContent": {
+      "type": {
+        "name": "node"
+      },
+      "required": false,
+      "description": "无数据时显示内容",
+      "docblock": "无数据时显示内容"
+    },
+    "locale": {
+      "type": {
+        "name": "object"
+      },
+      "required": false,
+      "description": "国际化",
+      "defaultValue": {
+        "value": "zhCN.Select",
+        "computed": true
+      },
+      "docblock": "国际化",
+      "properties": []
+    },
+    "loadData": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "异步加载数据函数",
+      "docblock": "异步加载数据函数\n@param {Object} data 当前点击异步加载的数据",
+      "params": [
+        {
+          "name": "data",
+          "description": "当前点击异步加载的数据",
+          "type": {
+            "name": "Object"
+          }
+        }
+      ],
+      "returns": null
+    },
+    "header": {
+      "type": {
+        "name": "node"
+      },
+      "required": false,
+      "description": "自定义下拉框头部",
+      "docblock": "自定义下拉框头部"
+    },
+    "footer": {
+      "type": {
+        "name": "node"
+      },
+      "required": false,
+      "description": "自定义下拉框底部",
+      "docblock": "自定义下拉框底部"
+    },
+    "defaultVisible": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "初始下拉框是否显示",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "初始下拉框是否显示"
+    },
+    "visible": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "当前下拉框是否显示",
+      "docblock": "当前下拉框是否显示"
+    },
+    "onVisibleChange": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "下拉框显示或关闭时触发事件的回调函数",
+      "defaultValue": {
+        "value": "() => {}",
+        "computed": false
+      },
+      "docblock": "下拉框显示或关闭时触发事件的回调函数\n@param {Boolean} visible 是否显示\n@param {String} type 触发显示关闭的操作类型, fromTrigger 表示由trigger的点击触发； docClick 表示由document的点击触发",
+      "params": [
+        {
+          "name": "visible",
+          "description": "是否显示",
+          "type": {
+            "name": "Boolean"
+          }
+        },
+        {
+          "name": "type",
+          "description": "触发显示关闭的操作类型, fromTrigger 表示由trigger的点击触发； docClick 表示由document的点击触发",
+          "type": {
+            "name": "String"
+          }
+        }
+      ],
+      "returns": null
+    },
+    "popupStyle": {
+      "type": {
+        "name": "object"
+      },
+      "required": false,
+      "description": "下拉框自定义样式对象",
+      "docblock": "下拉框自定义样式对象",
+      "properties": []
+    },
+    "popupClassName": {
+      "type": {
+        "name": "string"
+      },
+      "required": false,
+      "description": "下拉框样式自定义类名",
+      "docblock": "下拉框样式自定义类名"
+    },
+    "popupContainer": {
+      "type": {
+        "name": "any"
+      },
+      "required": false,
+      "description": "下拉框挂载的容器节点",
+      "docblock": "下拉框挂载的容器节点"
+    },
+    "popupProps": {
+      "type": {
+        "name": "object"
+      },
+      "required": false,
+      "description": "透传到 Popup 的属性对象",
+      "defaultValue": {
+        "value": "{}",
+        "computed": false
+      },
+      "docblock": "透传到 Popup 的属性对象",
+      "properties": []
+    },
+    "followTrigger": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否跟随滚动",
+      "docblock": "是否跟随滚动"
+    },
+    "isPreview": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否为预览态",
+      "docblock": "是否为预览态"
+    },
+    "renderPreview": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "预览态模式下渲染的内容",
+      "docblock": "预览态模式下渲染的内容\n@param {Array<data>} value 选择值 { label: , value:}",
+      "params": [
+        {
+          "name": "value",
+          "description": "选择值 { label: , value:}",
+          "type": {
+            "name": "Array"
+          }
+        }
+      ],
+      "returns": null
+    },
+    "immutable": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否是不可变数据",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "是否是不可变数据\n@version 1.23",
+      "version": {
+        "value": "1.23",
+        "computed": false
+      }
+    }
+  },
+  "methods": [
+    {
+      "name": "refreshValueDataCache",
+      "docblock": "刷新值数据缓存，删除无效值\n@param {Arrary | String} curValue 当前值",
+      "modifiers": [],
+      "params": [
+        {
+          "name": "curValue",
+          "description": "当前值",
+          "type": {
+            "name": "union",
+            "value": [
+              "Arrary",
+              "String"
+            ]
+          }
+        }
+      ],
+      "returns": null,
+      "description": "刷新值数据缓存，删除无效值"
+    }
+  ],
+  "subComponents": []
+}

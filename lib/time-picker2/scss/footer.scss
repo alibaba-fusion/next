@@ -1,0 +1,16 @@
+.#{$css-prefix}time-picker2-footer {
+    width: min-content;
+    min-width: 100%;
+    box-sizing: border-box;
+    text-align: center;
+    border-top: 1px solid #F0F0F0;
+    padding: 4px 12px;
+    display: flex;
+    min-height: 40px;
+    align-items: center;
+    flex-wrap: wrap;
+
+    &-actions {
+        margin-left: auto;
+    }
+}

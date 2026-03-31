@@ -1,0 +1,330 @@
+@charset "UTF-8";
+
+// balloon mixins
+// --------------------------------------------------
+
+@mixin balloon-bounding($border-style) {
+    position: absolute;
+    top: 0;
+    max-width: $balloon-size-max-width;
+    border-style: $border-style;
+    border-radius: $balloon-corner;
+}
+
+@mixin balloon-state(
+    $contentColor,
+    $colorBorder,
+    $colorBg,
+    $shadow,
+    $widthBorder
+) {
+    color: $contentColor;
+    border-color: $colorBorder;
+    background-color: $colorBg;
+    box-shadow: $shadow;
+    border-width: $widthBorder;
+}
+
+@mixin balloon-size(
+    $padding-top,
+    $padding-right,
+    $padding-bottom,
+    $padding-left
+) {
+    padding: $padding-top $padding-right $padding-bottom $padding-left;
+}
+
+@mixin balloon-arrow(
+    $width,
+    $height,
+    $colorBorder,
+    $colorBg,
+    $widthBorder
+) {
+    & .#{$css-prefix}balloon-arrow {
+        position: absolute;
+        display: block;
+        width: calc(#{$width} * 2);
+        height: calc(#{$height} * 2);
+        overflow: hidden;
+        background: 0 0;
+        pointer-events: none;
+        .#{$css-prefix}balloon-arrow-content {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            display: block;
+            width: $width;
+            height: $height;
+            margin: auto;
+            background-color: $colorBg;
+            border: $widthBorder $balloon-border-style $colorBorder;
+            pointer-events: auto;
+        }
+    }
+    &.#{$css-prefix}balloon-top .#{$css-prefix}balloon-arrow {
+        top: calc(0px - (#{$width} * 2));
+        left: calc(50% - #{$width});
+        .#{$css-prefix}balloon-arrow-content {
+            transform: translateY($width) rotate(45deg);
+        }
+    }
+    &.#{$css-prefix}balloon-right .#{$css-prefix}balloon-arrow {
+        top: calc(50% - #{$width});
+        right: calc(0px - (#{$width} * 2));
+        .#{$css-prefix}balloon-arrow-content {
+            transform: translateX(calc(0px - #{$width})) rotate(45deg);
+        }
+    }
+    &.#{$css-prefix}balloon-bottom .#{$css-prefix}balloon-arrow {
+        left: calc(50% - #{$width});
+        bottom: calc(0px - (#{$width} * 2));
+        .#{$css-prefix}balloon-arrow-content {
+            transform: translateY(calc(0px - #{$width})) rotate(45deg);
+        }
+    }
+
+    &.#{$css-prefix}balloon-left .#{$css-prefix}balloon-arrow {
+        top: calc(50% - #{$width});
+        left: calc(0px - (#{$width} * 2));
+        .#{$css-prefix}balloon-arrow-content {
+            transform: translateX($width) rotate(45deg);
+        }
+    }
+    &.#{$css-prefix}balloon-left-top .#{$css-prefix}balloon-arrow {
+        top: calc(#{$balloon-size-arrow-margin} - (#{$width} / 2));
+        left: calc(0px - (#{$width} * 2));
+        .#{$css-prefix}balloon-arrow-content {
+            transform: translateX($width) rotate(45deg);
+        }
+    }
+    &.#{$css-prefix}balloon-left-bottom .#{$css-prefix}balloon-arrow {
+        bottom: calc(#{$balloon-size-arrow-margin} - (#{$width} / 2));
+        left: calc(0px - (#{$width} * 2));
+        .#{$css-prefix}balloon-arrow-content {
+            transform: translateX($width) rotate(45deg);
+        }
+    }
+
+    &.#{$css-prefix}balloon-right-top .#{$css-prefix}balloon-arrow {
+        top: calc(#{$balloon-size-arrow-margin} - (#{$width} / 2));
+        right: calc(0px - (#{$width} * 2));
+        .#{$css-prefix}balloon-arrow-content {
+            transform: translateX(calc(0px - #{$width})) rotate(45deg);
+        }
+    }
+
+    &.#{$css-prefix}balloon-right-bottom .#{$css-prefix}balloon-arrow {
+        bottom: calc(#{$balloon-size-arrow-margin} - (#{$width} / 2));
+        right: calc(0px - (#{$width} * 2));
+        .#{$css-prefix}balloon-arrow-content {
+            transform: translateX(calc(0px - #{$width})) rotate(45deg);
+        }
+    }
+
+    &.#{$css-prefix}balloon-top-left .#{$css-prefix}balloon-arrow {
+        left: calc(#{$balloon-size-arrow-margin} - (#{$width} / 2));
+        top: calc(0px - (#{$width} * 2));
+        .#{$css-prefix}balloon-arrow-content {
+            transform: translateY($width) rotate(45deg);
+        }
+    }
+
+    &.#{$css-prefix}balloon-top-right .#{$css-prefix}balloon-arrow {
+        right: calc(#{$balloon-size-arrow-margin} - (#{$width} / 2));
+        top: calc(0px - (#{$width} * 2));
+        .#{$css-prefix}balloon-arrow-content {
+            transform: translateY($width) rotate(45deg);
+        }
+    }
+
+    &.#{$css-prefix}balloon-bottom-left .#{$css-prefix}balloon-arrow {
+        left: calc(#{$balloon-size-arrow-margin} - (#{$width} / 2));
+        bottom: calc(0px - (#{$width} * 2));
+        .#{$css-prefix}balloon-arrow-content {
+            transform: translateY(calc(0px - #{$width})) rotate(45deg);
+        }
+    }
+
+    &.#{$css-prefix}balloon-bottom-right .#{$css-prefix}balloon-arrow {
+        right: calc(#{$balloon-size-arrow-margin} - (#{$width} / 2));
+        bottom: calc(0px - (#{$width} * 2));
+        .#{$css-prefix}balloon-arrow-content {
+            transform: translateY(calc(0px - #{$width})) rotate(45deg);
+        }
+    }
+}
+
+@mixin balloon-close(
+    $top,
+    $right,
+    $iconSize,
+    $colorClose,
+    $colorCloseHover
+) {
+    .#{$css-prefix}balloon-close {
+        position: absolute;
+        top: -1px;
+        transform: translateY(calc(#{$balloon-size-padding-top} + (#{$balloon-content-font-size} - #{$balloon-size-close}) / 2));
+        right: $right;
+        font-size: $iconSize;
+        cursor: pointer;
+
+        .#{$css-prefix}icon {
+            @include icon-square-size($iconSize);
+        }
+        color: $colorClose;
+        :hover {
+            color: $colorCloseHover;
+        }
+    }
+}
+
+@mixin show-hidden() {
+    &.visible {
+        display: block;
+    }
+    &.hidden {
+        display: none;
+    }
+}
+
+@mixin tooltip-state(
+    $contentColor,
+    $colorBorder,
+    $colorBg,
+    $shadow,
+    $widthBorder
+) {
+    color: $contentColor;
+    border-color: $colorBorder;
+    background-color: $colorBg;
+    box-shadow: $shadow;
+    border-width: $widthBorder;
+}
+
+@mixin tooltip-arrow(
+    $width,
+    $height,
+    $colorBorder,
+    $colorBg
+) {
+    & .#{$css-prefix}balloon-arrow {
+        position: absolute;
+        display: block;
+        width: calc(#{$width} * 2);
+        height: calc(#{$height} * 2);
+        overflow: hidden;
+        background: 0 0;
+        pointer-events: none;
+        .#{$css-prefix}balloon-arrow-content {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            display: block;
+            width: $width;
+            height: $height;
+            margin: auto;
+            background-color: $colorBg;
+            border: $balloon-tooltip-border-width $balloon-tooltip-border-style $colorBorder;
+            pointer-events: auto;
+        }
+    }
+    &-top .#{$css-prefix}balloon-arrow {
+        top: calc(0px - (#{$width} * 2));
+        left: calc(50% - #{$width});
+        .#{$css-prefix}balloon-arrow-content {
+            transform: translateY($width) rotate(45deg);
+        }
+    }
+    &-right .#{$css-prefix}balloon-arrow {
+        top: calc(50% - #{$width});
+        right: calc(0px - (#{$width} * 2));
+        .#{$css-prefix}balloon-arrow-content {
+            transform: translateX(calc(0px - #{$width})) rotate(45deg);
+        }
+    }
+    &-bottom .#{$css-prefix}balloon-arrow {
+        left: calc(50% - #{$width});
+        bottom: calc(0px - (#{$width} * 2));
+        .#{$css-prefix}balloon-arrow-content {
+            transform: translateY(calc(0px - #{$width})) rotate(45deg);
+        }
+    }
+
+    &-left .#{$css-prefix}balloon-arrow {
+        top: calc(50% - #{$width});
+        left: calc(0px - (#{$width} * 2));
+        .#{$css-prefix}balloon-arrow-content {
+            transform: translateX($width) rotate(45deg);
+        }
+    }
+    &-left-top .#{$css-prefix}balloon-arrow {
+        top: calc(#{$balloon-size-arrow-margin} - (#{$width} / 2));
+        left: calc(0px - (#{$width} * 2));
+        .#{$css-prefix}balloon-arrow-content {
+            transform: translateX($width) rotate(45deg);
+        }
+    }
+    &-left-bottom .#{$css-prefix}balloon-arrow {
+        bottom: calc(#{$balloon-size-arrow-margin} - (#{$width} / 2));
+        left: calc(0px - (#{$width} * 2));
+        .#{$css-prefix}balloon-arrow-content {
+            transform: translateX($width) rotate(45deg);
+        }
+    }
+
+    &-right-top .#{$css-prefix}balloon-arrow {
+        top: calc(#{$balloon-size-arrow-margin} - (#{$width} / 2));
+        right: calc(0px - (#{$width} * 2));
+        .#{$css-prefix}balloon-arrow-content {
+            transform: translateX(calc(0px - #{$width})) rotate(45deg);
+        }
+    }
+
+    &-right-bottom .#{$css-prefix}balloon-arrow {
+        bottom: calc(#{$balloon-size-arrow-margin} - (#{$width} / 2));
+        right: calc(0px - (#{$width} * 2));
+        .#{$css-prefix}balloon-arrow-content {
+            transform: translateX(calc(0px - #{$width})) rotate(45deg);
+        }
+    }
+
+    &-top-left .#{$css-prefix}balloon-arrow {
+        left: calc(#{$balloon-size-arrow-margin} - (#{$width} / 2));
+        top: calc(0px - (#{$width} * 2));
+        .#{$css-prefix}balloon-arrow-content {
+            transform: translateY($width) rotate(45deg);
+        }
+    }
+
+    &-top-right .#{$css-prefix}balloon-arrow {
+        right: calc(#{$balloon-size-arrow-margin} - (#{$width} / 2));
+        top: calc(0px - (#{$width} * 2));
+        .#{$css-prefix}balloon-arrow-content {
+            transform: translateY($width) rotate(45deg);
+        }
+    }
+
+    &-bottom-left .#{$css-prefix}balloon-arrow {
+        left: calc(#{$balloon-size-arrow-margin} - (#{$width} / 2));
+        bottom: calc(0px - (#{$width} * 2));
+        .#{$css-prefix}balloon-arrow-content {
+            transform: translateY(calc(0px - #{$width})) rotate(45deg);
+        }
+    }
+
+    &-bottom-right .#{$css-prefix}balloon-arrow {
+        right: calc(#{$balloon-size-arrow-margin} - (#{$width} / 2));
+        bottom: calc(0px - (#{$width} * 2));
+        .#{$css-prefix}balloon-arrow-content {
+            transform: translateY(calc(0px - #{$width})) rotate(45deg);
+        }
+    }
+}

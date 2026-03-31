@@ -1,0 +1,181 @@
+{
+  "name": "ConfigProvider",
+  "props": {
+    "prefix": {
+      "type": {
+        "name": "string"
+      },
+      "required": false,
+      "description": "样式类名的品牌前缀",
+      "docblock": "样式类名的品牌前缀"
+    },
+    "locale": {
+      "type": {
+        "name": "object"
+      },
+      "required": false,
+      "description": "国际化文案对象，属性为组件的 displayName",
+      "docblock": "国际化文案对象，属性为组件的 displayName",
+      "properties": []
+    },
+    "defaultPropsConfig": {
+      "type": {
+        "name": "object"
+      },
+      "required": false,
+      "description": "组件 API 的默认配置",
+      "docblock": "组件 API 的默认配置",
+      "properties": []
+    },
+    "errorBoundary": {
+      "type": {
+        "name": "union",
+        "value": [
+          {
+            "name": "bool"
+          },
+          {
+            "name": "object"
+          }
+        ]
+      },
+      "required": false,
+      "description": "是否开启错误捕捉 errorBoundary\n如需自定义参数，请传入对象 对象接受参数列表如下：\n\nfallbackUI `Function(error?: {}, errorInfo?: {}) => Element` 捕获错误后的展示\nafterCatch `Function(error?: {}, errorInfo?: {})` 捕获错误后的行为, 比如埋点上传",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "是否开启错误捕捉 errorBoundary\n如需自定义参数，请传入对象 对象接受参数列表如下：\n\nfallbackUI `Function(error?: {}, errorInfo?: {}) => Element` 捕获错误后的展示\nafterCatch `Function(error?: {}, errorInfo?: {})` 捕获错误后的行为, 比如埋点上传"
+    },
+    "pure": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否开启 Pure Render 模式，会提高性能，但是也会带来副作用",
+      "docblock": "是否开启 Pure Render 模式，会提高性能，但是也会带来副作用"
+    },
+    "warning": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否在开发模式下显示组件属性被废弃的 warning 提示",
+      "defaultValue": {
+        "value": "true",
+        "computed": false
+      },
+      "docblock": "是否在开发模式下显示组件属性被废弃的 warning 提示"
+    },
+    "rtl": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否开启 rtl 模式",
+      "docblock": "是否开启 rtl 模式"
+    },
+    "device": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'tablet'",
+            "computed": false
+          },
+          {
+            "value": "'desktop'",
+            "computed": false
+          },
+          {
+            "value": "'phone'",
+            "computed": false
+          }
+        ]
+      },
+      "required": false,
+      "description": "设备类型，针对不同的设备类型组件做出对应的响应式变化",
+      "docblock": "设备类型，针对不同的设备类型组件做出对应的响应式变化"
+    },
+    "children": {
+      "type": {
+        "name": "any"
+      },
+      "required": false,
+      "description": "组件树",
+      "docblock": "组件树"
+    },
+    "popupContainer": {
+      "type": {
+        "name": "any"
+      },
+      "required": false,
+      "description": "指定浮层渲染的父节点, 可以为节点id的字符串，也可以返回节点的函数",
+      "docblock": "指定浮层渲染的父节点, 可以为节点id的字符串，也可以返回节点的函数"
+    }
+  },
+  "methods": [
+    {
+      "name": "config",
+      "docblock": "传入组件，生成受 ConfigProvider 控制的 HOC 组件\n@param {Component} Component 组件类\n@param {Object} options 可选项\n@returns {Component} HOC",
+      "modifiers": [
+        "static"
+      ],
+      "params": [
+        {
+          "name": "Component",
+          "description": "组件类",
+          "type": {
+            "name": "Component"
+          }
+        },
+        {
+          "name": "options",
+          "description": "可选项",
+          "type": {
+            "name": "Object"
+          }
+        }
+      ],
+      "returns": {
+        "description": "HOC",
+        "type": {
+          "name": "Component"
+        }
+      },
+      "description": "传入组件，生成受 ConfigProvider 控制的 HOC 组件"
+    },
+    {
+      "name": "getContextProps",
+      "docblock": "传入组件的 props 和 displayName，得到和 childContext 计算过的包含有 preifx/locale/pure 的对象，一般用于通过静态方法生成脱离组件树的组件\n@param {Object} props 组件的 props\n@param {String} displayName 组件的 displayName\n@returns {Object} 新的 context props",
+      "modifiers": [
+        "static"
+      ],
+      "params": [
+        {
+          "name": "props",
+          "description": "组件的 props",
+          "type": {
+            "name": "Object"
+          }
+        },
+        {
+          "name": "displayName",
+          "description": "组件的 displayName",
+          "type": {
+            "name": "String"
+          }
+        }
+      ],
+      "returns": {
+        "description": "新的 context props",
+        "type": {
+          "name": "Object"
+        }
+      },
+      "description": "传入组件的 props 和 displayName，得到和 childContext 计算过的包含有 preifx/locale/pure 的对象，一般用于通过静态方法生成脱离组件树的组件"
+    }
+  ],
+  "propsExtends": false,
+  "subComponents": []
+}

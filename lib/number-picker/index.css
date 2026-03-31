@@ -1,0 +1,430 @@
+.next-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+  top: 0;
+  margin: -1px;
+}
+
+.next-number-picker {
+  box-sizing: border-box;
+  display: inline-block;
+  /* stylelint-disable declaration-no-important */
+}
+.next-number-picker *,
+.next-number-picker *:before,
+.next-number-picker *:after {
+  box-sizing: border-box;
+}
+.next-number-picker .next-btn {
+  padding: 0 !important;
+  line-height: 0 !important;
+  box-shadow: none !important;
+}
+.next-number-picker-normal .next-input {
+  width: 100%;
+}
+.next-number-picker-normal .next-input .next-input-control {
+  padding-right: 0;
+  height: 100%;
+}
+.next-number-picker-normal:not(.next-number-picker-no-trigger) .next-input input {
+  padding-right: 2px;
+}
+.next-number-picker-normal .next-btn {
+  display: block;
+}
+.next-number-picker-normal .next-btn:hover {
+  z-index: 1;
+}
+.next-number-picker-normal .next-btn:first-child {
+  border-right: none;
+  border-top: none;
+  height: 50%;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.next-number-picker-normal .next-btn:last-child {
+  border-right: none;
+  border-bottom: none;
+  margin-top: -1px;
+  height: calc(50% + 1px);
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-top-right-radius: 0;
+}
+.next-number-picker-normal .next-number-picker-handler {
+  transition: opacity 100ms linear;
+  transition: opacity var(--motion-duration-immediately, 100ms) var(--motion-linear, linear);
+  height: 100%;
+  display: block;
+}
+.next-number-picker-normal:not(.next-number-picker-show-trigger) .next-number-picker-handler {
+  opacity: 0;
+}
+.next-number-picker-normal:hover .next-number-picker-handler, .next-number-picker-normal.hover .next-number-picker-handler {
+  opacity: 1;
+}
+.next-number-picker-normal .next-input.next-disabled .next-number-picker-handler {
+  opacity: 0;
+}
+.next-number-picker-normal .next-number-picker-up-icon::before {
+  content: "\e625";
+  content: var(--number-picker-normal-up-icon, "\e625");
+}
+.next-number-picker-normal .next-number-picker-down-icon::before {
+  content: "\e63d";
+  content: var(--number-picker-normal-down-icon, "\e63d");
+}
+.next-number-picker-normal.next-small {
+  width: 68px;
+}
+.next-number-picker-normal.next-small .next-btn {
+  width: 20px;
+  width: var(--number-picker-normal-s-button-width, 20px);
+}
+.next-number-picker-normal.next-small .next-btn:first-child {
+  border-top-right-radius: 3px;
+  border-top-right-radius: var(--form-element-small-corner, 3px);
+}
+.next-number-picker-normal.next-small .next-btn:last-child {
+  border-bottom-right-radius: 3px;
+  border-bottom-right-radius: var(--form-element-small-corner, 3px);
+}
+.next-number-picker-normal.next-small .next-icon:before, .next-number-picker-normal.next-small .next-icon .next-icon-remote {
+  width: 8px;
+  width: var(--number-picker-normal-s-button-icon-size, 8px);
+  font-size: 8px;
+  font-size: var(--number-picker-normal-s-button-icon-size, 8px);
+  line-height: inherit;
+}
+@media all and (-webkit-min-device-pixel-ratio: 0) and (min-resolution: 0.001dpcm) {
+  .next-number-picker-normal.next-small .next-icon {
+    transform: scale(0.5);
+    margin-left: -4px;
+    margin-left: calc(0px - var(--icon-s, 16px)/2 + var(--number-picker-normal-s-button-icon-size, 8px)/2);
+    margin-right: -4px;
+    margin-right: calc(0px - var(--icon-s, 16px)/2 + var(--number-picker-normal-s-button-icon-size, 8px)/2);
+  }
+  .next-number-picker-normal.next-small .next-icon:before {
+    width: 16px;
+    width: var(--icon-s, 16px);
+    font-size: 16px;
+    font-size: var(--icon-s, 16px);
+  }
+}
+.next-number-picker-normal.next-medium {
+  width: 80px;
+  width: var(--number-picker-normal-m-input-width, 80px);
+}
+.next-number-picker-normal.next-medium .next-btn {
+  width: 20px;
+  width: var(--number-picker-normal-m-button-width, 20px);
+}
+.next-number-picker-normal.next-medium .next-btn:first-child {
+  border-top-right-radius: 3px;
+  border-top-right-radius: var(--form-element-medium-corner, 3px);
+}
+.next-number-picker-normal.next-medium .next-btn:last-child {
+  border-bottom-right-radius: 3px;
+  border-bottom-right-radius: var(--form-element-medium-corner, 3px);
+}
+.next-number-picker-normal.next-medium .next-icon:before, .next-number-picker-normal.next-medium .next-icon .next-icon-remote {
+  width: 8px;
+  width: var(--number-picker-normal-m-button-icon-size, 8px);
+  font-size: 8px;
+  font-size: var(--number-picker-normal-m-button-icon-size, 8px);
+  line-height: inherit;
+}
+@media all and (-webkit-min-device-pixel-ratio: 0) and (min-resolution: 0.001dpcm) {
+  .next-number-picker-normal.next-medium .next-icon {
+    transform: scale(0.5);
+    margin-left: -4px;
+    margin-left: calc(0px - var(--icon-s, 16px)/2 + var(--number-picker-normal-m-button-icon-size, 8px)/2);
+    margin-right: -4px;
+    margin-right: calc(0px - var(--icon-s, 16px)/2 + var(--number-picker-normal-m-button-icon-size, 8px)/2);
+  }
+  .next-number-picker-normal.next-medium .next-icon:before {
+    width: 16px;
+    width: var(--icon-s, 16px);
+    font-size: 16px;
+    font-size: var(--icon-s, 16px);
+  }
+}
+.next-number-picker-normal.next-large {
+  width: 80px;
+  width: var(--number-picker-normal-l-input-width, 80px);
+}
+.next-number-picker-normal.next-large .next-btn {
+  width: 20px;
+  width: var(--number-picker-normal-l-button-width, 20px);
+}
+.next-number-picker-normal.next-large .next-btn:first-child {
+  border-top-right-radius: 3px;
+  border-top-right-radius: var(--form-element-large-corner, 3px);
+}
+.next-number-picker-normal.next-large .next-btn:last-child {
+  border-bottom-right-radius: 3px;
+  border-bottom-right-radius: var(--form-element-large-corner, 3px);
+}
+.next-number-picker-normal.next-large .next-icon:before, .next-number-picker-normal.next-large .next-icon .next-icon-remote {
+  width: 8px;
+  width: var(--number-picker-normal-l-button-icon-size, 8px);
+  font-size: 8px;
+  font-size: var(--number-picker-normal-l-button-icon-size, 8px);
+  line-height: inherit;
+}
+@media all and (-webkit-min-device-pixel-ratio: 0) and (min-resolution: 0.001dpcm) {
+  .next-number-picker-normal.next-large .next-icon {
+    transform: scale(0.5);
+    margin-left: -4px;
+    margin-left: calc(0px - var(--icon-s, 16px)/2 + var(--number-picker-normal-l-button-icon-size, 8px)/2);
+    margin-right: -4px;
+    margin-right: calc(0px - var(--icon-s, 16px)/2 + var(--number-picker-normal-l-button-icon-size, 8px)/2);
+  }
+  .next-number-picker-normal.next-large .next-icon:before {
+    width: 16px;
+    width: var(--icon-s, 16px);
+    font-size: 16px;
+    font-size: var(--icon-s, 16px);
+  }
+}
+.next-number-picker-inline input {
+  text-align: center;
+}
+.next-number-picker-inline .next-input input {
+  padding: 0;
+}
+.next-number-picker-inline .next-number-picker-add-icon::before {
+  content: "\e655";
+  content: var(--number-picker-inline-add-icon, "\e655");
+}
+.next-number-picker-inline .next-number-picker-minus-icon::before {
+  content: "\e601";
+  content: var(--number-picker-inline-minus-icon, "\e601");
+}
+.next-number-picker-inline.next-small {
+  width: 68px;
+  min-width: 60px;
+  min-width: calc(var(--form-element-small-height, 20px)*3);
+}
+.next-number-picker-inline.next-small .next-icon:before, .next-number-picker-inline.next-small .next-icon .next-icon-remote {
+  width: 12px;
+  width: var(--number-picker-inline-s-button-icon-size, 12px);
+  font-size: 12px;
+  font-size: var(--number-picker-inline-s-button-icon-size, 12px);
+  line-height: inherit;
+}
+.next-number-picker-inline.next-small .next-btn {
+  height: 20px;
+  height: var(--form-element-small-height, 20px);
+}
+.next-number-picker-inline.next-small .next-before .next-btn {
+  margin-right: 2px;
+  margin-right: var(--number-picker-inline-s-button-margin, 2px);
+  border-top-left-radius: 3px;
+  border-top-left-radius: var(--number-picker-inline-s-button-corner, 3px);
+  border-bottom-left-radius: 3px;
+  border-bottom-left-radius: var(--number-picker-inline-s-button-corner, 3px);
+}
+.next-number-picker-inline.next-small .next-after .next-btn {
+  margin-left: 2px;
+  margin-left: var(--number-picker-inline-s-button-margin, 2px);
+  border-top-right-radius: 3px;
+  border-top-right-radius: var(--number-picker-inline-s-button-corner, 3px);
+  border-bottom-right-radius: 3px;
+  border-bottom-right-radius: var(--number-picker-inline-s-button-corner, 3px);
+}
+.next-number-picker-inline.next-medium {
+  width: 100px;
+  width: var(--number-picker-inline-m-input-width, 100px);
+  min-width: 84px;
+  min-width: calc(var(--form-element-medium-height, 28px)*3);
+}
+.next-number-picker-inline.next-medium .next-icon:before, .next-number-picker-inline.next-medium .next-icon .next-icon-remote {
+  width: 12px;
+  width: var(--number-picker-inline-m-button-icon-size, 12px);
+  font-size: 12px;
+  font-size: var(--number-picker-inline-m-button-icon-size, 12px);
+  line-height: inherit;
+}
+.next-number-picker-inline.next-medium .next-btn {
+  height: 28px;
+  height: var(--form-element-medium-height, 28px);
+}
+.next-number-picker-inline.next-medium .next-before .next-btn {
+  margin-right: 2px;
+  margin-right: var(--number-picker-inline-m-button-margin, 2px);
+  border-top-left-radius: 3px;
+  border-top-left-radius: var(--number-picker-inline-m-button-corner, 3px);
+  border-bottom-left-radius: 3px;
+  border-bottom-left-radius: var(--number-picker-inline-m-button-corner, 3px);
+}
+.next-number-picker-inline.next-medium .next-after .next-btn {
+  margin-left: 2px;
+  margin-left: var(--number-picker-inline-m-button-margin, 2px);
+  border-top-right-radius: 3px;
+  border-top-right-radius: var(--number-picker-inline-m-button-corner, 3px);
+  border-bottom-right-radius: 3px;
+  border-bottom-right-radius: var(--number-picker-inline-m-button-corner, 3px);
+}
+.next-number-picker-inline.next-large {
+  width: 128px;
+  width: var(--number-picker-inline-l-input-width, 128px);
+  min-width: 120px;
+  min-width: calc(var(--form-element-large-height, 40px)*3);
+}
+.next-number-picker-inline.next-large .next-icon:before, .next-number-picker-inline.next-large .next-icon .next-icon-remote {
+  width: 12px;
+  width: var(--number-picker-inline-l-button-icon-size, 12px);
+  font-size: 12px;
+  font-size: var(--number-picker-inline-l-button-icon-size, 12px);
+  line-height: inherit;
+}
+.next-number-picker-inline.next-large .next-btn {
+  height: 40px;
+  height: var(--form-element-large-height, 40px);
+}
+.next-number-picker-inline.next-large .next-before .next-btn {
+  margin-right: 2px;
+  margin-right: var(--number-picker-inline-l-button-margin, 2px);
+  border-top-left-radius: 3px;
+  border-top-left-radius: var(--number-picker-inline-l-button-corner, 3px);
+  border-bottom-left-radius: 3px;
+  border-bottom-left-radius: var(--number-picker-inline-l-button-corner, 3px);
+}
+.next-number-picker-inline.next-large .next-after .next-btn {
+  margin-left: 2px;
+  margin-left: var(--number-picker-inline-l-button-margin, 2px);
+  border-top-right-radius: 3px;
+  border-top-right-radius: var(--number-picker-inline-l-button-corner, 3px);
+  border-bottom-right-radius: 3px;
+  border-bottom-right-radius: var(--number-picker-inline-l-button-corner, 3px);
+}
+.next-number-picker-inline .next-btn.next-small {
+  width: 20px;
+  width: var(--form-element-small-height, 20px);
+}
+.next-number-picker-inline .next-btn.next-medium {
+  width: 28px;
+  width: var(--form-element-medium-height, 28px);
+}
+.next-number-picker-inline .next-btn.next-large {
+  width: 40px;
+  width: var(--form-element-large-height, 40px);
+}
+
+@-moz-document url-prefix() {
+  .next-number-picker-normal.next-small .next-number-picker-handler {
+    height: 18px;
+    height: calc(var(--form-element-small-height, 20px) - 2px);
+  }
+  .next-number-picker-normal.next-medium .next-number-picker-handler {
+    height: 26px;
+    height: calc(var(--form-element-medium-height, 28px) - 2px);
+  }
+  .next-number-picker-normal.next-large .next-number-picker-handler {
+    height: 38px;
+    height: calc(var(--form-element-large-height, 40px) - 2px);
+  }
+}
+.next-number-picker-normal[dir=rtl] .next-btn:first-child {
+  border-right: 1px solid #C4C6CF;
+  border-right: 1px solid var(--color-line1-3, #C4C6CF);
+  border-left: 0;
+  border-top-right-radius: 0;
+}
+.next-number-picker-normal[dir=rtl] .next-btn:first-child.next-small {
+  border-top-left-radius: 3px;
+  border-top-left-radius: var(--form-element-small-corner, 3px);
+}
+.next-number-picker-normal[dir=rtl] .next-btn:first-child.next-medium {
+  border-top-left-radius: 3px;
+  border-top-left-radius: var(--form-element-medium-corner, 3px);
+}
+.next-number-picker-normal[dir=rtl] .next-btn:first-child.next-large {
+  border-top-left-radius: 3px;
+  border-top-left-radius: var(--form-element-large-corner, 3px);
+}
+.next-number-picker-normal[dir=rtl] .next-btn:last-child {
+  border-right: 1px solid #C4C6CF;
+  border-right: 1px solid var(--color-line1-3, #C4C6CF);
+  border-left: 0;
+  border-bottom-right-radius: 0;
+}
+.next-number-picker-normal[dir=rtl] .next-btn:last-child.next-small {
+  border-bottom-left-radius: 3px;
+  border-bottom-left-radius: var(--form-element-small-corner, 3px);
+}
+.next-number-picker-normal[dir=rtl] .next-btn:last-child.next-medium {
+  border-bottom-left-radius: 3px;
+  border-bottom-left-radius: var(--form-element-medium-corner, 3px);
+}
+.next-number-picker-normal[dir=rtl] .next-btn:last-child.next-large {
+  border-bottom-left-radius: 3px;
+  border-bottom-left-radius: var(--form-element-large-corner, 3px);
+}
+.next-number-picker-normal[dir=rtl] .next-input .next-input-control {
+  padding-left: 0;
+}
+
+.next-number-picker-inline[dir=rtl] .next-before .next-btn {
+  margin-right: 0;
+}
+.next-number-picker-inline[dir=rtl] .next-before .next-btn.next-small {
+  margin-left: 2px;
+  margin-left: var(--number-picker-inline-s-button-margin, 2px);
+  border-top-right-radius: 3px !important;
+  border-top-right-radius: var(--number-picker-inline-s-button-corner, 3px) !important;
+  border-bottom-right-radius: 3px !important;
+  border-bottom-right-radius: var(--number-picker-inline-s-button-corner, 3px) !important;
+}
+.next-number-picker-inline[dir=rtl] .next-before .next-btn.next-medium {
+  margin-left: 2px;
+  margin-left: var(--number-picker-inline-m-button-margin, 2px);
+  border-top-right-radius: 3px !important;
+  border-top-right-radius: var(--number-picker-inline-m-button-corner, 3px) !important;
+  border-bottom-right-radius: 3px !important;
+  border-bottom-right-radius: var(--number-picker-inline-m-button-corner, 3px) !important;
+}
+.next-number-picker-inline[dir=rtl] .next-before .next-btn.next-large {
+  margin-left: 2px;
+  margin-left: var(--number-picker-inline-l-button-margin, 2px);
+  border-top-right-radius: 3px !important;
+  border-top-right-radius: var(--number-picker-inline-l-button-corner, 3px) !important;
+  border-bottom-right-radius: 3px !important;
+  border-bottom-right-radius: var(--number-picker-inline-l-button-corner, 3px) !important;
+}
+.next-number-picker-inline[dir=rtl] .next-after .next-btn {
+  margin-left: 0;
+}
+.next-number-picker-inline[dir=rtl] .next-after .next-btn.next-small {
+  margin-right: 2px;
+  margin-right: var(--number-picker-inline-s-button-margin, 2px);
+  border-top-left-radius: 3px !important;
+  border-top-left-radius: var(--number-picker-inline-s-button-corner, 3px) !important;
+  border-bottom-left-radius: 3px !important;
+  border-bottom-left-radius: var(--number-picker-inline-s-button-corner, 3px) !important;
+}
+.next-number-picker-inline[dir=rtl] .next-after .next-btn.next-medium {
+  margin-right: 2px;
+  margin-right: var(--number-picker-inline-m-button-margin, 2px);
+  border-top-left-radius: 3px !important;
+  border-top-left-radius: var(--number-picker-inline-m-button-corner, 3px) !important;
+  border-bottom-left-radius: 3px !important;
+  border-bottom-left-radius: var(--number-picker-inline-m-button-corner, 3px) !important;
+}
+.next-number-picker-inline[dir=rtl] .next-after .next-btn.next-large {
+  margin-right: 2px;
+  margin-right: var(--number-picker-inline-l-button-margin, 2px);
+  border-top-left-radius: 3px !important;
+  border-top-left-radius: var(--number-picker-inline-l-button-corner, 3px) !important;
+  border-bottom-left-radius: 3px !important;
+  border-bottom-left-radius: var(--number-picker-inline-l-button-corner, 3px) !important;
+}

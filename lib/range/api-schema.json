@@ -1,0 +1,386 @@
+{
+  "name": "Range",
+  "props": {
+    "prefix": {
+      "type": {
+        "name": "string"
+      },
+      "required": false,
+      "description": "样式类名的品牌前缀",
+      "defaultValue": {
+        "value": "'next-'",
+        "computed": false
+      },
+      "docblock": "样式类名的品牌前缀"
+    },
+    "className": {
+      "type": {
+        "name": "string"
+      },
+      "required": false,
+      "description": "自定义类名",
+      "docblock": "自定义类名"
+    },
+    "style": {
+      "type": {
+        "name": "object"
+      },
+      "required": false,
+      "description": "自定义内敛样式",
+      "docblock": "自定义内敛样式",
+      "properties": []
+    },
+    "slider": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'single'",
+            "computed": false,
+            "description": "单个"
+          },
+          {
+            "value": "'double'",
+            "computed": false,
+            "description": "两个"
+          }
+        ]
+      },
+      "required": false,
+      "description": "滑块个数",
+      "defaultValue": {
+        "value": "'single'",
+        "computed": false
+      },
+      "docblock": "滑块个数\n@enumdesc 单个, 两个",
+      "value": [
+        {
+          "value": "'single'",
+          "computed": false,
+          "description": "单个"
+        },
+        {
+          "value": "'double'",
+          "computed": false,
+          "description": "两个"
+        }
+      ]
+    },
+    "min": {
+      "type": {
+        "name": "number"
+      },
+      "required": false,
+      "description": "最小值",
+      "defaultValue": {
+        "value": "0",
+        "computed": false
+      },
+      "docblock": "最小值"
+    },
+    "max": {
+      "type": {
+        "name": "number"
+      },
+      "required": false,
+      "description": "最大值",
+      "defaultValue": {
+        "value": "100",
+        "computed": false
+      },
+      "docblock": "最大值"
+    },
+    "step": {
+      "type": {
+        "name": "number"
+      },
+      "required": false,
+      "description": "步长，取值必须大于 0，并且可被 (max - min) 整除。",
+      "defaultValue": {
+        "value": "1",
+        "computed": false
+      },
+      "docblock": "步长，取值必须大于 0，并且可被 (max - min) 整除。"
+    },
+    "value": {
+      "type": {
+        "name": "union",
+        "value": [
+          {
+            "name": "number"
+          },
+          {
+            "name": "arrayOf",
+            "value": {
+              "name": "number"
+            }
+          }
+        ]
+      },
+      "required": false,
+      "description": "设置当前取值。当 `slider` 为 `single` 时，使用 `Number`，否则用 `[Number, Number]`",
+      "docblock": "设置当前取值。当 `slider` 为 `single` 时，使用 `Number`，否则用 `[Number, Number]`"
+    },
+    "defaultValue": {
+      "type": {
+        "name": "union",
+        "value": [
+          {
+            "name": "number"
+          },
+          {
+            "name": "arrayOf",
+            "value": {
+              "name": "number"
+            }
+          }
+        ]
+      },
+      "required": false,
+      "description": "设置初始取值。当 `slider` 为 `single` 时，使用 `Number`，否则用 `[Number, Number]`",
+      "docblock": "设置初始取值。当 `slider` 为 `single` 时，使用 `Number`，否则用 `[Number, Number]`"
+    },
+    "marks": {
+      "type": {
+        "name": "union",
+        "value": [
+          {
+            "name": "bool"
+          },
+          {
+            "name": "number"
+          },
+          {
+            "name": "arrayOf",
+            "value": {
+              "name": "number"
+            }
+          },
+          {
+            "name": "object"
+          }
+        ]
+      },
+      "required": false,
+      "description": "刻度数值显示逻辑（false 代表不显示，array 枚举显示的值，number 代表按 number 平分，object 表示按 key 划分，value 值显示）",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "刻度数值显示逻辑（false 代表不显示，array 枚举显示的值，number 代表按 number 平分，object 表示按 key 划分，value 值显示）"
+    },
+    "marksPosition": {
+      "type": {
+        "name": "enum",
+        "value": [
+          {
+            "value": "'above'",
+            "computed": false
+          },
+          {
+            "value": "'below'",
+            "computed": false
+          }
+        ]
+      },
+      "required": false,
+      "description": "marks显示在上方('above')or下方('below')",
+      "defaultValue": {
+        "value": "'above'",
+        "computed": false
+      },
+      "docblock": "marks显示在上方('above')or下方('below')"
+    },
+    "disabled": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "值为 `true` 时，滑块为禁用状态",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "值为 `true` 时，滑块为禁用状态"
+    },
+    "onChange": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "当 Range 的值发生改变后，会触发 onChange 事件，并把改变后的值作为参数传入, 如果设置了value, 要配合此函数做受控使用",
+      "defaultValue": {
+        "value": "func.noop",
+        "computed": true
+      },
+      "docblock": "当 Range 的值发生改变后，会触发 onChange 事件，并把改变后的值作为参数传入, 如果设置了value, 要配合此函数做受控使用\n@param {String/number} value",
+      "params": [
+        {
+          "name": "value",
+          "description": null,
+          "type": {
+            "name": "String/number"
+          }
+        }
+      ],
+      "returns": null
+    },
+    "onProcess": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "滑块拖动的时候触发的事件,不建议在这里setState, 一般情况下不需要用, 滑动时有特殊需求时使用",
+      "defaultValue": {
+        "value": "func.noop",
+        "computed": true
+      },
+      "docblock": "滑块拖动的时候触发的事件,不建议在这里setState, 一般情况下不需要用, 滑动时有特殊需求时使用\n@param {String/number} value",
+      "params": [
+        {
+          "name": "value",
+          "description": null,
+          "type": {
+            "name": "String/number"
+          }
+        }
+      ],
+      "returns": null
+    },
+    "hasTip": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否显示 tip",
+      "defaultValue": {
+        "value": "true",
+        "computed": false
+      },
+      "docblock": "是否显示 tip"
+    },
+    "tipRender": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "自定义 tip 显示内容",
+      "defaultValue": {
+        "value": "value => value",
+        "computed": false
+      },
+      "docblock": "自定义 tip 显示内容\n@param {Number|String} value 值\n@return {ReactNode} 显示内容",
+      "params": [
+        {
+          "name": "value",
+          "description": "值",
+          "type": {
+            "name": "union",
+            "value": [
+              "Number",
+              "String"
+            ]
+          }
+        }
+      ],
+      "returns": {
+        "description": "显示内容",
+        "type": {
+          "name": "ReactNode"
+        }
+      }
+    },
+    "reverse": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "选中态反转",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "选中态反转"
+    },
+    "pure": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否pure render",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "是否pure render"
+    },
+    "fixedWidth": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否为拖动线段类型,默认slider为double, defaultValue必传且指定区间",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "是否为拖动线段类型,默认slider为double, defaultValue必传且指定区间"
+    },
+    "tooltipVisible": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "tooltip是否默认展示",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "tooltip是否默认展示"
+    },
+    "rtl": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否已rtl模式展示",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "是否已rtl模式展示"
+    },
+    "isPreview": {
+      "type": {
+        "name": "bool"
+      },
+      "required": false,
+      "description": "是否为预览态",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "docblock": "是否为预览态"
+    },
+    "renderPreview": {
+      "type": {
+        "name": "func"
+      },
+      "required": false,
+      "description": "预览态模式下渲染的内容",
+      "docblock": "预览态模式下渲染的内容\n@param {number} value 评分值",
+      "params": [
+        {
+          "name": "value",
+          "description": "评分值",
+          "type": {
+            "name": "number"
+          }
+        }
+      ],
+      "returns": null
+    }
+  },
+  "methods": [],
+  "subComponents": []
+}

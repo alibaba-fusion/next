@@ -1,0 +1,16 @@
+:root {
+--select-color: #333333;
+--select-hint-color: #999999;
+--select-highlight-color: #5584FF;
+--select-highlight-font: 12px;
+--select-l-lineheight: 24px;
+--select-m-lineheight: 20px;
+--select-s-lineheight: 14px;
+--select-tag-spacing-lr: 4px;
+--select-tag-spacing-tb: 3px;
+--select-tag-padding-lr: 0px;
+--select-menu-item-height: 20px;
+--select-menu-icon-color: #5584FF;
+--select-fold-icon-content: "\e63d";
+--select-unfold-icon-content: "";
+}

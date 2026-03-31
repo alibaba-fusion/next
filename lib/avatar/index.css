@@ -1,0 +1,83 @@
+.next-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+  top: 0;
+  margin: -1px;
+}
+
+/* put your code here */
+.next-avatar {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  color: #FFFFFF;
+  color: var(--avatar-color, #FFFFFF);
+  white-space: nowrap;
+  text-align: center;
+  vertical-align: middle;
+  background: #E2E4E8;
+  background: var(--avatar-default-bg, #E2E4E8);
+  border: 0px solid #FFFFFF;
+  border: var(--avatar-size-border-width, 0px) solid var(--avatar-border-color, #FFFFFF);
+  box-shadow: none;
+  box-shadow: var(--avatar-shadow, none);
+  width: 40px;
+  width: var(--avatar-size-medium, 40px);
+  height: 40px;
+  height: var(--avatar-size-medium, 40px);
+  line-height: 40px;
+  line-height: var(--avatar-size-medium, 40px);
+  border-radius: 50%;
+}
+.next-avatar-image {
+  background: transparent;
+}
+.next-avatar-string {
+  position: absolute;
+  left: 50%;
+  transform-origin: 0 center;
+}
+.next-avatar-large {
+  width: 52px;
+  width: var(--avatar-size-large, 52px);
+  height: 52px;
+  height: var(--avatar-size-large, 52px);
+  line-height: 52px;
+  line-height: var(--avatar-size-large, 52px);
+  border-radius: 50%;
+}
+.next-avatar-large-string {
+  position: absolute;
+  left: 50%;
+  transform-origin: 0 center;
+}
+.next-avatar-small {
+  width: 28px;
+  width: var(--avatar-size-small, 28px);
+  height: 28px;
+  height: var(--avatar-size-small, 28px);
+  line-height: 28px;
+  line-height: var(--avatar-size-small, 28px);
+  border-radius: 50%;
+}
+.next-avatar-small-string {
+  position: absolute;
+  left: 50%;
+  transform-origin: 0 center;
+}
+.next-avatar-square {
+  border-radius: 3px;
+  border-radius: var(--avatar-border-radius, 3px);
+}
+.next-avatar > img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}

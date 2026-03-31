@@ -1,0 +1,26 @@
+.next-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+  top: 0;
+  margin: -1px;
+}
+
+/* put your code here */
+.next-responsive-grid {
+  box-sizing: border-box;
+  display: grid;
+}
+.next-responsive-grid *,
+.next-responsive-grid *:before,
+.next-responsive-grid *:after {
+  box-sizing: border-box;
+}
+.next-responsive-grid-ie {
+  display: block;
+}
