@@ -16,7 +16,14 @@ import Input from '../input';
 import zhCN from '../locale/zh-cn';
 import DataStore from './data-store';
 import VirtualList from '../virtual-list';
-import { isSingle, filter, isNull, valueToSelectKey, getValueDataSource } from './util';
+import {
+    isSingle,
+    filter,
+    isNull,
+    valueToSelectKey,
+    getValueDataSource,
+    generateGroupKey,
+} from './util';
 import type {
     BaseProps,
     DataSourceItem,
@@ -519,13 +526,21 @@ export default class Base<
             searchKey = this.state.searchValue;
         }
 
+        const itemValueSet = new Set<string>();
+        for (const item of dataSource) {
+            if (item && !(Array.isArray(item.children) && showDataSourceChildren)) {
+                itemValueSet.add(`${item.value}`);
+            }
+        }
+
         return dataSource.map((item, index) => {
             if (!item) {
                 return null;
             }
             if (Array.isArray(item.children) && showDataSourceChildren) {
+                const groupKey = generateGroupKey(index, itemValueSet);
                 return (
-                    <MenuGroup key={index} label={item.label}>
+                    <MenuGroup key={groupKey} label={item.label}>
                         {this.renderMenuItem(item.children)}
                     </MenuGroup>
                 );

@@ -347,3 +347,23 @@ export function valueToSelectKey(value: DataSourceItem): ObjectItem['value'] {
     }
     return `${val}`;
 }
+
+/**
+ * Generate group key
+ * @param index - index
+ * @param itemValueSet - item value set
+ * @returns group key
+ */
+export function generateGroupKey(index: number, itemValueSet: Set<string>) {
+    const targetKey = `select-group-${index}`;
+    if (!itemValueSet.has(targetKey)) {
+        return targetKey;
+    }
+    let suffix = 0;
+    let key = `${targetKey}-repeat-${suffix}`;
+    while (itemValueSet.has(key)) {
+        suffix++;
+        key = `${targetKey}-repeat-${suffix}`;
+    }
+    return key;
+}
