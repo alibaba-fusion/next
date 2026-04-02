@@ -8,23 +8,25 @@ import { func, obj } from '../../util';
 import defaultLocale from '../../locale/zh-cn';
 
 import Button from '../../button';
+import type { FooterPanelProps, PresetType } from '../types';
 
 const { renderNode } = func;
 
-function normalizePreset(preset) {
+function normalizePreset(preset: PresetType | PresetType[]) {
     if (Array.isArray(preset)) {
         return preset;
     } else {
         return Object.keys(preset).map(key => {
             return {
                 label: key,
-                value: preset[key],
+                value: (preset as { [key: string]: unknown })[key],
             };
         });
     }
 }
 
-class FooterPanel extends React.PureComponent {
+class FooterPanel extends React.PureComponent<FooterPanelProps> {
+    static displayName = 'FooterPanel';
     static propTypes = {
         rtl: PT.bool,
         className: PT.string,
@@ -41,7 +43,8 @@ class FooterPanel extends React.PureComponent {
         locale: defaultLocale.DatePicker,
     };
 
-    constructor(props) {
+    prefixCls: string;
+    constructor(props: FooterPanelProps) {
         super(props);
 
         this.prefixCls = `${props.prefix}date-picker2-footer`;
@@ -55,7 +58,7 @@ class FooterPanel extends React.PureComponent {
         const preset = normalizePreset(this.props.preset);
 
         return preset.map(({ label, value, ...restProps }, index) => {
-            const buttonProps = obj.pickProps(Button.propTypes, restProps);
+            const buttonProps = obj.pickProps(Button.propTypes!, restProps);
 
             const handleClick = () => {
                 const date = typeof value === 'function' ? value() : value;
@@ -74,7 +77,7 @@ class FooterPanel extends React.PureComponent {
                     //     ])
                     // }
                     onClick={handleClick}
-                    {...buttonProps}
+                    {...(buttonProps as object)}
                 >
                     {label}
                 </Button>
@@ -93,8 +96,14 @@ class FooterPanel extends React.PureComponent {
         const extraNode = renderNode(extraRender);
         const rangeNode = this.renderRanges();
         const actionsNode = (
-            <Button size="small" disabled={!oKable} onClick={onOk} className={`${prefixCls}-ok`} type="primary">
-                {locale.ok}
+            <Button
+                size="small"
+                disabled={!oKable}
+                onClick={onOk}
+                className={`${prefixCls}-ok`}
+                type="primary"
+            >
+                {locale?.ok}
             </Button>
         );
 

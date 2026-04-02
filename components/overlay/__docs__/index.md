@@ -186,6 +186,16 @@ Popup 是对 Overlay 的封装，它接收某个节点作为触发节点，弹�
 export type AnimationObjectType = Record<'in' | 'out', string>;
 ```
 
+### onPositionResultType
+
+```typescript
+export type onPositionResultType = {
+    config: { placement: string; points: string };
+    align: string[];
+    style?: CSSCounterStyleRule;
+};
+```
+
 ### PropTarget
 
 ```typescript

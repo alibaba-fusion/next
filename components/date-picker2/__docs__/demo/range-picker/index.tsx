@@ -1,11 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { type Dayjs } from 'dayjs';
 
 import { DatePicker2 } from '@alifd/next';
 
 const { RangePicker } = DatePicker2;
 
-const onChange = (date, dateStr) => console.log(date, dateStr);
+const onChange = (date: Dayjs | Dayjs[], dateStr: string | string[]) => console.log(date, dateStr);
 
 const App = () => (
     <div className="app">
