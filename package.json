@@ -237,7 +237,7 @@
     "loader-utils": "^1.1.0",
     "lodash": "^4.17.5",
     "magic-string": "^0.30.5",
-    "markdown-it": "^8.4.2",
+    "markdown-it": "^14.3.0",
     "markdown-it-anchor": "^6.0.0",
     "markdown-it-prism": "^2.1.3",
     "md5": "^2.2.1",
