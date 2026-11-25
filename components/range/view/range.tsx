@@ -410,10 +410,16 @@ class Range extends React.Component<RangeProps, RangeState> {
 
     _end() {
         const { startValue } = this._moving!;
-        const { tempValue, value } = this.state;
+        const { value } = this.state;
+        const { min, max } = this.props;
+        const clamp = (item: number) => Math.min(max, Math.max(min, item));
+        const tempValue = Array.isArray(this.state.tempValue)
+            ? (this.state.tempValue.map(clamp) as [number, number])
+            : clamp(this.state.tempValue!);
         this._moving = null;
         this._removeDocumentEvents();
         this.setState({
+            tempValue,
             hasMovingClass: false,
             lowerTooltipVisible: false,
             upperTooltipVisible: false,
